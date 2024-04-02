@@ -59,6 +59,7 @@
   
   <script>
   import MemberOption from "@/components/MemberOption.vue";
+  import { useUserStore } from "@/stores/userStore"; //user store
   import axios from "axios";
 
   // 引入外部 CSS 文件
@@ -79,8 +80,8 @@
       MemberOption,
     },
     methods: {
-        getMemberData() {
-            const userId = 3;
+        getMemberData(userId) {
+            // const userId = 3;
             axios
                 .get(`${this.API_URL}/member/showmemberredata?userId=${userId}`)
                 .then((response) => {
@@ -133,7 +134,12 @@
         },
     },
     mounted() {
-        this.getMemberData();
+      const userStore = useUserStore();
+      if (userStore.isLoggedIn) {
+        this.getMemberData(userStore.userId);
+      } else {
+        console.log("會員未登入");
+      }
     },
     computed: {
         formattedRegisterDate() {

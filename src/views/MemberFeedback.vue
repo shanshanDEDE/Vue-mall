@@ -146,7 +146,8 @@ import MemberOption from "@/components/MemberOption.vue";
 import axios from "axios";
 
 // 引入外部 CSS 文件
-import "@/assets/track.css"; // 样式文件路径根据实际情况修改
+import "@/assets/track.css";
+import {useUserStore} from "@/stores/userStore.js"; // 样式文件路径根据实际情况修改
 
 export default {
   components: {
@@ -162,8 +163,8 @@ export default {
     };
   },
   methods: {
-    fetchFeedbackData() {
-      const userId = 1;
+    fetchFeedbackData(userId) {
+      // const userId = 1;
       axios
         .get(`${this.API_URL}/feedbacks/showCustomerFeedbacks?userId=${userId}`)
         .then((rs) => {
@@ -198,7 +199,12 @@ export default {
     },
   },
   mounted() {
-    this.fetchFeedbackData();
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      this.fetchFeedbackData(userStore.userId);
+    } else {
+      console.log("會員未登入");
+    }
   },
 };
 </script>

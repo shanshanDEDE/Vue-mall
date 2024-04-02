@@ -88,8 +88,10 @@
 
 <script>
 import MemberOption from "@/components/MemberOption.vue";
+import { useUserStore } from "@/stores/userStore"; // 假设 userStore 存在于 src/stores 目录下
 import axios from "axios";
 export default {
+
   data() {
     return {
       memberdata: null,
@@ -99,8 +101,8 @@ export default {
     MemberOption,
   },
   methods: {
-    getMemberData() {
-      const userId = 2;
+    getMemberData(userId) {
+      // const userId = 2;
       axios
         .get(`${this.API_URL}/member/showmemberredata?userId=${userId}`)
         .then((response) => {
@@ -113,8 +115,12 @@ export default {
     },
   },
   mounted() {
-
-    this.getMemberData();
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      this.getMemberData(userStore.userId);
+    } else {
+      console.log("會員未登入");
+    }
   },
 };
 </script>

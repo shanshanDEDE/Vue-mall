@@ -65,14 +65,16 @@
                 <div>
                 <div>
                     <input v-model="VerificationCode"></input>
+                  <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
+                  <br>
+
                     <button type="primary" @click="sendCode" :disabled="disableSend">取得驗證碼</button>
                 </div>
                 </div>
 
               </div>
 
-                  <button @click="submitUpdate">重設密碼</button>  <img v-if = "VerificationCodePass" src="/greentick.jpg"/>
-              <img v-if = "!VerificationCodePass" src="/wrong.jpg"/>
+                  <button @click="submitUpdate">重設密碼</button>
 
 
 
@@ -181,7 +183,7 @@
                                 axios.post(`${this.API_URL}/register`, { email: this.email })
                                     .then(res => {
                                         console.log(res.data)
-                                        if (res.data.status === 'success') {
+                                        if (res.data.code  === 1) {
                                           alert(res.data.message); // 使用 alert 函數顯示成功消息
                                         } else {
                                             alert(res.data.message); // 使用 alert 函數顯示錯誤消息
@@ -201,7 +203,7 @@
         axios.post(`${this.API_URL}/verifyCode`, { email: this.email ,code: this.VerificationCode})
           .then(res => {
             console.log(res.data)
-            if (res.data.status === 'success') {
+            if (res.data.code  === 1) {
               alert(res.data.message,"驗證碼驗證成功"); // 使用 alert 函數顯示成功消息
               this.VerificationCodePass = true;
             } else {
@@ -224,5 +226,14 @@
   };
   </script>
   
-  <style></style>
+  <style>
+
+  .icon-background {
+    display: inline-block; /* 或其他适合的显示方式 */
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background-position: center;
+  }
+  </style>
   
