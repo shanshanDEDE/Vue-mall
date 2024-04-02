@@ -46,6 +46,22 @@ const router = createRouter({
       path: '/member_center/member_reset_password',
       component: () => import('@/views/member_reset_password.vue'),
     },
+    {
+      path: "/login",
+      component: () => import("@/views/LoginPage.vue"),
+    },
+    {
+      path: "/register",
+      component: () => import("@/views/RegisterPage.vue"),
+    },
+    {
+      path: "/forget",
+      component: () => import("@/views/ForgetPassword.vue"),
+    },
+    {
+      path: "/OLoginSuccess",
+      component: () => import("@/views/Oath2LoginSuccess.vue"),
+    },
     ]
 })
 

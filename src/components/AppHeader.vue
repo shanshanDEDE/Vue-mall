@@ -39,13 +39,13 @@
           </li>
         </ul>
 
-        <!-- <div class="text-end">
-          <router-link
-            to="/login"
-            class="text-decoration-none"
-            v-if="!isLoggedIn"
-          >
-            <button type="button" class="btn btn-outline-light me-2">
+        <div class="text-end">
+          <router-link to="/login" class="text-decoration-none">
+            <button
+                type="button"
+                class="btn btn-outline-light me-2"
+                v-if="!isLoggedIn"
+            >
               登入
             </button>
           </router-link>
@@ -61,46 +61,49 @@
               登出
             </button>
           </template>
-        </div> -->
+        </div>
       </div>
     </div>
   </header>
 </template>
+
 <script>
-import { useMemberStore } from "@/stores/memberStore";
+import { useUserStore } from "@/stores/userStore";
 import axios from "axios";
 
 export default {
-  //   methods: {
-  //     logout() {
-  //       axios
-  //         .get(`${this.API_URL}/logout`)
-  //         .then((rs) => {
-  //           const memberStore = useMemberStore();
-  //           memberStore.logout();
-  //           this.$router.push("/");
-  //         })
-  //         .catch((error) => {
-  //           console.log("登出失敗", console.error);
-  //         });
-  //     },
-  //   },
-  //   computed: {
-  //     id() {
-  //       const memberStore = useMemberStore();
-  //       return memberStore.memberId;
-  //     },
-  //     name() {
-  //       const memberStore = useMemberStore();
-  //       return memberStore.memberName;
-  //     },
-  //     photo() {
-  //       return useMemberStore().memberPhoto;
-  //     },
-  //     isLoggedIn() {
-  //       return useMemberStore().isLoggedIn;
-  //     },
-  //   },
+  methods: {
+    logout() {
+      console.log("logout");
+      axios
+          .get(`${this.API_URL}/user/logout`)
+          .then((rs) => {
+            const userStore = useUserStore();
+            userStore.logout();
+            this.$router.push("/");
+          })
+          .catch((error) => {
+            console.log("登出失敗", error);
+          });
+    },
+  },
+  computed: {
+    name() {
+      const userStore = useUserStore();
+      return userStore.userName;
+    },
+    id() {
+      const userStore = useUserStore();
+      return userStore.userId;
+    },
+    // photo() {
+    //   const userStore = useUserStore();
+    //   return userStore.userPhoto;
+    // },
+    isLoggedIn() {
+      return useUserStore().isLoggedIn;
+    },
+  },
 };
 </script>
 <style></style>

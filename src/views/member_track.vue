@@ -28,7 +28,7 @@
 
                 <div class="track-image">
                   <img
-                    :src="track.photoFile"
+                    :src="'data:image/jpeg;base64,' + track.photoFile"
                     alt="Product Image"
                     class="product-img"
                   />

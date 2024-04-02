@@ -71,7 +71,9 @@
 
               </div>
 
-                  <button @click="submitUpdate">重設密碼</button> 
+                  <button @click="submitUpdate">重設密碼</button>  <img v-if = "VerificationCodePass" src="/greentick.jpg"/>
+              <img v-if = "!VerificationCodePass" src="/wrong.jpg"/>
+
 
 
               </div>
@@ -148,6 +150,7 @@
         email: '',
         disableSend: false,
         VerificationCode: '',
+        VerificationCodePass: false,
       };
     },
     created() {
@@ -189,10 +192,31 @@
                                     .catch(error => {
                                         console.log("想哭");
                                         console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
-                                        alert('发送验证码失败'); // 使用 alert 函數顯示錯誤消息
+                                        alert('發送驗證碼失敗'); // 使用 alert 函數顯示錯誤消息
                                         this.disableSend = false;
                                     });
-                            }
+                            },
+
+      verifyCodeNumber(){
+        axios.post(`${this.API_URL}/verifyCode`, { email: this.email ,code: this.VerificationCode})
+          .then(res => {
+            console.log(res.data)
+            if (res.data.status === 'success') {
+              alert(res.data.message,"驗證碼驗證成功"); // 使用 alert 函數顯示成功消息
+              this.VerificationCodePass = true;
+            } else {
+                alert("驗證碼驗證錯誤"); // 使用 alert 函數顯示錯誤消息
+              this.VerificationCodePass = false;
+            }
+          })
+          .catch(error => {
+            console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
+            alert('驗證碼的部分發生錯誤!'); // 使用 alert 函數顯示錯誤消息
+          });
+      },
+      submitUpdate(){
+        this.verifyCodeNumber();
+      },
     },
     mounted() {
       this.getMemberPasswordData();
