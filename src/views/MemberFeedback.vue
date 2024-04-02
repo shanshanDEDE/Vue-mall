@@ -165,7 +165,7 @@ export default {
     fetchFeedbackData() {
       const userId = 1;
       axios
-        .get(`${this.API_URL}/feedbacks/showcustomerdeedbacks?userId=${userId}`)
+        .get(`${this.API_URL}/feedbacks/showCustomerFeedbacks?userId=${userId}`)
         .then((rs) => {
           console.log(rs);
           this.feedbacks = rs.data;
@@ -180,7 +180,7 @@ export default {
       this.feedbackDTO.orderID = feedback.orderID;
 
       axios
-        .delete(`${this.API_URL}/delete/customerdeedback`, {
+        .delete(`${this.API_URL}/delete/customerFeedbacks`, {
           data: this.feedbackDTO,
         })
         .then((response) => {

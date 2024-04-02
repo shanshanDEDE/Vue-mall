@@ -33,7 +33,7 @@
             >
           </li> -->
           <li>
-            <router-link to="/member_center" class="nav-link px-2 text-white"
+            <router-link to="/MemberCenter" class="nav-link px-2 text-white"
               >會員中心</router-link
             >
           </li>

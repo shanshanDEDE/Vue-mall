@@ -5,46 +5,31 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: () => import('@/views/home_page.vue'),
+      component: () => import('@/views/HomePage.vue'),
     },
     {
-      path: '/member_center',
-      component: () => import('@/views/member_center.vue'),
-      // children: [
-      //   {
-      //     path: '/', // 空路徑表示默認頁面，例如/member
-      //     component: () => import('@/views/member_center.vue'),
-      //   },
-      //   {
-      //     path: 'track',
-      //     component: () => import('@/views/member_track.vue'),
-      //   },
-      //   {
-      //     path: 'customer_feedback',
-      //     component: () => import('@/views/member_feedback.vue'),
-      //   },
-      //   // 其他子路由...
-      // ]
+      path: '/MemberCenter',
+      component: () => import('@/views/MemberCenter.vue'),
      },
     {
-      path: '/member_center/track',
-      component: () => import('@/views/member_track.vue'),
+      path: '/MemberCenter/track',
+      component: () => import('@/views/MemberTrack.vue'),
     },
     {
-      path: '/member_center/customer_feedback',
-      component: () => import('@/views/member_feedback.vue'),
+      path: '/MemberCenter/MemberFeedback',
+      component: () => import('@/views/MemberFeedback.vue'),
     },
     {
-      path: '/member_center/member_data',
-      component: () => import('@/views/member_data.vue'),
+      path: '/MemberCenter/MemberData',
+      component: () => import('@/views/MemberData.vue'),
     },
     {
-      path: '/member_center/member_data_update',
-      component: () => import('@/views/member_data_update.vue'),
+      path: '/MemberCenter/MemberDataUpdate',
+      component: () => import('@/views/MemberDataUpdate.vue'),
     },
     {
-      path: '/member_center/member_reset_password',
-      component: () => import('@/views/member_reset_password.vue'),
+      path: '/MemberCenter/MemberResetPassword',
+      component: () => import('@/views/MemberResetPassword.vue'),
     },
     {
       path: "/login",
