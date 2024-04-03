@@ -55,22 +55,22 @@
 
 
 
-<!--                      <template-->
-<!--                          v-if="feedback.customerFeedbackStatus != '已處理'"-->
-<!--                      >-->
-<!--                        <button-->
-<!--                            @click="deleteFeedback(feedback)"-->
-<!--                            class="btn btn-primary"-->
-<!--                        >-->
-<!--                          刪除-->
-<!--                        </button>-->
-<!--                      </template>-->
-<!--                      <template v-else>-->
-<!--                        <button class="btn btn-primary" disabled>-->
-<!--                          無法刪除-->
-<!--                        </button>-->
-<!--                      </template>-->
-                      <!-- 在这里添加更多详细信息 -->
+                      <template
+                          v-if="order.orderStatus == '處理中'"
+                      >
+                        <button
+                            @click="deleteOrders(order)"
+                            class="btn btn-primary"
+                        >
+                          取消訂單
+                        </button>
+                      </template>
+                      <template v-else>
+                        <button class="btn btn-primary" disabled>
+                          無法取消
+                        </button>
+                      </template>
+
                     </div>
                   </div>
                 </div>
@@ -152,10 +152,10 @@ export default {
   data() {
     return {
       Orders: [],
-      feedbackDTO: {
-        userID: null, // 初始化為空，等待登錄後填充
-        orderID: null, // 初始化為空，等待需要時填充
-      },
+      // orderDTO: {
+      //   userID: null, // 初始化為空，等待登錄後填充
+      //   orderID: null, // 初始化為空，等待需要時填充
+      // },
     };
   },
   methods: {
@@ -169,23 +169,18 @@ export default {
           });
     },
 
-    deleteFeedback(feedback) {
-      // 这里添加取消收藏的逻辑
-      console.log("取消收藏的产品ID:", feedback.feedbackID);
-      // 例如，发起一个请求到后端取消收藏
-      this.feedbackDTO.userID = feedback.userID;
-      this.feedbackDTO.orderID = feedback.orderID;
+    deleteOrders(order) {
 
+      console.log("取消訂單:", order.orderId);
       axios
-          .delete(`${this.API_URL}/delete/customerFeedbacks`, {
-            data: this.feedbackDTO,
-          })
+          .delete(`${this.API_URL}/delete/UserOrders/${order.orderId}`
+          )
           .then((response) => {
-            // 处理响应
+
             console.log(response);
             // 更新tracks数组，移除取消收藏的产品
-            this.feedbacks = this.feedbacks.filter(
-                (item) => item.feedbackID !== feedback.feedbackID
+            this.Orders = this.Orders.filter(
+                (item) => item.orderId !== order.orderId
             );
           })
           .catch((error) => {
