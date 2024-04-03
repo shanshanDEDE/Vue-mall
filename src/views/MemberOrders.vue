@@ -15,65 +15,61 @@
               <p class="lead fw-normal">訂單資訊</p>
             </div>
 
-            <!-- 交易记录 -->
-            <div v-for="feedback in feedbacks" :key="feedback.feedbackID">
+            <div v-for="order in Orders" :key="order.orderId">
               <div class="accordion mb-3" id="accordionExample">
                 <div class="accordion-item">
                   <!-- 折叠标题 -->
-                  <h2
-                      class="accordion-header"
-                      id="heading{{ feedback.orderID }}"
-                  >
+                  <h2 class="accordion-header" :id="'heading' + order.orderId">
                     <button
                         class="accordion-button"
                         type="button"
                         data-bs-toggle="collapse"
-                        :data-bs-target="'#collapse' + feedback.orderID"
+                        :data-bs-target="'#collapse' + order.orderId"
                         aria-expanded="true"
-                        :aria-controls="'collapse' + feedback.orderID"
+                        :aria-controls="'collapse' + order.orderId"
                     >
-                      訂單編號:{{ feedback.orderID }} 反應類別:{{
-                        feedback.type
-                      }}
-                      評價日期:{{ feedback.feedbackDate }} 狀態:{{
-                        feedback.customerFeedbackStatus
-                      }}
+                      訂單編號:{{ order.orderId }} 下單日期:{{ order.orderDate }}
+                      付款方式:{{ order.paymentMethod }} 訂單狀態:{{ order.orderStatus }}
                     </button>
                   </h2>
                   <!-- 折叠内容 -->
                   <div
-                      :id="'collapse' + feedback.orderID"
+                      :id="'collapse' + order.orderId"
                       class="accordion-collapse collapse"
-                      aria-labelledby="heading{{ feedback.orderID }}"
+                      :aria-labelledby="'heading' + order.orderId"
                       data-bs-parent="#accordionExample"
                   >
                     <div class="accordion-body">
-                      <div
-                          v-for="(product, productIndex) in feedback.productNames"
-                          :key="productIndex"
-                      >
-                        產品名稱: {{ product }} 價格:{{
-                          feedback.prices[productIndex]
-                        }}$
+                      <div v-for="(detail, index) in order.orderDetails" :key="index">
+                        <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
+                        <p>數量: {{ detail.quantity }}個,單價: {{ detail.price }}$</p>
+                        <p>總價: {{ detail.orderPrice }}$</p>
                       </div>
 
-                      <p>回饋內容: {{ feedback.description }}</p>
+                      <p>收貨地址: {{ order.deliverAddress }}</p>
+                      <p>聯絡電話: {{ order.recipientPhone }}</p>
 
-                      <template
-                          v-if="feedback.customerFeedbackStatus != '已處理'"
-                      >
-                        <button
-                            @click="deleteFeedback(feedback)"
-                            class="btn btn-primary"
-                        >
-                          刪除
-                        </button>
-                      </template>
-                      <template v-else>
-                        <button class="btn btn-primary" disabled>
-                          無法刪除
-                        </button>
-                      </template>
+
+
+
+
+
+
+<!--                      <template-->
+<!--                          v-if="feedback.customerFeedbackStatus != '已處理'"-->
+<!--                      >-->
+<!--                        <button-->
+<!--                            @click="deleteFeedback(feedback)"-->
+<!--                            class="btn btn-primary"-->
+<!--                        >-->
+<!--                          刪除-->
+<!--                        </button>-->
+<!--                      </template>-->
+<!--                      <template v-else>-->
+<!--                        <button class="btn btn-primary" disabled>-->
+<!--                          無法刪除-->
+<!--                        </button>-->
+<!--                      </template>-->
                       <!-- 在这里添加更多详细信息 -->
                     </div>
                   </div>
@@ -155,7 +151,7 @@ export default {
   },
   data() {
     return {
-      feedbacks: [],
+      Orders: [],
       feedbackDTO: {
         userID: null, // 初始化為空，等待登錄後填充
         orderID: null, // 初始化為空，等待需要時填充
@@ -163,13 +159,13 @@ export default {
     };
   },
   methods: {
-    fetchFeedbackData(userId) {
+    fetchOrdersData(userId) {
       // const userId = 1;
       axios
-          .get(`${this.API_URL}/feedbacks/showCustomerFeedbacks?userId=${userId}`)
+          .get(`${this.API_URL}/memberOrders/showAllUserOrders?userId=${userId}`)
           .then((rs) => {
             console.log(rs);
-            this.feedbacks = rs.data;
+            this.Orders = rs.data;
           });
     },
 
@@ -201,7 +197,7 @@ export default {
   mounted() {
     const userStore = useUserStore();
     if (userStore.isLoggedIn) {
-      this.fetchFeedbackData(userStore.userId);
+      this.fetchOrdersData(userStore.userId);
     } else {
       console.log("會員未登入");
     }

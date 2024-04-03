@@ -31,6 +31,14 @@ const router = createRouter({
       path: '/MemberCenter/MemberResetPassword',
       component: () => import('@/views/MemberResetPassword.vue'),
     },
+
+
+    {
+      path: '/MemberCenter/MemberOrders',
+      component: () => import('@/views/MemberOrders.vue'),
+    },
+
+
     {
       path: "/login",
       component: () => import("@/views/LoginPage.vue"),
