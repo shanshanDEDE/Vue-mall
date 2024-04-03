@@ -142,6 +142,7 @@
   <script>
   import MemberOption from "@/components/MemberOption.vue";
   import axios from "axios";
+  import {useUserStore} from "@/stores/userStore.js";
   export default {
     data() {
       return {
@@ -164,8 +165,8 @@
       MemberOption,
     },
     methods: {
-      getMemberPasswordData() {
-        const userId = 2;
+      getMemberPasswordData(userId) {
+        // const userId = 2;
         axios
           .get(`${this.API_URL}/member/showrepassworddata?userId=${userId}`)
           .then((response) => {
@@ -221,7 +222,12 @@
       },
     },
     mounted() {
-      this.getMemberPasswordData();
+      const userStore = useUserStore();
+      if (userStore.isLoggedIn) {
+        this.getMemberPasswordData(userStore.userId);
+      } else {
+        console.log("會員未登入");
+      }
     },
   };
   </script>
