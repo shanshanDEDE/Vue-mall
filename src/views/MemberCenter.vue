@@ -11,7 +11,7 @@
             class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light"
           >
             <div class="col-md-5 p-lg-5 mx-auto my-5">
-              <h1 class="display-4 fw-normal">Nono商城</h1>
+              <h1 class="display-4 fw-normal">會員中心</h1>
               <p class="lead fw-normal">
                 (ChatGPT產生)歡迎來到NonoShop，您的一站式線上購物天堂！涵蓋3C產品、美食、流行服飾、日常用品等，滿足各式購物需求，讓您輕鬆享受購物樂趣。
               </p>

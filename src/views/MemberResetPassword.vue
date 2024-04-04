@@ -44,44 +44,28 @@
                 <div>
                     <label>確認密碼:</label>
                     <input type="password" v-model="confirmPasswordData.password" />
+                    <img :src="IsConfirmPassword ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
                     <!-- 右側提示標籤 -->
                     <label v-if="!confirmPasswordData.password" class="missing-data-label">尚未填寫</label>
                     <label v-else-if="confirmPasswordData.password !== ResetPasswordData.password && ResetPasswordData.password && confirmPasswordData.password" class="missing-data-label">密碼錯誤</label>
                     
                 </div> 
                 </div>
-
-<!-- 
-                <div v-if="memberPasswordData">
-                <div>
-                    <label>密碼:</label>
-                    <input type="text" v-model="inputmemberdata.userAddress" />
-                    <label v-if="shouldShowMissingLabel(memberdata.userAddress,inputmemberdata.userAddress)" class="missing-data-label">尚未有過資料 建議填寫!</label>
-                </div>
-                </div> -->
-  
-
-
                 <div>
                 <div>
-                    <input v-model="VerificationCode"></input>
+                  驗證碼:<input v-model="VerificationCode"></input>
                   <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
                   <br>
 
-                    <button type="primary" @click="sendCode" :disabled="disableSend">取得驗證碼</button>
-                </div>
-                </div>
-
-              </div>
-
+                  <button type="primary" @click="sendCode" :disabled="disableSend" class="mr-2">取得驗證碼</button>
                   <button @click="submitUpdate">重設密碼</button>
+                </div>
 
-
-
+                </div>
+              </div>
               </div>
             </div>
           </div>
-        
         <div class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button
@@ -154,6 +138,17 @@
         disableSend: false,
         VerificationCode: '',
         VerificationCodePass: false,
+        IsConfirmPassword: false,
+        feedbackDTO: {
+          userID: null, // 初始化為空，等待登錄後填充
+          orderID: null, // 初始化為空，等待需要時填充
+        },
+        memberRePasswordDTO:{
+          userID: null,
+          // password: 12345678
+          password: null,
+        },
+        // memberInputPassword: this.ResetPasswordData.password,
       };
     },
     created() {
@@ -164,61 +159,123 @@
     components: {
       MemberOption,
     },
+    watch: {
+      // 監聽ResetPasswordData.password和confirmPasswordData.password的變化
+      'ResetPasswordData.password'(newVal, oldVal) {
+        this.updateIsConfirmPassword();
+      },
+      'confirmPasswordData.password'(newVal, oldVal) {
+        this.updateIsConfirmPassword();
+      },
+      'inputemberPasswordData.password'(newVal, oldVal) {
+        this.updateInputPassword();
+      }
+    },
     methods: {
       getMemberPasswordData(userId) {
         // const userId = 2;
         axios
-          .get(`${this.API_URL}/member/showrepassworddata?userId=${userId}`)
-          .then((response) => {
-            console.log(response);
-            this.memberPasswordData = response.data;
-            this.email = response.data.email
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            .get(`${this.API_URL}/member/showrepassworddata?userId=${userId}`)
+            .then((response) => {
+              console.log(response);
+              this.memberPasswordData = response.data;
+              this.email = response.data.email
+            })
+            .catch((error) => {
+              console.log(error);
+            });
       },
-                                sendCode () {
-                                this.disableSend = true;
-                                console.log(this.email);
-                                axios.post(`${this.API_URL}/register`, { email: this.email })
-                                    .then(res => {
-                                        console.log(res.data)
-                                        if (res.data.code  === 1) {
-                                          alert(res.data.message); // 使用 alert 函數顯示成功消息
-                                        } else {
-                                            alert(res.data.message); // 使用 alert 函數顯示錯誤消息
-                                            console.log("想哭rrrrr");
-                                            this.disableSend = false;
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.log("想哭");
-                                        console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
-                                        alert('發送驗證碼失敗'); // 使用 alert 函數顯示錯誤消息
-                                        this.disableSend = false;
-                                    });
-                            },
+      sendCode() {
+        this.disableSend = true;
+        console.log(this.email);
+        axios.post(`${this.API_URL}/register`, {email: this.email})
+            .then(res => {
+              console.log(res.data)
+              if (res.data.code === 1) {
+                alert(res.data.message); // 使用 alert 函數顯示成功消息
+              } else {
+                alert(res.data.message); // 使用 alert 函數顯示錯誤消息
+                console.log("想哭rrrrr");
+                this.disableSend = false;
+              }
+            })
+            .catch(error => {
+              console.log("想哭");
+              console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
+              alert('發送驗證碼失敗'); // 使用 alert 函數顯示錯誤消息
+              this.disableSend = false;
+            });
+      },
 
-      verifyCodeNumber(){
-        axios.post(`${this.API_URL}/verifyCode`, { email: this.email ,code: this.VerificationCode})
-          .then(res => {
-            console.log(res.data)
-            if (res.data.code  === 1) {
-              alert(res.data.message,"驗證碼驗證成功"); // 使用 alert 函數顯示成功消息
-              this.VerificationCodePass = true;
-            } else {
+      verifyCodeNumber() {
+        axios.post(`${this.API_URL}/verifyCode`, {email: this.email, code: this.VerificationCode})
+            .then(res => {
+              console.log(res.data)
+              if (res.data.code === 1) {
+                alert(res.data.message, "驗證碼驗證成功"); // 使用 alert 函數顯示成功消息
+                this.VerificationCodePass = true;
+              } else {
                 alert("驗證碼驗證錯誤"); // 使用 alert 函數顯示錯誤消息
-              this.VerificationCodePass = false;
-            }
-          })
-          .catch(error => {
-            console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
-            alert('驗證碼的部分發生錯誤!'); // 使用 alert 函數顯示錯誤消息
-          });
+                this.VerificationCodePass = false;
+                return false;
+              }
+            })
+            .catch(error => {
+              console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
+              alert('驗證碼的部分發生錯誤!'); // 使用 alert 函數顯示錯誤消息
+              return false;
+            });
+
       },
-      submitUpdate(){
+      confirmAndResetPassword() {
+        if (this.ResetPasswordData.password && this.confirmPasswordData.password) {
+          if (this.confirmPasswordData.password !== this.ResetPasswordData.password) {
+            this.IsConfirmPassword = false;
+            alert("密碼不正確"); // 使用 alert 函數顯示成功消息
+            return false;
+          } else {
+            this.IsConfirmPassword = true;
+          }
+        }
+      },
+      updateIsConfirmPassword() {
+        if (this.ResetPasswordData.password && this.confirmPasswordData.password) {
+          if (this.confirmPasswordData.password !== this.ResetPasswordData.password) {
+            this.IsConfirmPassword = false;
+          } else {
+            this.IsConfirmPassword = true;
+          }
+        }
+      },
+
+      updateInputPassword(){
+        this.memberRePasswordDTO.password = this.inputemberPasswordData;
+      },
+
+      oringPassword() {
+        axios.put(`${this.API_URL}/member/memberInputPassword`,{userID: this.memberRePasswordDTO.userID,
+              password: this.inputemberPasswordData.password,
+        },{
+          headers: {
+            'Content-Type': 'application/json'
+          }}
+        )
+            .then(res => {
+              console.log(res)
+              alert('密碼的部份成功!');
+            })
+            .catch(error => {
+              console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
+              alert('密碼的部分發生錯誤!'); // 使用 alert 函數顯示錯誤消息
+              return false;
+            });
+      },
+
+      submitUpdate() {
+        this.oringPassword();
         this.verifyCodeNumber();
+        this.confirmAndResetPassword();
+
       },
     },
     mounted() {
@@ -228,18 +285,26 @@
       } else {
         console.log("會員未登入");
       }
+      this.updateIsConfirmPassword();
+      this.memberRePasswordDTO.userID = userStore.userId;
     },
   };
   </script>
   
   <style>
-
   .icon-background {
     display: inline-block; /* 或其他适合的显示方式 */
     width: 20px;
     height: 20px;
     background-size: cover;
     background-position: center;
+  }
+   .mr-2 {
+     margin-right: 8px; /* 或根據需要調整距離 */
+     margin-top: 8px;
+   }
+  input {
+    margin-bottom: 16px;
   }
   </style>
   
