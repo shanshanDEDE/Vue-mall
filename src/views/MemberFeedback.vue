@@ -66,12 +66,12 @@
                           @click="deleteFeedback(feedback)"
                           class="btn btn-primary"
                         >
-                          刪除
+                          更改評論
                         </button>
                       </template>
                       <template v-else>
                         <button class="btn btn-primary" disabled>
-                          無法刪除
+                          無法更改
                         </button>
                       </template>
                       <!-- 在这里添加更多详细信息 -->
@@ -173,30 +173,30 @@ export default {
         });
     },
 
-    deleteFeedback(feedback) {
-      // 这里添加取消收藏的逻辑
-      console.log("取消收藏的产品ID:", feedback.feedbackID);
-      // 例如，发起一个请求到后端取消收藏
-      this.feedbackDTO.userID = feedback.userID;
-      this.feedbackDTO.orderID = feedback.orderID;
-
-      axios
-        .delete(`${this.API_URL}/delete/customerFeedbacks`, {
-          data: this.feedbackDTO,
-        })
-        .then((response) => {
-          // 处理响应
-          console.log(response);
-          // 更新tracks数组，移除取消收藏的产品
-          this.feedbacks = this.feedbacks.filter(
-            (item) => item.feedbackID !== feedback.feedbackID
-          );
-        })
-        .catch((error) => {
-          // 处理错误
-          console.error(error);
-        });
-    },
+    // deleteFeedback(feedback) {
+    //   // 这里添加取消收藏的逻辑
+    //   console.log("取消收藏的产品ID:", feedback.feedbackID);
+    //   // 例如，发起一个请求到后端取消收藏
+    //   this.feedbackDTO.userID = feedback.userID;
+    //   this.feedbackDTO.orderID = feedback.orderID;
+    //
+    //   axios
+    //     .delete(`${this.API_URL}/delete/customerFeedbacks`, {
+    //       data: this.feedbackDTO,
+    //     })
+    //     .then((response) => {
+    //       // 处理响应
+    //       console.log(response);
+    //       // 更新tracks数组，移除取消收藏的产品
+    //       this.feedbacks = this.feedbacks.filter(
+    //         (item) => item.feedbackID !== feedback.feedbackID
+    //       );
+    //     })
+    //     .catch((error) => {
+    //       // 处理错误
+    //       console.error(error);
+    //     });
+    // },
   },
   mounted() {
     const userStore = useUserStore();

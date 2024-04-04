@@ -46,7 +46,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/MemberCenter"
+                to="/MemberCenter/CustomerRight"
                 class="nav-link px-2 text-white"
               >
                 會員權益
@@ -93,7 +93,7 @@
           <ul class="list-group mt-2">
             <li class="list-group-item">
               <router-link
-                to="/MemberCenter"
+                to="/MemberCenter/CommonProblems"
                 class="nav-link px-2 text-white"
               >
                 常見問題
@@ -101,7 +101,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/MemberCenter"
+                to="/MemberCenter/UserRight"
                 class="nav-link px-2 text-white"
               >
                 課戶權益聲明

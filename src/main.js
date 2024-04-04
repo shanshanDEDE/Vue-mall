@@ -18,7 +18,9 @@ axios.get(`${API_URL}/user/check`).then((rs) => {
     }
 });
 
+
 const app = createApp(App)
+
 
 app.use(createPinia())
 app.use(router)
