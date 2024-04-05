@@ -39,6 +39,11 @@ const router = createRouter({
       component: () => import('@/views/MemberResetPassword.vue'),
       // meta: { requiresAuth: true }
     },
+    {
+      path: '/MemberCenter/CustomerFeedbackAdd',
+      component: () => import('@/views/CustomerFeedbackAdd.vue'),
+      // meta: { requiresAuth: true }
+    },
 
 
     {
@@ -67,6 +72,13 @@ const router = createRouter({
       path: '/MemberCenter/CustomerFeedbackUpdate',
       name: 'CustomerFeedbackUpdate',
       component: () => import('@/views/CustomerFeedbackUpdate.vue'),
+      props: true // 允许通过 props 接收参数
+    },
+
+    {
+      path: '/MemberCenter/OrderFeedbackUpdate',
+      name: 'OrderFeedbackUpdate',
+      component: () => import('@/views/OrderFeedbackUpdate.vue'),
       props: true // 允许通过 props 接收参数
     },
 
