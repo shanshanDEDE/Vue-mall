@@ -28,6 +28,7 @@
                 <div>
                     <label>密碼:</label>
                     <input type="text" v-model="inputemberPasswordData.password" />
+                  <img v-if="!IsInputMemberPasswordData" src="/wrong.jpg" class="icon-background" />
                 </div>
                 </div>
 
@@ -35,6 +36,7 @@
                 <div>
                     <label>重設密碼:</label>
                     <input type="password" v-model="ResetPasswordData.password" />
+                  <img v-if="!this.ResetPasswordData.password" src="/wrong.jpg" class="icon-background" />
                     <!-- 右側提示標籤 -->
                     <label v-if="!ResetPasswordData.password" class="missing-data-label">尚未填寫</label>
                 </div> 
@@ -139,6 +141,7 @@
         VerificationCode: '',
         VerificationCodePass: false,
         IsConfirmPassword: false,
+        IsInputMemberPasswordData: '',
         feedbackDTO: {
           userID: null, // 初始化為空，等待登錄後填充
           orderID: null, // 初始化為空，等待需要時填充
@@ -208,24 +211,25 @@
       },
 
       verifyCodeNumber() {
-        axios.post(`${this.API_URL}/verifyCode`, {email: this.email, code: this.VerificationCode})
-            .then(res => {
-              console.log(res.data)
-              if (res.data.code === 1) {
-                alert(res.data.message, "驗證碼驗證成功"); // 使用 alert 函數顯示成功消息
-                this.VerificationCodePass = true;
-              } else {
-                alert("驗證碼驗證錯誤"); // 使用 alert 函數顯示錯誤消息
-                this.VerificationCodePass = false;
-                return false;
-              }
-            })
-            .catch(error => {
-              console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
-              alert('驗證碼的部分發生錯誤!'); // 使用 alert 函數顯示錯誤消息
-              return false;
-            });
-
+        return new Promise((resolve, reject) => {
+          axios.post(`${this.API_URL}/verifyCode`, { email: this.email, code: this.VerificationCode })
+              .then(res => {
+                if (res.data.code === 1) {
+                  alert(res.data.message, "驗證碼驗證成功");
+                  this.VerificationCodePass = true;
+                  resolve(true);
+                } else {
+                  alert("驗證碼驗證錯誤");
+                  this.VerificationCodePass = false;
+                  resolve(false);
+                }
+              })
+              .catch(error => {
+                console.error(error);
+                alert('驗證碼的部分發生錯誤!');
+                reject(error);
+              });
+        });
       },
       confirmAndResetPassword() {
         if (this.ResetPasswordData.password && this.confirmPasswordData.password) {
@@ -235,8 +239,10 @@
             return false;
           } else {
             this.IsConfirmPassword = true;
+            return true;
           }
         }
+        return false; // 确保任何非预期路径都会返回 false
       },
       updateIsConfirmPassword() {
         if (this.ResetPasswordData.password && this.confirmPasswordData.password) {
@@ -253,30 +259,86 @@
       },
 
       oringPassword() {
-        axios.put(`${this.API_URL}/member/memberInputPassword`,{userID: this.memberRePasswordDTO.userID,
-              password: this.inputemberPasswordData.password,
-        },{
-          headers: {
-            'Content-Type': 'application/json'
-          }}
-        )
-            .then(res => {
-              console.log(res)
-              alert('密碼的部份成功!');
+        // 注意，这里返回了一个新的 Promise
+        return new Promise((resolve, reject) => {
+          axios.put(`${this.API_URL}/member/memberInputPassword`, {
+            userID: this.memberRePasswordDTO.userID,
+            password: this.inputemberPasswordData.password
+          }, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+              .then(res => {
+                if(res.data === true){
+                  console.log(res);
+                  this.IsInputMemberPasswordData = true;
+                  alert('密碼的部份成功!');
+                  resolve(true); // 解决 Promise 为 true
+                }else{
+                  console.log(res);
+                  this.IsInputMemberPasswordData = false;
+                  alert('密碼的部份失敗!');
+                  resolve(false); // 解决 Promise 为 false
+                }
+              })
+              .catch(error => {
+                console.error(error);
+                alert('密碼的部分發生錯誤!');
+                reject(error); // 拒绝 Promise
+              });
+        });
+      },
+
+      submitUpdate: async function() {
+        this.disableSend = false;
+        try {
+          const codeVerified = await this.verifyCodeNumber();
+          if (!codeVerified) {
+            throw new Error('驗證碼驗證失敗');
+          }
+
+          const passwordCorrect = await this.oringPassword();
+          if (!passwordCorrect) {
+            throw new Error('原始密碼不正確');
+          }
+
+          const passwordConfirmed = this.confirmAndResetPassword();
+          if (!passwordConfirmed) {
+            throw new Error('密碼重設與確認不符');
+          }
+
+
+
+            axios.put(`${this.API_URL}/update/memberRePasswordDTO`, {
+              userID: this.memberRePasswordDTO.userID,
+              password: this.ResetPasswordData.password
+            }, {
+              headers: {
+                'Content-Type': 'application/json'
+              }
             })
-            .catch(error => {
-              console.error(error); // 這裡添加錯誤處理，確保錯誤能夠被正確地捕獲和處理
-              alert('密碼的部分發生錯誤!'); // 使用 alert 函數顯示錯誤消息
-              return false;
-            });
-      },
+                .then(res => {
+                  if(res.data){
+                    console.log(res);
+                    alert('重設密碼成功!');
+                  }else{
+                    console.log(res);
+                    alert('重設密碼失敗!');
+                  }
+                })
+                .catch(error => {
+                  console.error(error);
+                  alert('重設密碼的部分發生錯誤!');
+                });
 
-      submitUpdate() {
-        this.oringPassword();
-        this.verifyCodeNumber();
-        this.confirmAndResetPassword();
-
-      },
+          // 如果所有驗證都通過了，則在這裡處理成功的邏輯
+          // 例如跳轉到成功頁面或顯示成功信息
+        } catch (error) {
+          // 處理任何在上面過程中拋出的錯誤
+          alert(error.message); // 顯示錯誤信息
+        }
+      }
     },
     mounted() {
       const userStore = useUserStore();
