@@ -18,17 +18,17 @@
               >
                 userId:{{ memberdata.userID }}
                 <br/>
-                {{ memberdata.userName }}
+                使用者名稱:{{ memberdata.userName }}
                 <br/>
-                {{ memberdata.email }}
+                電子信箱:{{ memberdata.email }}
                 <br/>
-                {{ formattedRegisterDate }}
+                註冊日期:{{ formattedRegisterDate }}
                 <br/>
-                {{ memberdata.userAddress }}
+                使用者地址:{{ memberdata.userAddress }}
                 <br/>
-                {{ memberdata.deliverAddress }}
+                遞送地址:{{ memberdata.deliverAddress }}
                 <br/>
-                {{ memberdata.phone }}
+                電話:{{ memberdata.phone }}
               </p>
             </div>
           </div>
