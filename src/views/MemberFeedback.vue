@@ -63,7 +63,7 @@
                         v-if="feedback.customerFeedbackStatus != '已處理'"
                       >
                         <button
-                          @click="deleteFeedback(feedback)"
+                          @click="updateFeedback(feedback)"
                           class="btn btn-primary"
                         >
                           更改評論
@@ -148,6 +148,7 @@ import axios from "axios";
 // 引入外部 CSS 文件
 import "@/assets/track.css";
 import {useUserStore} from "@/stores/userStore.js"; // 样式文件路径根据实际情况修改
+import { useFeedbackStore } from '@/stores/feedbackStore';
 
 export default {
   components: {
@@ -171,6 +172,15 @@ export default {
           console.log(rs);
           this.feedbacks = rs.data;
         });
+    },
+
+    updateFeedback(feedback) {
+      const feedbackStore = useFeedbackStore();
+      feedbackStore.setFeedback(feedback);
+
+      this.$router.push({
+        name: 'CustomerFeedbackUpdate',
+      });
     },
 
     // deleteFeedback(feedback) {

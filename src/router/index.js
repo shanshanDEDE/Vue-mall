@@ -64,6 +64,14 @@ const router = createRouter({
 
 
     {
+      path: '/MemberCenter/CustomerFeedbackUpdate',
+      name: 'CustomerFeedbackUpdate',
+      component: () => import('@/views/CustomerFeedbackUpdate.vue'),
+      props: true // 允许通过 props 接收参数
+    },
+
+
+    {
       path: "/login",
       component: () => import("@/views/LoginPage.vue"),
     },
