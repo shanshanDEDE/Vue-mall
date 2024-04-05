@@ -28,7 +28,7 @@
                         aria-expanded="true"
                         :aria-controls="'collapse' + order.orderId"
                     >
-                      訂單編號:{{ order.orderId }} 下單日期:{{ order.orderDate }}
+                      訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }}
                       付款方式:{{ order.paymentMethod }} 訂單狀態:{{ order.orderStatus }}
                     </button>
                   </h2>
@@ -196,6 +196,25 @@ export default {
     } else {
       console.log("會員未登入");
     }
+  },
+  computed: {
+    formattedRegisterDate() {
+      return function (order) {
+        if (!order || !order.orderDate) {
+          return ''; // 如果沒有訂單日期，則返回空字符串
+        }
+        // 將註冊日期轉換為 Date 物件
+        const registerDate = new Date(order.orderDate);
+        // 使用 Date 物件的方法取得年、月、日、時、分
+        const year = registerDate.getFullYear();
+        const month = ('0' + (registerDate.getMonth() + 1)).slice(-2); // 確保月份是兩位數
+        const day = ('0' + registerDate.getDate()).slice(-2); // 確保日期是兩位數
+        const hours = ('0' + registerDate.getHours()).slice(-2); // 確保小時是兩位數
+        const minutes = ('0' + registerDate.getMinutes()).slice(-2); // 確保分鐘是兩位數
+        // 格式化日期時間字串，例如：2024-03-01 00:00
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+      }
+    },
   },
 };
 </script>

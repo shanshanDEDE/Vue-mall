@@ -20,31 +20,28 @@
               <div class="accordion mb-3" id="accordionExample">
                 <div class="accordion-item">
                   <!-- 折叠标题 -->
-                  <h2
-                    class="accordion-header"
-                    id="heading{{ feedback.orderID }}"
-                  >
+                  <h2 class="accordion-header" :id="'heading' + feedback.feedbackID">
                     <button
                       class="accordion-button"
                       type="button"
                       data-bs-toggle="collapse"
-                      :data-bs-target="'#collapse' + feedback.orderID"
+                      :data-bs-target="'#collapse' + feedback.feedbackID"
                       aria-expanded="true"
-                      :aria-controls="'collapse' + feedback.orderID"
+                      :aria-controls="'collapse' + feedback.feedbackID">
                     >
                       訂單編號:{{ feedback.orderID }} 反應類別:{{
                         feedback.type
                       }}
-                      評價日期:{{ feedback.feedbackDate }} 狀態:{{
+                      評價日期:{{ formattedRegisterDate(feedback) }} 狀態:{{
                         feedback.customerFeedbackStatus
                       }}
                     </button>
                   </h2>
                   <!-- 折叠内容 -->
                   <div
-                    :id="'collapse' + feedback.orderID"
+                      :id="'collapse' + feedback.feedbackID"
                     class="accordion-collapse collapse"
-                    aria-labelledby="heading{{ feedback.orderID }}"
+                      :aria-labelledby="'heading' + feedback.feedbackID"
                     data-bs-parent="#accordionExample"
                   >
                     <div class="accordion-body">
@@ -215,6 +212,26 @@ export default {
     } else {
       console.log("會員未登入");
     }
+  },
+
+  computed: {
+    formattedRegisterDate() {
+      return function (feedback) {
+        if (!feedback || !feedback.feedbackDate) {
+          return ''; // 如果沒有訂單日期，則返回空字符串
+        }
+        // 將註冊日期轉換為 Date 物件
+        const registerDate = new Date(feedback.feedbackDate);
+        // 使用 Date 物件的方法取得年、月、日、時、分
+        const year = registerDate.getFullYear();
+        const month = ('0' + (registerDate.getMonth() + 1)).slice(-2); // 確保月份是兩位數
+        const day = ('0' + registerDate.getDate()).slice(-2); // 確保日期是兩位數
+        const hours = ('0' + registerDate.getHours()).slice(-2); // 確保小時是兩位數
+        const minutes = ('0' + registerDate.getMinutes()).slice(-2); // 確保分鐘是兩位數
+        // 格式化日期時間字串，例如：2024-03-01 00:00
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+      }
+    },
   },
 };
 </script>
