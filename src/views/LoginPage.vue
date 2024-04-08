@@ -22,7 +22,7 @@
           </div>
           <div class="form-floating mb-3">
             <input
-              type="text"
+              type="password"
               class="form-control"
               placeholder="Password"
               v-model="password"

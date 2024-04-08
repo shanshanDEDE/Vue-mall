@@ -7,7 +7,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: () => import('@/views/HomePage.vue'),
+      component: () => import('@/views/new_home.vue'),
     },
     {
       path: '/MemberCenter',
@@ -80,6 +80,31 @@ const router = createRouter({
       name: 'OrderFeedbackUpdate',
       component: () => import('@/views/OrderFeedbackUpdate.vue'),
       props: true // 允许通过 props 接收参数
+    },
+
+    {
+      path: "/product",
+      component: () => import("@/views/product_page.vue"),
+    },
+    {
+      path: "/product/iphoneIndex",
+      component: () => import("@/views/iphone_page.vue"),
+    },
+    {
+      path: "/product/ipadIndex",
+      component: () => import("@/views/ipad_page.vue"),
+    },
+    {
+      path: "/product/macbookIndex",
+      component: () => import("@/views/macbook_page.vue"),
+    },
+    {
+      path: "/product/detail",
+      component: () => import("@/views/product_detail_page.vue"),
+    },
+    {
+      path: "/cart",
+      component: () => import("@/views/cart_page.vue"),
     },
 
 

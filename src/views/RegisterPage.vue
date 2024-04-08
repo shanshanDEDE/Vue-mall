@@ -42,7 +42,7 @@
                           type="button"
                           class="btn btn-outline-primary btn-sm"
                           @click="generateVerificationCode"
-                          :disabled="disabled"
+                          :disabled="disableButton"
                         >
                           驗證
                         </button>
@@ -169,6 +169,7 @@ export default {
       verificationCode2: "", // 使用者輸入的驗證碼
       message: "",
       message2: "",
+      disableButton: false,
     };
   },
   methods: {
@@ -215,8 +216,8 @@ export default {
         this.message2 = "  錯誤的信箱！";
         return;
       } else {
-        this.disabled = true; // 禁用按鈕
-
+        this.disableButton = true; // 禁用按鈕
+        this.message2 = "  驗證碼發送中...";
         this.verificationCode = this.generateRandomCode();
         const fd = new FormData();
         fd.append("email", this.email);
@@ -235,11 +236,11 @@ export default {
         setTimeout(() => {
           this.message2 =
             "  沒有收到驗證碼？請檢查信箱是否正確後，再次點擊驗證。";
-          this.disabled = false; // 啟用按鈕
+          this.disableButton = false; // 啟用按鈕
         }, 30000);
         setTimeout(() => {
-          this.verificationCode = ""; // 5分鐘後清空驗證碼
-        }, 300000);
+          this.verificationCode = ""; // 10分鐘後清空驗證碼
+        }, 600000);
       }
     },
   },
