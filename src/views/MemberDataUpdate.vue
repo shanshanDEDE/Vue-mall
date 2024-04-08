@@ -63,7 +63,7 @@
   import axios from "axios";
 
   // 引入外部 CSS 文件
-    import "@/assets/memberReData.css"; // 样式文件路径根据实际情况修改
+  import "@/assets/memberReData.css"; // 样式文件路径根据实际情况修改
   
   export default {
     data() {
@@ -73,15 +73,11 @@
             showsubmitfalseflag:false
         };
     },
-    created() {
-      this.getMemberData(); // 在 created hook 中取得會員資料
-    },
     components: {
       MemberOption,
     },
     methods: {
         getMemberData(userId) {
-            // const userId = 3;
             axios
                 .get(`${this.API_URL}/member/showmemberredata?userId=${userId}`)
                 .then((response) => {
@@ -103,17 +99,15 @@
             this.showsubmitfalseflag=true;
             return
           }
-          
-        
-        // 在此提交表單更新
+            // 在此提交表單更新
             console.log("提交更新資訊：", this.memberdata);
 
-            
             // 將 inputmemberdata 的值更新到 memberdata 中
+            //判斷除了memberdata為有值並且inputmemberdata不存在時,才去做更新
             if(!(this.memberdata.userAddress && !this.inputmemberdata.userAddress)){
               this.memberdata.userAddress = this.inputmemberdata.userAddress;
             }
-            if(!( this.memberdata.deliverAddress && !this.inputmemberdata.deliverAddress)){
+            if(!(this.memberdata.deliverAddress && !this.inputmemberdata.deliverAddress)){
               this.memberdata.deliverAddress = this.inputmemberdata.deliverAddress;
             }
             if(!(this.memberdata.phone && !this.inputmemberdata.phone)){
@@ -124,6 +118,7 @@
                 .then((response) => {
                     console.log(response);
                     this.showsubmitfalseflag=false;
+                    alert("資料更新成功")
                 })
                 .catch((error) => {
                     console.log(error);
