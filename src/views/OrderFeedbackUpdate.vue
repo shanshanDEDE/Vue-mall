@@ -75,17 +75,10 @@ export default {
   methods: {
     submitFeedback() {
       const userStore = useUserStore();
-      // const ordersFeedbackStore = OrdersFeedbackStore();
       if (!userStore.userId) {
         alert("用戶未登入");
         return;
       }
-      // alert(userStore.userId);
-      // alert(this.order.orderId);
-      // alert(this.order.ordersDetailId);
-      // alert(this.feedback.type);
-      // alert(this.feedback.description);
-
       this.feedback.userId = userStore.userId;
       this.feedback.orderId = this.order.orderId;
       // this.feedback.ordersDetailId = this.order.ordersDetailId;
