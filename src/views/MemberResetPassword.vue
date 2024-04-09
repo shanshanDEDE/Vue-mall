@@ -1,39 +1,37 @@
 <template>
-    <main>
-      <main class="container-fluid">
-        <div class="row">
-          <!-- 左側選項列 -->
-          <MemberOption></MemberOption>
-          <!-- 主要內容 -->
-          <div class="col-md-9">
-            <!-- ... 您原本的主要內容代碼 ... -->
-            <div
-              class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light"
-            >
-              <div class="col-md-5 p-lg-5 mx-auto my-5">
-                <h1 class="display-4 fw-normal">Nono商城</h1>
+  <main class="main-container">
+    <MemberOption class="sidebar"></MemberOption>
+    <div class="content-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <h1 class="brand-title">APPLE TREE</h1>
+          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+        </div>
+        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
+        <div class="form-container">
+          <form @submit.prevent="submitUpdate" class="member-form">
 
-                <div v-if="memberPasswordData">
+                <div v-if="memberPasswordData" class="divider">
                   <label>姓名：</label>
                   <input type="text" v-model="memberPasswordData.userName" :disabled="true" />
                 </div>
 
-                <div v-if="memberPasswordData">
+                <div v-if="memberPasswordData" class="divider">
                   <label>電子信箱:</label>
                   <input type="text" v-model="memberPasswordData.email" :disabled="true" />
                 </div>
   
-                <div v-if="memberPasswordData">
+                <div v-if="memberPasswordData" class="divider">
                   <div>
                       <label>密碼:</label>
-                      <input type="text" v-model="inputemberPasswordData.password" />
+                      <input type="password" v-model="inputemberPasswordData.password" />
                     <span v-if="sendfirstcode">
                     <img v-if="!IsInputMemberPasswordData" src="/wrong.jpg" class="icon-background" />
                     </span>
                   </div>
                 </div>
 
-                <div v-if="memberPasswordData && ResetPasswordData">
+                <div v-if="memberPasswordData && ResetPasswordData" class="divider">
                   <div>
                       <label>重設密碼:</label>
                       <input type="password" v-model="ResetPasswordData.password" />
@@ -43,7 +41,7 @@
                   </div>
                 </div>
 
-                <div v-if="memberPasswordData && confirmPasswordData">
+                <div v-if="memberPasswordData && confirmPasswordData" class="divider">
                   <div>
                       <label>確認密碼:</label>
                       <input type="password" v-model="confirmPasswordData.password" />
@@ -55,22 +53,22 @@
                 </div>
                 <div>
                   <div>
-                    驗證碼:<input v-model="VerificationCode"></input>
+                    驗證碼:<input v-model="VerificationCode" class="divider"></input>
                     <span v-if="sendFirstVerificationCode">
                     <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
                     </span>
                       <br>
-                    <button type="primary" @click="sendCode" :disabled="disableSend" class="mr-2">取得驗證碼</button>
-                    <button @click="submitUpdate">重設密碼</button>
+                    <button type="primary" @click="sendCode" :disabled="disableSend" class="submit-button">取得驗證碼</button>
+                    <button @click="submitUpdate" class="submit-button">重設密碼</button>
                   </div>
                 </div>
-              </div>
-              </div>
-            </div>
-          </div>
-      </main>
-    </main>
-  </template>
+
+    </form>
+    </div>
+    </div>
+    </div>
+  </main>
+</template>
   
   <script>
   import MemberOption from "@/components/MemberOption.vue";
@@ -160,7 +158,7 @@
               .then(res => {
                 this.sendFirstVerificationCode=true;
                 if (res.data.code === 1) {
-                  //alert(res.data.message, "驗證碼驗證成功");
+                  alert(res.data.message, "驗證碼驗證成功");
                   this.VerificationCodePass = true;
                   resolve(true);
                 } else {
@@ -172,6 +170,7 @@
               .catch(error => {
                 console.error(error);
                 alert('驗證碼的部分發生錯誤!');
+                this.VerificationCodePass = false; // 當驗證失敗時設置為 false
                 reject(error);
               });
         });
@@ -297,8 +296,8 @@
     },
   };
   </script>
-  
-  <style>
+
+  <style scoped>
   .icon-background {
     display: inline-block; /* 或其他适合的显示方式 */
     width: 20px;
@@ -306,12 +305,122 @@
     background-size: cover;
     background-position: center;
   }
-   .mr-2 {
-     margin-right: 8px; /* 或根據需要調整距離 */
-     margin-top: 8px;
-   }
-  input {
-    margin-bottom: 16px;
+  .main-container {
+    display: flex;
+    min-height: 100vh;
   }
+
+  .sidebar {
+    width: 250px;
+    background-color: #333;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-container {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-card {
+    width: 100%;
+    max-width: 700px; /* 設定最大寬度 */
+    padding: 20px;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .brand-title {
+    font-size: 2.5em;
+    color: #333;
+  }
+
+  .brand-slogan {
+    font-size: 1em;
+    color: #666;
+  }
+
+  .member-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  .missing-data-label {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="password"],
+  .form-group input[type="email"],
+  .form-group input[type="tel"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .submit-button {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+
+  /* 如果footer覆蓋到了內容，你可能需要添加一些底部邊距 */
+  .content-container {
+    margin-bottom: 50px; /* 根據實際footer高度調整 */
+  }
+
+  .divider{
+    margin-top: 10px;
+  }
+
+  .horizontal-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc; /* 淡灰色背景色 */
+    margin-bottom: 20px; /* 根據需要增加下邊距 */
+  }
+
+
+
+  /* 表單輸入框的樣式 */
+  .input-wrapper input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+  }
+
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
   </style>
-  

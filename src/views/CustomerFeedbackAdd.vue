@@ -1,19 +1,17 @@
 <template>
-  <main>
-    <main class="container-fluid">
-      <div class="row">
-        <!-- 左側選項列 -->
-        <MemberOption></MemberOption>
-        <!-- 主要內容 -->
-        <div class="col-md-9">
-          <!-- ... 您原本的主要內容代碼 ... -->
-          <div
-              class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light"
-          >
-            <div class="col-md-5 p-lg-5 mx-auto my-5">
-              <h1 class="display-4 fw-normal">Nono商城</h1>
-              <p class="lead fw-normal">訂單評價</p>
-            </div>
+  <main class="main-container">
+    <MemberOption class="sidebar"></MemberOption>
+    <div class="content-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <h1 class="brand-title">APPLE TREE</h1>
+          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+        </div>
+        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
+
+
+        <div class="form-container">
+          <form @submit.prevent="submitUpdate" class="member-form">
 
             <div v-for="order in Orders" :key="order.orderId">
               <div v-if="order.orderStatus == '已完結' ">
@@ -62,7 +60,7 @@
                           </button>
                         </template>
                         <template v-else>
-                          <button class="btn btn-primary" disabled>
+                          <button class="btn-primary btn centered-btn" disabled>
                             無法新增評論
                           </button>
                         </template>
@@ -73,11 +71,11 @@
                 </div>
               </div>
             </div>
-          </div>
+            </form>
+        </div>
         </div>
       </div>
     </main>
-  </main>
 </template>
 
 <script>
@@ -85,7 +83,6 @@ import MemberOption from "@/components/MemberOption.vue";
 import axios from "axios";
 
 // 引入外部 CSS 文件
-import "@/assets/track.css";
 import {useUserStore} from "@/stores/userStore.js";
 import {OrdersFeedbackStore} from "@/stores/OrdersFeedbackStore.js"; // 样式文件路径根据实际情况修改
 
@@ -147,4 +144,83 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 1000px; /* 設定最大寬度 */
+  padding: 20px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-title {
+  font-size: 2.5em;
+  color: #333;
+}
+
+.brand-slogan {
+  font-size: 1em;
+  color: #666;
+}
+
+.horizontal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+
+.custom-sidebar {
+  background-color: #333; /* 調整為與頂部導航欄相同的背景顏色 */
+  color: white; /* 文字顏色為白色 */
+}
+
+.custom-sidebar .list-group-item {
+  background-color: #333; /* 調整背景顏色 */
+  color: white; /* 文字顏色 */
+  border: none; /* 移除邊框 */
+}
+
+.custom-sidebar .list-group-item:hover {
+  background-color: #555; /* 滑鼠懸停時的背景顏色 */
+}
+
+.centered-btn {
+  display: block;
+  margin: 0 auto;
+  width: max-content;
+
+}
+
+</style>

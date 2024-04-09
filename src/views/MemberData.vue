@@ -1,42 +1,38 @@
 <template>
-  <main>
-    <main class="container-fluid">
-      <div class="row">
-        <!-- 左側選項列 -->
-        <MemberOption></MemberOption>
-        <!-- 主要內容 -->
-        <div class="col-md-9">
-          <!-- ... 您原本的主要內容代碼 ... -->
-          <div
-            class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light"
-          >
-            <div class="col-md-5 p-lg-5 mx-auto my-5">
-              <h1 class="display-4 fw-normal">Nono商城</h1>
-              <p
-                class="lead fw-normal"
-                v-if="memberdata && memberdata.userName"
-              >
-                userId:{{ memberdata.userID }}
-                <br/>
-                使用者名稱:{{ memberdata.userName }}
-                <br/>
-                電子信箱:{{ memberdata.email }}
-                <br/>
-                註冊日期:{{ formattedRegisterDate }}
-                <br/>
-                使用者地址:{{ memberdata.userAddress }}
-                <br/>
-                遞送地址:{{ memberdata.deliverAddress }}
-                <br/>
-                電話:{{ memberdata.phone }}
-              </p>
+  <main class="main-content">
+    <!-- 左側選項列 -->
+    <MemberOption class="sidebar"></MemberOption>
+    <div class="content">
+      <!-- 主要內容 -->
+      <div class="profile-content">
+        <div class="profile-header">
+          <h1>APPLE TREE</h1>
+          <p>CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+        </div>
+        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
+        <div class="profile-body">
+          <div v-if="memberdata" class="member-info-container">
+            <div class="member-info-column">
+              <div>使用者名稱: {{ memberdata.userName }}</div>
+              <div>電子信箱: {{ memberdata.email }}</div>
+              <div>註冊日期: {{ formattedRegisterDate }}</div>
             </div>
+            <div class="member-info-divider"></div>
+            <div class="member-info-column">
+              <div>使用者地址: {{ memberdata.userAddress }}</div>
+              <div>遞送地址: {{ memberdata.deliverAddress }}</div>
+              <div>電話: {{ memberdata.phone }}</div>
+            </div>
+          </div>
+          <div v-else>
+            <p>載入會員資料中...</p>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   </main>
 </template>
+
 
 <script>
 import MemberOption from "@/components/MemberOption.vue";
@@ -56,14 +52,14 @@ export default {
     getMemberData(userId) {
       // const userId = 2;
       axios
-        .get(`${this.API_URL}/member/showmemberredata?userId=${userId}`)
-        .then((response) => {
-          console.log(response);
-          this.memberdata = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          .get(`${this.API_URL}/member/showmemberredata?userId=${userId}`)
+          .then((response) => {
+            console.log(response);
+            this.memberdata = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
   },
   mounted() {
@@ -94,4 +90,97 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.main-content {
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #fff;
+  margin-left: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-header h1 {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.profile-header p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.member-info > div {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #333;
+}
+
+.member-info > div span {
+  font-weight: bold;
+}
+
+.sidebar {
+  flex: 0 0 250px; /* 給側邊導航一個固定的寬度 */
+  background-color: #333; /* 灰色背景 */
+  color: #fff; /* 白色文字 */
+  min-height: 100vh; /* Full height */
+}
+
+.content {
+  flex-grow: 1; /* 佔據剩餘的空間 */
+  padding: 20px;
+  background-color: #f8f9fa; /* 輕灰色背景 */
+}
+
+.member-info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+}
+
+.member-info-column {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 10px); /* 減去分隔線的空間 */
+  text-align: left;
+}
+
+.member-info-divider {
+  height: 100%;
+  width: 1px;
+  background-color: #ccc; /* 淡灰色分隔線 */
+}
+
+.member-info > div {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #333;
+}
+
+.horizontal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+</style>
+
+

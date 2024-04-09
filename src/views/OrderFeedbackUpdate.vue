@@ -1,17 +1,14 @@
 <template>
-  <main class="container-fluid">
-    <!-- ...其他HTML代码... -->
-    <div class="row">
-      <!-- 左側選項列 -->
-      <MemberOption></MemberOption>
-      <!-- 主要內容 -->
-      <div class="col-md-9">
-        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-          <div class="col-md-5 p-lg-5 mx-auto my-5">
-            <div v-if="order">
-              <h1 class="display-4 fw-normal">新增評論</h1>
-              <label>訂單編號：{{ order.orderId }}</label>
-              <!-- 留言类型和描述的表单 -->
+  <main class="main-container">
+    <MemberOption class="sidebar"></MemberOption>
+    <div class="content-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <h1 class="brand-title">APPLE TREE</h1>
+          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+          <label>訂單編號：{{ order.orderId }}</label>
+        </div>
+
               <div class="container">
                 <form @submit.prevent="submitFeedback">
                   <div class="form-group">
@@ -28,15 +25,11 @@
                     <label for="feedbackDescription">描述：</label>
                     <textarea v-model="feedback.description" id="feedbackDescription" required></textarea>
                   </div>
-                  <button type="submit" class="btn btn-primary">提交評論</button>
+                  <button type="submit" class="btn btn-primary centered-btn">提交評論</button>
                 </form>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- ...其他HTML代码... -->
   </main>
 </template>
 
@@ -130,5 +123,85 @@ export default {
 </script>
 
 <style>
-/* ...样式代码... */
+.form-group {
+  display: flex;
+  align-items: flex-start; /* 改變此處，讓items在容器的開始處對齊 */
+  margin-bottom: 10px; /* 添加一些底部外邊距 */
+}
+
+.form-label {
+  margin-right: 10px; /* 添加標籤右側的一些空間 */
+  white-space: nowrap; /* 防止標籤折行 */
+}
+
+.textarea-large {
+  flex-grow: 1; /* textarea佔據剩餘空間 */
+  min-height: 150px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-top: 0; /* 設置適當的margin-top，如果需要 */
+}
+
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 1000px; /* 設定最大寬度 */
+  padding: 20px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-title {
+  font-size: 2.5em;
+  color: #333;
+}
+
+.brand-slogan {
+  font-size: 1em;
+  color: #666;
+}
+
+.horizontal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+.centered-btn {
+  display: block;
+  margin: 0 auto;
+  width: max-content;
+}
 </style>
