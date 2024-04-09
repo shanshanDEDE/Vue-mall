@@ -13,7 +13,39 @@
               <router-link to="/product" class="nav-link active">shop</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/member_center" class="nav-link active">member</router-link>
+              <router-link to="/MemberCenter" class="nav-link active">member</router-link>
+            </li>
+
+          </ul>
+          <ul class="navbar-nav ms-auto">
+            <router-link to="/cart" class="nav-link">
+            <li class="nav-item"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal">(2)</small></li></router-link>
+            <li class="nav-item"><a class="nav-link" href="#!"> <i class="far fa-heart me-1"></i><small class="text-gray fw-normal"> (0)</small></a></li>
+            <router-link
+              class="nav-link"
+              to="/login"
+              v-if="!isLoggedIn"
+            >
+            <li class="nav-item"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Login</li></router-link>
+
+            <template v-if="isLoggedIn" >
+              <li class="nav-item" @click="logout"><a class="nav-link" href="#!"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Logout</a></li>
+  <!-- navbar-->
+  <header class="header bg-white">
+    <div class="container px-lg-3">
+      <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><a class="navbar-brand" href="index.html"><span class="fw-bold text-uppercase text-dark">Apple Tree</span></a>
+        <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <router-link to="/" class="nav-link active">home</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/product" class="nav-link active">shop</router-link>
+            </li>
+
+            <li class="nav-item">
+              <router-link to="/MemberCenter" class="nav-link active">member</router-link>
             </li>
 
           </ul>
@@ -39,6 +71,7 @@
   </header>
 
 </template>
+
 <script>
 import { useUserStore } from "@/stores/userStore";
 import axios from "axios";

@@ -22,7 +22,7 @@
           <ul class="list-group mt-2">
             <li class="list-group-item">
               <router-link
-                to="/member_center/member_data"
+                to="/MemberCenter/MemberData"
                 class="nav-link px-2 text-white"
               >
                 我的會員資訊
@@ -30,7 +30,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/member_center/member_data_update"
+                to="/MemberCenter/MemberDataUpdate"
                 class="nav-link px-2 text-white"
               >
                 會員資料修改
@@ -38,7 +38,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/member_center/member_reset_password"
+                to="/MemberCenter/MemberResetPassword"
                 class="nav-link px-2 text-white"
               >
                 會員密碼修改
@@ -46,7 +46,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/member_center/customer_feedback"
+                to="/MemberCenter/CustomerRight"
                 class="nav-link px-2 text-white"
               >
                 會員權益
@@ -58,11 +58,16 @@
         </div>
       </li>
 
-      <li class="list-group-item">訂單資訊</li>
+      <li class="list-group-item">
+        <router-link to="/MemberCenter/MemberOrders" class="nav-link px-2 text-white">
+          訂單查詢
+        </router-link>
+      </li>
+
       <li class="list-group-item">退換貨</li>
 
       <li class="list-group-item">
-        <router-link to="/member_center/track" class="nav-link px-2 text-white">
+        <router-link to="/MemberCenter/track" class="nav-link px-2 text-white">
           我的追蹤
         </router-link>
       </li>
@@ -88,7 +93,7 @@
           <ul class="list-group mt-2">
             <li class="list-group-item">
               <router-link
-                to="/member_center/customer_feedback"
+                to="/MemberCenter/CommonProblems"
                 class="nav-link px-2 text-white"
               >
                 常見問題
@@ -96,7 +101,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/member_center/customer_feedback"
+                to="/MemberCenter/UserRight"
                 class="nav-link px-2 text-white"
               >
                 課戶權益聲明
@@ -104,10 +109,18 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/member_center/customer_feedback"
+                to="/MemberCenter/MemberFeedback"
                 class="nav-link px-2 text-white"
               >
                 我的意見反應
+              </router-link>
+            </li>
+            <li class="list-group-item">
+              <router-link
+                  to="/MemberCenter/CustomerFeedbackAdd"
+                  class="nav-link px-2 text-white"
+              >
+                填寫訂單意見
               </router-link>
             </li>
 

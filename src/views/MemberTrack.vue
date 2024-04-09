@@ -28,7 +28,7 @@
 
                 <div class="track-image">
                   <img
-                    :src="track.photoFile"
+                    :src="'data:image/jpeg;base64,' + track.photoFile"
                     alt="Product Image"
                     class="product-img"
                   />
@@ -42,60 +42,6 @@
           </div>
         </div>
       </div>
-
-      <div class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="0"
-            class="active"
-            aria-current="true"
-            aria-label="Slide 1"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="2"
-            aria-label="Slide 3"
-          ></button>
-        </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="/1.webp" class="d-block w-100" />
-          </div>
-          <div class="carousel-item">
-            <img src="/2.webp" class="d-block w-100" />
-          </div>
-          <div class="carousel-item">
-            <img src="/3.webp" class="d-block w-100" />
-          </div>
-        </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide="prev"
-        >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide="next"
-        >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
     </main>
   </main>
 </template>
@@ -105,7 +51,8 @@ import MemberOption from "@/components/MemberOption.vue";
 import axios from "axios";
 
 // 引入外部 CSS 文件
-import "@/assets/track.css"; // 样式文件路径根据实际情况修改
+import "@/assets/track.css";
+import {useUserStore} from "@/stores/userStore.js"; // 样式文件路径根据实际情况修改
 
 export default {
   data() {
@@ -118,8 +65,8 @@ export default {
     };
   },
   methods: {
-    fetchData() {
-      const userId = 2;
+    fetchData(userId) {
+      // const userId = 2;
       axios.get(`${this.API_URL}/getshow/track?userId=${userId}`).then((rs) => {
         console.log(rs);
         this.tracks = rs.data;
@@ -151,18 +98,17 @@ export default {
           console.error(error);
         });
     },
-
-    // 登錄成功後調用此方法，更新 trackDTO 中的用戶信息
-    handleLoginSuccess(userId) {
-      this.trackDTO.userId = userId;
-      // 如果還有其他需要初始化的屬性，可以在這裡進行設置
-    },
   },
   components: {
     MemberOption,
   },
   mounted() {
-    this.fetchData(); // 在實例掛載後自動調用 fetchData 方法
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      this.fetchData(userStore.userId);
+    } else {
+      console.log("會員未登入");
+    }
   },
 };
 </script>
