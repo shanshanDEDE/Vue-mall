@@ -27,7 +27,7 @@
                       <label for="feedbackDescription" class="form-label">內容：</label>
                       <textarea v-model="feedback.description" id="feedbackDescription" class="textarea-large"></textarea>
                     </div>
-                    <button @click="submitFeedback" class="btn btn-primary centered-btn">提交更新</button>
+                    <button @click="submitFeedback" class="myButton">提交更新</button>
                   </div>
                 </div>
 
@@ -176,15 +176,24 @@ export default {
   margin-bottom: 20px; /* 根據需要增加下邊距 */
 }
 
-.centered-btn {
+
+.myButton{
   display: block;
   margin: 0 auto;
   width: max-content;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
+  background-color: #84C1FF; /* A pleasant green that looks professional */
+  color: #3C3C3C; /* White text for better readability */
+  padding: 10px 20px; /* Sufficient padding for a button */
+  border: none; /* No border to keep it sleek */
+  border-radius: 4px; /* Rounded corners like other inputs */
+  cursor: pointer; /* Cursor pointer to indicate it's clickable */
+  font-size: 16px; /* Slightly larger font size for better visibility */
+  font-weight: bold; /* Bold text for emphasis */
+  text-transform: uppercase; /* Uppercase text for a formal appearance */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
+button:hover {
+  background-color: #0056b3;
+}
+
 </style>

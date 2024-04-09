@@ -58,8 +58,8 @@
                     <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
                     </span>
                       <br>
-                    <button type="primary" @click="sendCode" :disabled="disableSend" class="submit-button">取得驗證碼</button>
-                    <button @click="submitUpdate" :disabled="disableupdate" class="submit-button">重設密碼</button>
+                    <button type="primary" @click="sendCode" :disabled="disableSend" class="myButton">取得驗證碼</button>
+                    <button @click="submitUpdate" :disabled="disableupdate" class="myButton">重設密碼</button>
                   </div>
                 </div>
 
@@ -172,7 +172,7 @@
               })
               .catch(error => {
                 console.error(error);
-                alert('驗證碼的部分發生錯誤!');
+                alert('驗證碼發送錯誤!');
                 this.VerificationCodePass = false; // 當驗證失敗時設置為 false
                 reject(error);
               });
@@ -182,7 +182,7 @@
         if (this.ResetPasswordData.password && this.confirmPasswordData.password) {
           if (this.confirmPasswordData.password !== this.ResetPasswordData.password) {
             this.IsConfirmPassword = false;
-            //alert("密碼不正確"); // 使用 alert 函數顯示成功消息
+            alert("密碼重設與確認不符"); // 使用 alert 函數顯示成功消息
             return false;
           } else {
             this.IsConfirmPassword = true;
@@ -227,14 +227,14 @@
                 }else{
                   console.log(res);
                   this.IsInputMemberPasswordData = false;
-                  alert('密碼的部份失敗!');
+                  alert('原密碼錯誤!');
                   reject(false); // 解决 Promise 为 false
 
                 }
               })
               .catch(error => {
                 console.error(error);
-                alert('密碼的部分發生錯誤!');
+                alert('原密碼發送錯誤!');
                 reject(error); // 拒绝 Promise
               });
         });
@@ -268,7 +268,7 @@
           alert('重設密碼成功!');
         } catch (error) {
           console.error(error);
-          alert(error.message);
+         // alert(error.message);
         } finally {
           this.disableSend = false; // 恢复发送按钮
           this.disableupdate = false; // 恢复提交按钮
@@ -398,7 +398,20 @@
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
   }
-
+  .myButton{
+    background-color: #8E8E8E; /* A pleasant green that looks professional */
+    color: #3C3C3C; /* White text for better readability */
+    padding: 10px 20px; /* Sufficient padding for a button */
+    border: none; /* No border to keep it sleek */
+    border-radius: 4px; /* Rounded corners like other inputs */
+    cursor: pointer; /* Cursor pointer to indicate it's clickable */
+    font-size: 16px; /* Slightly larger font size for better visibility */
+    font-weight: bold; /* Bold text for emphasis */
+    text-transform: uppercase; /* Uppercase text for a formal appearance */
+    margin-top: 10px; /* Top margin to give space from previous elements */
+    margin-left: 10px;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  }
 
   button:hover {
     background-color: #0056b3;

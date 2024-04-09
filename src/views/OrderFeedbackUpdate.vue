@@ -8,6 +8,7 @@
           <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
           <label>訂單編號：{{ order.orderId }}</label>
         </div>
+        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 
               <div class="container">
                 <form @submit.prevent="submitFeedback">
@@ -21,11 +22,12 @@
                       <option value="其他">其他</option>
                     </select>
                   </div>
+                  <p/>
                   <div class="form-group">
-                    <label for="feedbackDescription">描述：</label>
-                    <textarea v-model="feedback.description" id="feedbackDescription" required></textarea>
+                    <label for="feedbackDescription" class="form-label">描述：</label>
+                    <textarea v-model="feedback.description" id="feedbackDescription" class="textarea-large" required></textarea>
                   </div>
-                  <button type="submit" class="btn btn-primary centered-btn">提交評論</button>
+                  <button type="submit" class="myButton">提交評論</button>
                 </form>
               </div>
             </div>
@@ -74,18 +76,11 @@ export default {
       }
       this.feedback.userId = userStore.userId;
       this.feedback.orderId = this.order.orderId;
-      // this.feedback.ordersDetailId = this.order.ordersDetailId;
       this.feedback.ordersDetailId = 1;
       this.feedback.feedbackDate = new Date().toISOString(); // 设置当前时间为反馈时间
 
-      alert(this.feedback.userId);
-      alert(this.feedback.orderId);
       console.log(this.feedback.userId);
       console.log(this.feedback.orderId);
-      alert(this.feedback.ordersDetailId);
-      alert(this.feedback.feedbackDate);
-      alert(this.feedback.type);
-      alert(this.feedback.description);
       console.log(this.feedback.type);
       console.log(this.feedback.description);
 
@@ -104,12 +99,12 @@ export default {
       })
           .then(response => {
             // 处理响应
-            alert('评论新增成功！');
+            alert('新增評論成功！');
             this.$router.push('/MemberCenter/MemberFeedback');
           })
           .catch(error => {
             // 处理错误
-            alert('评论新增失败！');
+            alert('新增評論失敗！');
             console.error(error);
           });
     },
@@ -199,9 +194,22 @@ export default {
   margin-bottom: 20px; /* 根據需要增加下邊距 */
 }
 
-.centered-btn {
+.myButton{
   display: block;
   margin: 0 auto;
   width: max-content;
+  background-color: #84C1FF; /* A pleasant green that looks professional */
+  color: #3C3C3C; /* White text for better readability */
+  padding: 10px 20px; /* Sufficient padding for a button */
+  border: none; /* No border to keep it sleek */
+  border-radius: 4px; /* Rounded corners like other inputs */
+  cursor: pointer; /* Cursor pointer to indicate it's clickable */
+  font-size: 16px; /* Slightly larger font size for better visibility */
+  font-weight: bold; /* Bold text for emphasis */
+  text-transform: uppercase; /* Uppercase text for a formal appearance */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+button:hover {
+  background-color: #0056b3;
 }
 </style>

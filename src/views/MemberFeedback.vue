@@ -56,7 +56,7 @@
                       >
                         <button
                           @click="updateFeedback(feedback)"
-                          class="btn btn-primary"
+                          class="myButton"
                         >
                           更改評論
                         </button>
@@ -241,12 +241,24 @@ export default {
   background-color: #555; /* 滑鼠懸停時的背景顏色 */
 }
 
-.centered-btn {
+.myButton{
   display: block;
   margin: 0 auto;
   width: max-content;
+  background-color: #84C1FF; /* A pleasant green that looks professional */
+  color: #3C3C3C; /* White text for better readability */
+  padding: 10px 20px; /* Sufficient padding for a button */
+  border: none; /* No border to keep it sleek */
+  border-radius: 4px; /* Rounded corners like other inputs */
+  cursor: pointer; /* Cursor pointer to indicate it's clickable */
+  font-size: 16px; /* Slightly larger font size for better visibility */
+  font-weight: bold; /* Bold text for emphasis */
+  text-transform: uppercase; /* Uppercase text for a formal appearance */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
-
+button:hover {
+  background-color: #0056b3;
+}
 
 /* 可以根據需要進一步調整樣式 */
 </style>
