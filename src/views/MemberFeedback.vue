@@ -57,7 +57,7 @@
                       <p>回饋內容: {{ feedback.description }}</p>
 
                       <template
-                        v-if="feedback.customerFeedbackStatus != '已處理'"
+                        v-if="feedback.customerFeedbackStatus == '處理中'"
                       >
                         <button
                           @click="updateFeedback(feedback)"
@@ -66,11 +66,7 @@
                           更改評論
                         </button>
                       </template>
-                      <template v-else>
-                        <button class="btn btn-primary" disabled>
-                          無法更改
-                        </button>
-                      </template>
+
                     </div>
                   </div>
                 </div>

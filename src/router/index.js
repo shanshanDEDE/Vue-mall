@@ -17,7 +17,7 @@ const router = createRouter({
     {
       path: '/MemberCenter/track',
       component: () => import('@/views/MemberTrack.vue'),
-      // meta: { requiresAuth: true }
+      meta: { requiresAuth: true }
     },
     {
       path: '/MemberCenter/MemberFeedback',
