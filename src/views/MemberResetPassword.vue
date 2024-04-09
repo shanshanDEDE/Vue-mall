@@ -59,7 +59,7 @@
                     </span>
                       <br>
                     <button type="primary" @click="sendCode" :disabled="disableSend" class="submit-button">取得驗證碼</button>
-                    <button @click="submitUpdate" class="submit-button">重設密碼</button>
+                    <button @click="submitUpdate" :disabled="disableupdate" class="submit-button">重設密碼</button>
                   </div>
                 </div>
 
@@ -83,6 +83,7 @@
         confirmPasswordData: {password: ''},
         email: '',
         disableSend: false,
+        disableupdate: false,
         VerificationCode: '',
         VerificationCodePass: false,
         IsConfirmPassword: false,
@@ -158,13 +159,15 @@
               .then(res => {
                 this.sendFirstVerificationCode=true;
                 if (res.data.code === 1) {
-                  alert(res.data.message, "驗證碼驗證成功");
+                  alert("驗證碼驗證成功");
                   this.VerificationCodePass = true;
                   resolve(true);
+
                 } else {
                   alert("驗證碼驗證錯誤");
                   this.VerificationCodePass = false;
-                  resolve(false);
+                  reject(false);
+
                 }
               })
               .catch(error => {
@@ -220,11 +223,13 @@
                   this.IsInputMemberPasswordData = true;
                   //alert('密碼的部份成功!');
                   resolve(true); // 解决 Promise 为 true
+
                 }else{
                   console.log(res);
                   this.IsInputMemberPasswordData = false;
                   alert('密碼的部份失敗!');
-                  resolve(false); // 解决 Promise 为 false
+                  reject(false); // 解决 Promise 为 false
+
                 }
               })
               .catch(error => {
@@ -236,51 +241,37 @@
       },
 
       submitUpdate: async function() {
-        this.disableSend = false;
+        if (this.disableupdate) return; // 如果正在进行更新操作，直接返回防止再次提交
+
+        this.disableSend = true;  // 应该禁用发送按钮，直到操作完成
+        this.disableupdate = true; // 确保提交按钮在操作过程中禁用
+
         try {
           const codeVerified = await this.verifyCodeNumber();
-          if (!codeVerified) {
-            throw new Error('驗證碼驗證失敗');
-          }
+          if (!codeVerified) throw new Error('驗證碼驗證失敗');
 
           const passwordCorrect = await this.oringPassword();
-          if (!passwordCorrect) {
-            throw new Error('原始密碼不正確');
-          }
+          if (!passwordCorrect) throw new Error('原始密碼不正確');
 
           const passwordConfirmed = this.confirmAndResetPassword();
-          if (!passwordConfirmed) {
-            throw new Error('密碼重設與確認不符');
-          }
-          // 如果所有驗證都通過了，則在這裡處理成功的邏輯
-          // 例如跳轉到成功頁面或顯示成功信息
-            axios.put(`${this.API_URL}/update/memberRePasswordDTO`, {
-              userID: this.memberRePasswordDTO.userID,
-              password: this.ResetPasswordData.password
-            }, {
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            })
-                .then(res => {
-                  if(res.data){
-                    console.log(res);
-                    alert('重設密碼成功!');
-                  }else{
-                    console.log(res);
-                    alert('重設密碼失敗!');
-                  }
-                })
-                .catch(error => {
-                  console.error(error);
-                  alert('重設密碼的部分發生錯誤!');
-                });
+          if (!passwordConfirmed) throw new Error('密碼重設與確認不符');
 
-          // 如果所有驗證都通過了，則在這裡處理成功的邏輯
-          // 例如跳轉到成功頁面或顯示成功信息
+          await axios.put(`${this.API_URL}/update/memberRePasswordDTO`, {
+            userID: this.memberRePasswordDTO.userID,
+            password: this.ResetPasswordData.password
+          }, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          alert('重設密碼成功!');
         } catch (error) {
-          // 處理任何在上面過程中拋出的錯誤
-          alert(error.message); // 顯示錯誤信息
+          console.error(error);
+          alert(error.message);
+        } finally {
+          this.disableSend = false; // 恢复发送按钮
+          this.disableupdate = false; // 恢复提交按钮
         }
       }
     },
@@ -381,16 +372,6 @@
     border-radius: 4px;
   }
 
-  .submit-button {
-    background-color: #000;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-left: 10px;
-  }
 
   /* 如果footer覆蓋到了內容，你可能需要添加一些底部邊距 */
   .content-container {
