@@ -10,8 +10,8 @@
           <div class="col-lg-6 text-lg-end">
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
-                <li class="breadcrumb-item"><a class="text-dark" href="index.html">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">shop</li>
+                <li class="breadcrumb-item"><router-link to="/" class="text-dark" >Home</router-link></li>
+                <li class="breadcrumb-item active" aria-current="page"><router-link to="/product" class="text-dark">Shop</router-link>  </li>
               </ol>
             </nav>
           </div>
@@ -24,20 +24,20 @@
           <label for="inputPassword6" class="col-form-label">名稱</label>
         </div>
         <div class="col-4">
-          <input type="text" class="form-control" />
+          <input type="text" class="form-control" v-model="searchKeyWord" />
         </div>
 
-        <div class="col-1">
-          <label for="inputPassword6" class="col-form-label">價格</label>
-        </div>
+<!--        <div class="col-1">-->
+<!--          <label for="inputPassword6" class="col-form-label">價格</label>-->
+<!--        </div>-->
+<!--        <div class="col-2">-->
+<!--          <input type="number" class="form-control" placeholder="最小值" min="0" />-->
+<!--        </div>-->
+<!--        <div class="col-2">-->
+<!--          <input type="number" class="form-control" placeholder="最大值" min="0" />-->
+<!--        </div>-->
         <div class="col-2">
-          <input type="number" class="form-control" placeholder="最小值" min="0" />
-        </div>
-        <div class="col-2">
-          <input type="number" class="form-control" placeholder="最大值" min="0" />
-        </div>
-        <div class="col-2">
-          <button class="btn btn-primary">查詢</button>
+          <button class="btn btn-primary" @click="goKeywordSearch">查詢</button>
         </div>
       </div>
     </div>
@@ -68,10 +68,14 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
           <div class="col" v-for="p in products" :key="p.productId">
             <div class="card shadow-sm">
-              <img :src="`http://localhost:8080/mall/product/photo/${p.photoId}`" class="w-100" />
+              <router-link to="/product/detail" @click="redirectToSpec(p)">
+                <div>
+              <img :src="`http://localhost:8080/mall/product/photo/${p.photoId}`" class="card-img-top" alt="Product Image" style="height: 300px; width: 100%; object-fit: contain "/>
               <p class="card-text mt-2 px-3 text-truncate">
                 {{ p.productName }}
               </p>
+                </div>
+              </router-link>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="m-3">價格:{{ p.price }}</div>
                 <div class="m-3">
@@ -96,17 +100,23 @@ export default {
       currentPage: 1,
       totalPage: 0,
       products: [],
+      searchPage:0,
+
+      searchKeyWord: '',
+      keywordSearchActive: false
     };
   },
   mounted() {
     window.a = this
     axios.get(`http://localhost:8080/mall/products/0`).then((rs) => {
-      console.log(rs.data)
 
       this.currentPage =rs.data.number+1;
       this.totalPage = rs.data.totalPages;
       this.products = rs.data.content;
-    });
+      console.log(rs.data.content)
+     });
+
+
   },
   computed: {
     showPageBar() {
@@ -126,7 +136,26 @@ export default {
       }
       arr.push(tp);
       return arr;
-    }
+    },
+    showSearchPageBar() {
+      const sp = this.searchPage;
+      const tp = this.totalPage;
+      let arr = [1];
+      if (sp > 4) {
+        arr.push("..")
+      }
+      for (let i = sp - 2; i <= sp + 2; i++) {
+        if (i > 1 && i < tp) {
+          arr.push(i)
+        }
+      };
+      if (sp < tp - 3) {
+        arr.push("..")
+      }
+      arr.push(tp);
+      return arr;
+    },
+
   },
   methods: {
     goToPage(p) {
@@ -135,19 +164,40 @@ export default {
       }
       this.currentPage = p;
     },
+    //關鍵字查詢
+    goKeywordSearch() {
+      axios.get(`http://localhost:8080/mall/products/findFilterProductByPage/0?productName=${this.searchKeyWord}`).then((rs) => {
+        this.currentPage =rs.data.number+1;
+        this.totalPage = rs.data.totalPages;
+        this.products = rs.data.content;
+        this.keywordSearchActive = true //建立搜尋狀態
+      })
+
+    }
+
 
   },
   watch: {
     currentPage(newVal, oldVal) {
       let newPage = newVal - 1  // 頁碼變化時重新計算currentPage(解決無法讀取第0頁面的狀況)
 
-      axios.get(`http://localhost:8080/mall/products/${newPage}`).then((rs) => {
-        console.log(rs.data)
+      if(this.keywordSearchActive==true){  //若已開始搜尋狀態則走搜尋調用的後端方法
+        axios.get(`http://localhost:8080/mall/products/findFilterProductByPage/${newPage}?productName=${this.searchKeyWord}`).then((rs) => {
+          this.currentPage =rs.data.number+1;
+          this.totalPage = rs.data.totalPages;
+          this.products = rs.data.content;
+        })
+        this.keywordSearchActive = true
 
-        this.totalPage = rs.data.totalPages;
-        this.products = rs.data.content;
-      })
-    }
+      }else{    //一般的商品頁面
+        axios.get(`http://localhost:8080/mall/products/${newPage}`).then((rs) => {
+          this.totalPage = rs.data.totalPages;
+          this.products = rs.data.content;
+        })
+      }
+    },
+
+
   }
 
 };

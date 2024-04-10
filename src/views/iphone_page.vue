@@ -2,21 +2,22 @@
   <main>
     <div class="container mb-3">
       <div class="row align-items-center text-center">
+
+
+<!--        <div class="col-1">-->
+<!--          <label for="inputPassword6" class="col-form-label">價格</label>-->
+<!--        </div>-->
+<!--        <div class="col-2">-->
+<!--          <input type="number" class="form-control" placeholder="最小值" min="0" />-->
+<!--        </div>-->
+<!--        <div class="col-2">-->
+<!--          <input type="number" class="form-control" placeholder="最大值" min="0" />-->
+<!--        </div>-->
         <div class="col-1">
           <label for="inputPassword6" class="col-form-label">名稱</label>
         </div>
         <div class="col-4">
           <input type="text" class="form-control" />
-        </div>
-
-        <div class="col-1">
-          <label for="inputPassword6" class="col-form-label">價格</label>
-        </div>
-        <div class="col-2">
-          <input type="number" class="form-control" placeholder="最小值" min="0" />
-        </div>
-        <div class="col-2">
-          <input type="number" class="form-control" placeholder="最大值" min="0" />
         </div>
         <div class="col-2">
           <button class="btn btn-primary">查詢</button>
@@ -51,7 +52,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
           <div class="col" v-for="p in products" :key="p.productId">
             <div class="card shadow-sm">
-              <router-link to="/product/detail">
+              <router-link to="/product/detail" @click="redirectToSpec(p)">
               <div>
                 <img :src="`http://localhost:8080/mall/product/photo/${p.photoId}`" class="w-100" />
                 <p class="card-text mt-2 px-3 text-truncate">
@@ -75,6 +76,10 @@
   </main>
 </template>
 <script>
+import { useRoute, useRouter } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
+
 import axios from "axios";
 
 export default {
@@ -82,17 +87,24 @@ export default {
     return {
       currentPage: 1,
       totalPage: 0,
-      products: [],
+      products: {
+        productId: '',
+        productName: '',
+        price: '',
+        photoId: '',
+        productDescription: '',
+      },
     };
   },
   mounted() {
     window.a = this
     axios.get(`http://localhost:8080/mall/products/findProductsByCategoryId?categoryId=A&pageNumber=0`).then((rs) => {
-      console.log(rs.data)
+
 
       this.currentPage =rs.data.number+1;
       this.totalPage = rs.data.totalPages;
       this.products = rs.data.content;
+      console.log(rs.data.content)
     });
   },
   computed: {
@@ -121,6 +133,18 @@ export default {
         return
       }
       this.currentPage = p;
+    },
+    redirectToSpec(product) {
+      this.$router.push({
+        path: '/product/detail',
+        query: {
+          reProductId: product.productId,
+          reProductName: product.productName,
+          rePrice: product.price,
+          rePhotoId: product.photoId,
+          reProductDescription: product.productDescription
+        }
+      });
     },
 
   },

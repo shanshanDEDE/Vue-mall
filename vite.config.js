@@ -14,6 +14,6 @@ export default defineConfig({
     }
   },
   server: {
-    port: 8081 // 將開發服務器的端口設置為 8081
+    port: 5173
   }
 })

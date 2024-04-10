@@ -9,15 +9,15 @@
           <input type="text" class="form-control" />
         </div>
 
-        <div class="col-1">
-          <label for="inputPassword6" class="col-form-label">價格</label>
-        </div>
-        <div class="col-2">
-          <input type="number" class="form-control" placeholder="最小值" min="0" />
-        </div>
-        <div class="col-2">
-          <input type="number" class="form-control" placeholder="最大值" min="0" />
-        </div>
+<!--        <div class="col-1">-->
+<!--          <label for="inputPassword6" class="col-form-label">價格</label>-->
+<!--        </div>-->
+<!--        <div class="col-2">-->
+<!--          <input type="number" class="form-control" placeholder="最小值" min="0" />-->
+<!--        </div>-->
+<!--        <div class="col-2">-->
+<!--          <input type="number" class="form-control" placeholder="最大值" min="0" />-->
+<!--        </div>-->
         <div class="col-2">
           <button class="btn btn-primary">查詢</button>
         </div>
@@ -51,10 +51,14 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
           <div class="col" v-for="p in products" :key="p.productId">
             <div class="card shadow-sm">
+              <router-link to="/product/detail" @click="redirectToSpec(p)">
+              <div>
               <img :src="`http://localhost:8080/mall/product/photo/${p.photoId}`" class="w-100" />
               <p class="card-text mt-2 px-3 text-truncate">
                 {{ p.productName }}
               </p>
+              </div>
+              </router-link>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="m-3">價格:{{ p.price }}</div>
                 <div class="m-3">
