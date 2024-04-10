@@ -8,22 +8,23 @@
           <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
+        <div class="startdiv"> (<span class="start">*</span> 為必填欄位)</div>
         <div class="form-container">
           <form @submit.prevent="submitUpdate" class="member-form">
 
-                <div v-if="memberPasswordData" class="divider">
-                  <label>姓名：</label>
-                  <input type="text" v-model="memberPasswordData.userName" :disabled="true" />
-                </div>
+            <div v-if="memberPasswordData" class="form-group">
+              <label for="userName">姓名</label>
+              <input type="text" id="userName" v-model="memberPasswordData.userName" :disabled="true" />
+            </div>
 
-                <div v-if="memberPasswordData" class="divider">
-                  <label>電子信箱:</label>
+                <div v-if="memberPasswordData" class="form-group">
+                  <label>電子信箱</label>
                   <input type="text" v-model="memberPasswordData.email" :disabled="true" />
                 </div>
-  
-                <div v-if="memberPasswordData" class="divider">
+
+                <div v-if="memberPasswordData" class="form-group">
                   <div>
-                      <label>密碼:</label>
+                      <label>密碼<span class="start">*</span></label>
                       <input type="password" v-model="inputemberPasswordData.password" />
                     <span v-if="sendfirstcode">
                     <img v-if="!IsInputMemberPasswordData" src="/wrong.jpg" class="icon-background" />
@@ -31,9 +32,9 @@
                   </div>
                 </div>
 
-                <div v-if="memberPasswordData && ResetPasswordData" class="divider">
+                <div v-if="memberPasswordData && ResetPasswordData" class="form-group">
                   <div>
-                      <label>重設密碼:</label>
+                      <label>重設密碼<span class="start">*</span></label>
                       <input type="password" v-model="ResetPasswordData.password" />
                       <img v-if="!this.ResetPasswordData.password" src="/wrong.jpg" class="icon-background" />
                       <!-- 右側提示標籤 -->
@@ -41,9 +42,9 @@
                   </div>
                 </div>
 
-                <div v-if="memberPasswordData && confirmPasswordData" class="divider">
+                <div v-if="memberPasswordData && confirmPasswordData" class="form-group">
                   <div>
-                      <label>確認密碼:</label>
+                      <label>確認密碼<span class="start">*</span></label>
                       <input type="password" v-model="confirmPasswordData.password" />
                       <img :src="IsConfirmPassword ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
                       <!-- 右側提示標籤 -->
@@ -53,7 +54,8 @@
                 </div>
                 <div>
                   <div>
-                    驗證碼:<input v-model="VerificationCode" class="divider"></input>
+                    <div> 驗證碼<span class="start">*</span> </div>
+                    <input type="text" v-model="VerificationCode"/>
                     <span v-if="sendFirstVerificationCode">
                     <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
                     </span>
@@ -69,7 +71,7 @@
     </div>
   </main>
 </template>
-  
+
   <script>
   import MemberOption from "@/components/MemberOption.vue";
   import axios from "axios";
@@ -288,133 +290,172 @@
   };
   </script>
 
-  <style scoped>
-  .icon-background {
-    display: inline-block; /* 或其他适合的显示方式 */
-    width: 20px;
-    height: 20px;
-    background-size: cover;
-    background-position: center;
-  }
-  .main-container {
-    display: flex;
-    min-height: 100vh;
-  }
+<style scoped>
+.icon-background {
+  display: inline-block; /* 或其他适合的显示方式 */
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+  background-position: center;
+}
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
 
-  .sidebar {
-    width: 250px;
-    background-color: #333;
-    padding: 20px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-  }
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
 
-  .content-container {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #f8f9fa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .profile-card {
-    width: 100%;
-    max-width: 700px; /* 設定最大寬度 */
-    padding: 20px;
-    border-radius: 6px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+.profile-card {
+  width: 100%;
+  max-width: 700px; /* 設定最大寬度 */
+  padding: 20px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .profile-header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-  .brand-title {
-    font-size: 2.5em;
-    color: #333;
-  }
+.brand-title {
+  font-size: 2.5em;
+  color: #333;
+}
 
-  .brand-slogan {
-    font-size: 1em;
-    color: #666;
-  }
+.brand-slogan {
+  font-size: 1em;
+  color: #666;
+}
 
-  .member-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-
-  .missing-data-label {
-    color: red;
-    margin-bottom: 15px;
-    font-size: 12px;
-    margin-top: 10px;
-  }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .form-group input[type="text"],
-  .form-group input[type="password"],
-  .form-group input[type="email"],
-  .form-group input[type="tel"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
+.member-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 
-  /* 如果footer覆蓋到了內容，你可能需要添加一些底部邊距 */
-  .content-container {
-    margin-bottom: 50px; /* 根據實際footer高度調整 */
-  }
+.missing-data-label {
+  color: red;
+  margin-bottom: 15px;
+  font-size: 12px;
+  margin-top: 10px;
+}
 
-  .divider{
-    margin-top: 10px;
-  }
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
 
-  .horizontal-divider {
-    width: 100%;
-    height: 1px;
-    background-color: #ccc; /* 淡灰色背景色 */
-    margin-bottom: 20px; /* 根據需要增加下邊距 */
-  }
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"],
+.form-group input[type="tel"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+
+/* 如果footer覆蓋到了內容，你可能需要添加一些底部邊距 */
+.content-container {
+  margin-bottom: 50px; /* 根據實際footer高度調整 */
+}
+
+.divider{
+  margin-top: 10px;
+}
+
+.horizontal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
 
 
 
-  /* 表單輸入框的樣式 */
-  .input-wrapper input {
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-  }
-  .myButton{
-    background-color: #8E8E8E; /* A pleasant green that looks professional */
-    color: #3C3C3C; /* White text for better readability */
-    padding: 10px 20px; /* Sufficient padding for a button */
-    border: none; /* No border to keep it sleek */
-    border-radius: 4px; /* Rounded corners like other inputs */
-    cursor: pointer; /* Cursor pointer to indicate it's clickable */
-    font-size: 16px; /* Slightly larger font size for better visibility */
-    font-weight: bold; /* Bold text for emphasis */
-    text-transform: uppercase; /* Uppercase text for a formal appearance */
-    margin-top: 10px; /* Top margin to give space from previous elements */
-    margin-left: 10px;
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-  }
+/* 表單輸入框的樣式 */
+.input-wrapper input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+.myButton{
+  background-color: white; /* For example, a green button */
+  border-color: black;
+  color: black;
+  padding: 10px 20px; /* Sufficient padding for a button */
+  border-radius: 25px; /* Rounded corners like other inputs */
+  cursor: pointer; /* Cursor pointer to indicate it's clickable */
+  font-size: 16px; /* Slightly larger font size for better visibility */
+  font-weight: bold; /* Bold text for emphasis */
+  text-transform: uppercase; /* Uppercase text for a formal appearance */
+  margin-top: 10px; /* Top margin to give space from previous elements */
+  margin-left: 10px;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 
-  button:hover {
-    background-color: #0056b3;
-  }
+}
 
-  </style>
+
+button:hover {
+  background-color: black; /* Darker green on hover */
+  color: white;
+}
+
+.member-form {
+  display: flex;
+  flex-direction: column; /* This ensures the stacked layout */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column; /* 使標籤在輸入框上方 */
+  margin-bottom: 20px; /* 為每個表單組添加底部邊距 */
+  width: 100%; /* 表單組寬度為100% */
+}
+
+.form-group label {
+  margin-bottom: 5px; /* 標籤和輸入框之間的間隔 */
+}
+
+.form-group input {
+  padding: 10px; /* 輸入框的內填充 */
+  border: 1px solid #ced4da; /* 邊框顏色和樣式 */
+  border-radius: 4px; /* 邊框圓角 */
+  font-size: 1rem; /* 文本大小 */
+}
+
+
+.start{
+  color: red;
+}
+.startdiv{
+  display: block; /* 確保它是塊級元素 */
+  text-align: right; /* 文字向右對齊 */
+  margin-left: auto; /* 左邊距自動，推到右側 */
+  margin-right: 20px; /* 右邊距保留一些空間 */
+}
+
+
+
+</style>

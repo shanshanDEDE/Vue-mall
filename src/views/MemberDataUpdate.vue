@@ -8,43 +8,44 @@
           <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
+        <div class="startdiv"> (<span class="start">*</span> 為必填欄位)</div>
         <div class="form-container">
           <form @submit.prevent="submitUpdate" class="member-form">
             <!-- 用戶名表單欄位 -->
             <div class="form-group" v-if="memberdata">
-              <label for="userName">姓名：</label>
+              <label for="userName">姓名<span class="start">*</span></label>
               <input type="text" id="userName" v-model="memberdata.userName" :placeholder="!memberdata.userName ? '必填' : ''" required />
             </div>
 
             <!-- 電子郵件表單欄位 -->
             <div class="form-group" v-if="memberdata">
-              <label for="email">電子郵件：</label>
+              <label for="email">電子郵件</label>
               <input type="email" id="email" v-model="memberdata.email" disabled />
             </div>
 
             <!-- 註冊日期表單欄位 -->
             <div class="form-group" v-if="memberdata">
-              <label for="registerDate">註冊日期：</label>
+              <label for="registerDate">註冊日期</label>
               <input type="text" id="registerDate" v-model="formattedRegisterDate" disabled />
             </div>
 
             <!-- 使用者地址表單欄位 -->
             <div class="form-group" v-if="memberdata">
-              <label for="address">使用者地址：</label>
+              <label for="address">使用者地址</label>
               <input type="text" id="address" v-model="inputmemberdata.userAddress"/>
               <label v-if="shouldShowMissingLabel(memberdata.userAddress,inputmemberdata.userAddress)" class="missing-data-label">尚未有過資料 建議填寫!</label>
             </div>
 
             <!-- 遞送地址表單欄位 -->
             <div class="form-group" v-if="memberdata">
-              <label for="deliverAddress">遞送地址：</label>
+              <label for="deliverAddress">遞送地址</label>
               <input type="text" id="deliverAddress" v-model="inputmemberdata.deliverAddress" />
               <label v-if="shouldShowMissingLabel(memberdata.deliverAddress,inputmemberdata.deliverAddress)" class="missing-data-label">尚未有過資料 建議填寫!</label>
             </div>
 
             <!-- 電話表單欄位 -->
             <div class="form-group" v-if="memberdata">
-              <label for="phone">電話：</label>
+              <label for="phone">電話</label>
               <input type="tel" id="phone" v-model="inputmemberdata.phone"/>
               <label v-if="shouldShowMissingLabel(memberdata.phone,inputmemberdata.phone)" class="missing-data-label">尚未有過資料 建議填寫!</label>
             </div>
@@ -188,6 +189,7 @@ export default {
   border-radius: 6px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
 }
 
 .profile-header {
@@ -205,37 +207,8 @@ export default {
   color: #666;
 }
 
-.member-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 將表單元素置中 */
-}
 
-.form-group {
-  width: 100%;
-  margin-bottom: 15px;
-}
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form-group input {
-  width: calc(100% - 20px);
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.submit-button {
-  background-color: #000;
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
 
 .error-message {
   color: red;
@@ -247,5 +220,58 @@ export default {
   background-color: #ccc; /* 淡灰色背景色 */
   margin-bottom: 20px; /* 根據需要增加下邊距 */
 }
+
+.member-form {
+  display: flex;
+  flex-direction: column; /* This ensures the stacked layout */
+}
+
+.form-group {
+  margin-bottom: 20px; /* Add some space between each form group */
+}
+
+.form-group label {
+  display: block; /* Ensures the label is above the input field */
+  margin-bottom: 8px; /* Space between the label and the input field */
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"] {
+  width: 100%; /* Full width of the container */
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+/* Style the submit button to match the rest of the form */
+.submit-button {
+  padding: 10px 15px;
+  border-color: black;
+  border-radius: 25px;
+  background-color: white; /* For example, a green button */
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+
+.submit-button:hover {
+  background-color: black; /* Darker green on hover */
+  color: white;
+}
+.start{
+  color: red;
+}
+.startdiv{
+  display: block; /* 確保它是塊級元素 */
+  text-align: right; /* 文字向右對齊 */
+  margin-left: auto; /* 左邊距自動，推到右側 */
+  margin-right: 20px; /* 右邊距保留一些空間 */
+}
+
+
 </style>
 
