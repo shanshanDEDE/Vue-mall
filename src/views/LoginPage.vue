@@ -97,10 +97,16 @@ export default {
       axios
         .post(`${this.API_URL}/user/login`, fd)
         .then((rs) => {
-          const userStore = useUserStore();
-          userStore.loginSuccess(rs.data);
-          sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
-          this.$router.push("/");
+          console.log(rs.data.authentication);
+          if(rs.data.authentication==3){
+            alert("此帳號已遭停權！")
+          }else{
+            const userStore = useUserStore();
+            userStore.loginSuccess(rs.data);
+            sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
+            this.$router.push("/");
+          }
+
         })
         .catch(() => {
           this.message = "登入失敗";
