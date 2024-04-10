@@ -24,34 +24,35 @@
                 </div>
 
                 <div v-if="memberPasswordData" class="form-group">
-                  <div>
                       <label>密碼<span class="start">*</span></label>
                       <input type="password" v-model="inputemberPasswordData.password" />
-                    <span v-if="sendfirstcode">
+                  <div class="icon-label-group">
+                    <template v-if="sendfirstcode">
                     <img v-if="!IsInputMemberPasswordData" src="/wrong.jpg" class="icon-background" />
-                    </span>
+                      <label v-if="!confirmPasswordData.password" class="missing-data-label">密碼錯誤</label>
+                    </template>
                   </div>
                 </div>
 
                 <div v-if="memberPasswordData && ResetPasswordData" class="form-group">
-                  <div>
                       <label>重設密碼<span class="start">*</span></label>
                       <input type="password" v-model="ResetPasswordData.password" />
+                  <div class="icon-label-group">
                       <img v-if="!this.ResetPasswordData.password" src="/wrong.jpg" class="icon-background" />
-                      <!-- 右側提示標籤 -->
                       <label v-if="!ResetPasswordData.password" class="missing-data-label">尚未填寫</label>
                   </div>
                 </div>
 
                 <div v-if="memberPasswordData && confirmPasswordData" class="form-group">
-                  <div>
                       <label>確認密碼<span class="start">*</span></label>
                       <input type="password" v-model="confirmPasswordData.password" />
-                      <img :src="IsConfirmPassword ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
-                      <!-- 右側提示標籤 -->
-                      <label v-if="!confirmPasswordData.password" class="missing-data-label">尚未填寫</label>
-                      <label v-else-if="confirmPasswordData.password !== ResetPasswordData.password && ResetPasswordData.password && confirmPasswordData.password" class="missing-data-label">密碼錯誤</label>
+
+                  <div class="icon-label-group">
+                    <img :src="IsConfirmPassword ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
+                    <label v-if="!confirmPasswordData.password" class="missing-data-label">尚未填寫</label>
+                    <label v-else-if="confirmPasswordData.password !== ResetPasswordData.password && ResetPasswordData.password && confirmPasswordData.password" class="missing-data-label">密碼錯誤</label>
                   </div>
+
                 </div>
                 <div>
                   <div>
@@ -300,7 +301,18 @@
   height: 20px;
   background-size: cover;
   background-position: center;
+  margin: 0; /* 移除任何外邊距 */
 }
+
+
+.icon-label-group {
+  display: flex; /* 啟用flexbox */
+  align-items: center; /* 垂直居中對齊 */
+  gap: 10px; /* 圖標和標籤之間的間隔 */
+}
+
+
+
 .main-container {
   display: flex;
   min-height: 100vh;
@@ -355,12 +367,20 @@
 }
 
 
+
+
+
 .missing-data-label {
   color: red;
-  margin-bottom: 15px;
   font-size: 12px;
-  margin-top: 10px;
+  margin: 0; /* 移除任何外邊距，根據需要進行調整 */
 }
+
+
+
+
+
+
 
 .form-group label {
   display: block;

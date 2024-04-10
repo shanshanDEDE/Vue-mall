@@ -13,26 +13,26 @@
           <div v-if="memberdata" class="member-info-container">
             <div class="member-info-wrapper">
               <div class="member-info-group">
-                <label class="member-info-title">使用者名稱:</label>
+                <label class="member-info-title">使用者名稱</label>
                 <div class="member-info-content">{{ memberdata.userName }}</div>
 
-                <label class="member-info-title">電子信箱:</label>
+                <label class="member-info-title">電子信箱</label>
                 <div class="member-info-content">{{ memberdata.email }}</div>
 
-                <label class="member-info-title">註冊日期:</label>
+                <label class="member-info-title">註冊日期</label>
                 <div class="member-info-content">{{ formattedRegisterDate }}</div>
               </div>
 
               <div class="member-info-divider"></div>
 
               <div class="member-info-group">
-                <label class="member-info-title">使用者地址:</label>
+                <label class="member-info-title">使用者地址</label>
                 <div class="member-info-content">{{ memberdata.userAddress }}</div>
 
-                <label class="member-info-title">遞送地址:</label>
+                <label class="member-info-title">遞送地址</label>
                 <div class="member-info-content">{{ memberdata.deliverAddress }}</div>
 
-                <label class="member-info-title">電話:</label>
+                <label class="member-info-title">電話</label>
                 <div class="member-info-content">{{ memberdata.phone }}</div>
               </div>
             </div>
@@ -274,6 +274,7 @@ export default {
 }
 
 .member-info-content {
+  border: 1px solid black;
   font-size: 20px;
   color: #333;
   margin-bottom: 10px;
@@ -281,6 +282,7 @@ export default {
   border-radius: 4px;
   padding: 6px 10px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
 }
 
 .member-info-divider {
