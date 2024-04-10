@@ -55,14 +55,16 @@
                 </div>
                 <div>
                   <div>
-                    <div> 驗證碼<span class="start">*</span> </div>
+                    <div>驗證碼<span class="start">*</span> </div>
                     <input type="text" v-model="VerificationCode"/>
                     <span v-if="sendFirstVerificationCode">
                     <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
                     </span>
                       <br>
-                    <button type="primary" @click="sendCode" :disabled="disableSend" class="myButton">取得驗證碼</button>
-                    <button @click="submitUpdate" :disabled="disableupdate" class="myButton">重設密碼</button>
+                    <div class="button-group">
+                      <button type="primary" @click="sendCode" :disabled="disableSend" class="myButton">取得驗證碼</button>
+                      <button @click="submitUpdate" :disabled="disableupdate" class="myButton">重設密碼</button>
+                    </div>
                   </div>
                 </div>
 
@@ -468,12 +470,27 @@ button:hover {
   font-weight: bold;
   text-transform: uppercase;
   display: block; /* 確保它是塊級元素 */
-  margin: auto; /* 左邊距自動，推到右側 */
+
+  margin: 0; /* 移除margin，由.button-group的gap控制間隔 */
+  width: auto; /* 防止按鈕被拉伸填滿整個容器 */
 }
 
 .myButton:hover {
   background-color: black; /* Darker green on hover */
   color: white;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  gap: 10px; /* 按鈕之間的間隔 */
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .button-group {
+    flex-direction: column;
+  }
 }
 
 </style>
