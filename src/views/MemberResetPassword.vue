@@ -5,7 +5,8 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="brand-title">APPLE TREE</h1>
-          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+          <h1 class="display-4 fw-normal">會員密碼修改</h1>
+
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
         <div class="startdiv"> (<span class="start">*</span> 為必填欄位)</div>
@@ -457,5 +458,22 @@ button:hover {
 }
 
 
+.myButton {
+  border: 2px solid black;
+  padding: 10px 15px;
+  border-radius: 20px;
+  background-color: white; /* For example, a green button */
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+
+.myButton:hover {
+  background-color: black; /* Darker green on hover */
+  color: white;
+}
 
 </style>

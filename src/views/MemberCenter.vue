@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .main-container {
   display: flex;
   min-height: 100vh;

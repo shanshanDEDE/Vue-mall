@@ -41,8 +41,6 @@ import MemberOption from "@/components/MemberOption.vue";
 import { useUserStore } from "@/stores/userStore"; //user store
 import axios from "axios";
 
-// 引入外部 CSS 文件
-import "@/assets/memberReData.css"; // 样式文件路径根据实际情况修改
 // CustomerFeedbackUpdate.vue
 import { useFeedbackStore } from '@/stores/feedbackStore';
 
@@ -99,7 +97,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .form-group {
   display: flex;
   align-items: flex-start; /* 改變此處，讓items在容器的開始處對齊 */

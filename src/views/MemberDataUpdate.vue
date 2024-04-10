@@ -5,7 +5,7 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="brand-title">APPLE TREE</h1>
-          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+          <h1 class="display-4 fw-normal">會員資料修改</h1>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
         <div class="startdiv"> (<span class="start">*</span> 為必填欄位)</div>
@@ -67,8 +67,7 @@ import MemberOption from "@/components/MemberOption.vue";
 import { useUserStore } from "@/stores/userStore"; //user store
 import axios from "axios";
 
-// 引入外部 CSS 文件
-import "@/assets/memberReData.css"; // 样式文件路径根据实际情况修改
+
 
 export default {
   data() {
