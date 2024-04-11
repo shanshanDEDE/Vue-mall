@@ -5,7 +5,7 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="brand-title">APPLE TREE</h1>
-          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+          <h6 class="display-4 fw-normal">訂單查詢</h6>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 
@@ -16,15 +16,18 @@
                   <!-- 折叠标题 -->
                   <h2 class="accordion-header" :id="'heading' + order.orderId">
                     <button
-                        class="accordion-button"
+                        class="accordion-button accordion"
                         type="button"
                         data-bs-toggle="collapse"
                         :data-bs-target="'#collapse' + order.orderId"
                         aria-expanded="true"
                         :aria-controls="'collapse' + order.orderId"
                     >
-                      訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }}
-                      付款方式:{{ order.paymentMethod }} 訂單狀態:{{ order.orderStatus }}
+                      <div style="flex-grow: 1; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span>訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }} 付款方式:{{ order.paymentMethod }}</span>
+                        <span class="order-status-group">訂單狀態: {{ order.orderStatus }}</span>
+                      </div>
+
                     </button>
                   </h2>
                   <!-- 折叠内容 -->
@@ -36,26 +39,49 @@
                   >
                     <div class="accordion-body">
                       <div v-for="(detail, index) in order.orderDetails" :key="index">
-                        <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
-                        <p>數量: {{ detail.quantity }}個,單價: {{ detail.price }}$</p>
-                        <p>總價: {{ detail.orderPrice }}$</p>
+
+                        <div class="accordion-body">
+                          <div class="member-info-wrapper">
+                            <div class="member-info-group">
+                              <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
+                              <p>單價: {{ detail.price }}$</p>
+                            </div>
+
+                            <div class="member-info-group">
+                              <p>數量: {{ detail.quantity }}個</p>
+                              <p>總價: {{ detail.orderPrice }}$</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="horizontal-dividermany"></div> <!-- 橫向灰色線 -->
                       </div>
 
-                      <p>收貨地址: {{ order.deliverAddress }}</p>
-                      <p>聯絡電話: {{ order.recipientPhone }}</p>
+                      <div class="accordion-body">
+                      <div class="member-info-wrapper">
+                        <div class="member-info-group">
+                          <p>收貨地址: {{ order.deliverAddress }}</p>
+                        </div>
+
+
+                        <div class="member-info-group">
+                          <p>聯絡電話: {{ order.recipientPhone }}</p>
+                        </div>
+                      </div>
+                        </div>
 
                       <template
                           v-if="order.orderStatus == '處理中'"
                       >
                         <button
                             @click="deleteOrders(order)"
-                            class="btn btn-primary"
+                            class="submit-button"
                         >
                           取消訂單
                         </button>
                       </template>
                       <template v-else>
-                        <button class="btn btn-primary" disabled>
+                        <button class="submit-button" disabled>
                           無法取消
                         </button>
                       </template>
@@ -203,6 +229,13 @@ export default {
   margin-bottom: 20px; /* 根據需要增加下邊距 */
 }
 
+.horizontal-dividermany {
+  width: 100%;
+  height: 1px;
+  background-color: #F0F0F0; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
 .custom-sidebar {
   background-color: #333; /* 調整為與頂部導航欄相同的背景顏色 */
   color: white; /* 文字顏色為白色 */
@@ -222,6 +255,89 @@ export default {
   display: block;      /* 使按钮成为块级元素 */
   margin: 0 auto;      /* 上下保持0，左右自动（自动居中） */
   width: max-content;  /* 使按钮宽度适应内容 */
+}
+
+.submit-button {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 25px;
+  background-color:		#ACD6FF; /* For example, a green button */
+  color:	#4F4F4F;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+
+.submit-button:hover {
+  background-color: #46A3FF; /* Darker green on hover */
+  color: white;
+}
+
+.member-info-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 內容靠左對齊 */
+}
+
+.member-info-divider {
+  min-height: 100%;
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 20px;
+}
+
+.member-info-wrapper {
+  width: 100%; /* 使包裹內容填滿容器 */
+  display: flex;
+  flex-direction: row; /* 水平排列 */
+  justify-content: space-evenly; /* 內容間距平均分配 */
+  align-items: flex-start;
+  background: 	white;
+
+}
+
+.member-info-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 分为两列，每列宽度相等 */
+  gap: 200px; /* 设置列与列之间的间隔 */
+  align-items: start; /* 确保所有内容在顶部对齐 */
+  padding: 0px; /* 可选：为了更好的视觉效果添加内边距 */
+}
+
+.member-info-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* 设置最小宽度为0，防止溢出 */
+}
+
+/* 添加文本溢出省略 */
+.member-info-group p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accordion{
+  border-color: black !important;
+  background-color:	#C4E1FF !important; /* For example, a green button */
+  color: black  !important;
+}
+.accordion:hover{
+  background-color: black; /* Darker green on hover */
+  color: white;
+}
+
+
+.order-status-group {
+  margin-left: 10px; /* 推送到容器的右边 */
+  white-space: nowrap;
+}
+.accordion-button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 </style>
 

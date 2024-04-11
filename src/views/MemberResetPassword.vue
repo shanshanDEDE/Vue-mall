@@ -56,14 +56,16 @@
                 </div>
                 <div>
                   <div>
+                    <div class="vinput">
                     <div>驗證碼<span class="start">*</span> </div>
                     <input type="text" v-model="VerificationCode"/>
                     <span v-if="sendFirstVerificationCode">
                     <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
                     </span>
+                    </div>
                       <br>
                     <div class="button-group">
-                      <button type="primary" @click="sendCode" :disabled="disableSend" class="myButton">取得驗證碼</button>
+                      <button type="primary" @click="sendCode" :disabled="disableSend" class="myButton vbutton">取得驗證碼</button>
                       <button @click="submitUpdate" :disabled="disableupdate" class="myButton">重設密碼</button>
                     </div>
                   </div>
@@ -498,6 +500,14 @@ button:hover {
 .myButton:hover {
   background-color: black; /* Darker green on hover */
   color: white;
+}
+
+.vbutton{
+  margin-right: 10px;
+}
+.vinput{
+  width: 200px;
+  margin-left: 20px;
 }
 
 .button-group {

@@ -5,7 +5,7 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="brand-title">APPLE TREE</h1>
-          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+          <h6 class="display-4 fw-normal">新增評論</h6>
           <label>訂單編號：{{ order.orderId }}</label>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
@@ -211,5 +211,23 @@ export default {
 }
 button:hover {
   background-color: #0056b3;
+}
+
+.myButton {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 25px;
+  background-color:		#ACD6FF; /* For example, a green button */
+  color:	#4F4F4F;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+
+.myButton:hover {
+  background-color: #46A3FF; /* Darker green on hover */
+  color: white;
 }
 </style>

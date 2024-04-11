@@ -94,10 +94,10 @@ const router = createRouter({
       path: "/product/ipadIndex",
       component: () => import("@/views/ipad_page.vue"),
     },
-    {
-      path: "/product/macbookIndex",
-      component: () => import("@/views/macbook_page.vue"),
-    },
+    // {
+    //   path: "/product/macbookIndex",
+    //   component: () => import("@/views/macbook_page.vue"),
+    // },
     {
       path: "/product/detail",
       component: () => import("@/views/product_detail_page.vue"),
