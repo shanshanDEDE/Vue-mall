@@ -61,12 +61,19 @@
                       <input type="text" v-model="VerificationCode"/>
                       <span v-if="sendFirstVerificationCode">
                       <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
-                      <label class="missing-data-label">驗證碼錯誤</label>
+                      <label v-if="!VerificationCodePass" class="missing-data-label">驗證碼錯誤</label>
                       </span>
                     </div>
                       <br>
                     <div class="button-group">
-                      <button type="primary" @click="sendCode" :disabled="disableSend" class="myButton vbutton">取得驗證碼</button>
+                      <button
+                          type="primary"
+                          @click="sendCode"
+                          :disabled="disableSend"
+                          :class="['myButton', 'vbutton', { 'disabled': disableSend }]"
+                      >
+                        {{ buttonText }}
+                      </button>
                       <button @click="submitUpdate" :disabled="disableupdate" class="myButton">重設密碼</button>
                     </div>
                   </div>
@@ -107,6 +114,9 @@
           userID: null,
           password: null,
         },
+
+        countdown: null,
+        buttonText: '取得驗證碼',
       };
     },
     created() {
@@ -145,6 +155,19 @@
       sendCode() {
         this.disableSend = true;
         console.log(this.email);
+        this.buttonText = '重新取得驗證碼';
+        let counter = 31;
+        this.countdown = setInterval(() => {
+          counter--;
+          if (counter > 0) {
+            this.buttonText = `重新取得驗證碼(${counter})`;
+          } else {
+            this.buttonText = '重新取得驗證碼';
+            this.disableSend = false;
+            clearInterval(this.countdown);
+          }
+        }, 1000);
+
         axios.post(`${this.API_URL}/register`, {email: this.email})
             .then(res => {
               console.log(res.data)
@@ -277,9 +300,11 @@
           alert('重設密碼成功!');
         } catch (error) {
           console.error(error);
+          clearInterval(this.countdown); // 清除倒计时
          // alert(error.message);
         } finally {
           this.disableSend = false; // 恢复发送按钮
+
           this.disableupdate = false; // 恢复提交按钮
         }
       }
@@ -293,6 +318,9 @@
       }
       this.updateIsConfirmPassword();
       this.memberRePasswordDTO.userID = userStore.userId;
+      if (this.countdown) {
+        clearInterval(this.countdown);
+      }
     },
   };
   </script>
@@ -524,4 +552,11 @@ button:hover {
   }
 }
 
+.myButton.disabled {
+  background-color: #ccc; /* 暗淡的背景颜色表示禁用状态 */
+  color: #666; /* 暗淡的文字颜色 */
+  border-color: #999; /* 暗淡的边框颜色 */
+  cursor: not-allowed; /* 禁止的光标样式 */
+  pointer-events: none; /* 防止点击事件 */
+}
 </style>
