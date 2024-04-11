@@ -99,7 +99,14 @@ export default {
     return {
       currentPage: 1,
       totalPage: 0,
-      products: [],
+      products: {
+        productId: '',
+        productName: '',
+        price: '',
+        photoId: '',
+        productDescription: '',
+        specIds:[],
+      },
       searchPage:0,
 
       searchKeyWord: '',
@@ -173,6 +180,19 @@ export default {
         this.keywordSearchActive = true //建立搜尋狀態
       })
 
+    },
+    redirectToSpec(product) {
+      this.$router.push({
+        path: '/product/detail',
+        query: {
+          reProductId: product.productId,
+          reProductName: product.productName,
+          rePrice: product.price,
+          rePhotoId: product.photoId,
+          reProductDescription: product.productDescription,
+          reSpecIds: product.specIds
+        }
+      });
     }
 
 

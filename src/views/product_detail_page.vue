@@ -42,28 +42,25 @@
       <div class="row mb-5">
         <div class="col-lg-6">
           <!-- PRODUCT SLIDER-->
-          <div class="row m-sm-0">
-            <div class="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
-              <div class="swiper product-slider-thumbs">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" :src="`http://localhost:8080/mall/product/photo/${rePhotoId}`" alt="{{reProductName}}"></div>
-                  <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src=" ../assets/img/product-detail-2.jpg" alt="{{reProductName}}"></div>
-                  <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src=" ../assets/img/product-detail-3.jpg" alt="{{reProductName}}"></div>
-                  <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src=" ../assets/img/product-detail-4.jpg" alt="{{reProductName}}"></div>
-                </div>
+          <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+              <div v-for="(id, index) in reSpecIds" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }" :data-bs-interval="index === 0 ? 10000 : 2000">
+                <img :src="`http://localhost:8080/mall/productSpec/photo/${id}`" class="d-block w-100" style="height: 300px; width: 100%; object-fit: contain " :alt="reProductName">
               </div>
             </div>
-            <div class="col-sm-10 order-1 order-sm-2">
-              <div class="swiper product-slider">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide h-auto"><a class="glightbox product-view" href=" ../assets/img/product-detail-1.jpg" data-gallery="gallery2" data-glightbox="Product item 1"><img class="img-fluid" src=" ../assets/img/product-detail-1.jpg" alt="..."></a></div>
-                  <div class="swiper-slide h-auto"><a class="glightbox product-view" href=" ../assets/img/product-detail-2.jpg" data-gallery="gallery2" data-glightbox="Product item 2"><img class="img-fluid" src=" ../assets/img/product-detail-2.jpg" alt="..."></a></div>
-                  <div class="swiper-slide h-auto"><a class="glightbox product-view" href=" ../assets/img/product-detail-3.jpg" data-gallery="gallery2" data-glightbox="Product item 3"><img class="img-fluid" src=" ../assets/img/product-detail-3.jpg" alt="..."></a></div>
-                  <div class="swiper-slide h-auto"><a class="glightbox product-view" href="../assets/img/product-detail-4.jpg" data-gallery="gallery2" data-glightbox="Product item 4"><img class="img-fluid" src="../assets/img/product-detail-4.jpg" alt="..."></a></div>
-                </div>
-              </div>
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+
           </div>
+
+
         </div>
         <!-- PRODUCT DETAILS-->
         <div class="col-lg-6">
@@ -152,7 +149,6 @@
 import axios from "axios";
 
 function injectSvgSprite(path) {
-
   var ajax = new XMLHttpRequest();
   ajax.open("GET", path, true);
   ajax.send();
@@ -163,13 +159,8 @@ function injectSvgSprite(path) {
     document.body.insertBefore(div, document.body.childNodes[0]);
   }
 }
-// this is set to BootstrapTemple website as you cannot
-// inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-// while using file:// protocol
-// pls don't forget to change to your domain :)
-injectSvgSprite('icons/orion-svg-sprite.svg');
-export default {
 
+export default {
   data() {
     return {
       reProductId: this.$route.query.reProductId,
@@ -177,15 +168,27 @@ export default {
       rePrice: this.$route.query.rePrice,
       rePhotoId: this.$route.query.rePhotoId,
       reProductDescription: this.$route.query.reProductDescription,
+      reSpecIds: this.$route.query.reSpecIds
     };
   },
   mounted() {
-    axios.get(`http://localhost:8080/mall/product/${this.$route.params.productId}`).then((rs) => {
-      this.product = rs.data;
-    });
+
+// axios.get(`http://localhost:8080/mall/products/${this.reProductId}`).then((rs) => {
+//   console.log(rs.data)
+//   this.reProductName = rs.data.name
+//   this.rePrice = rs.data.price
+//   this.rePhotoId = rs.data.photoId
+//   this.reProductDescription = rs.data.description
+// })
+
+
   },
+  methods: {
+
+  }
 }
 </script>
+
 <style>
 
 </style>
