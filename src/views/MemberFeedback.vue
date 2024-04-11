@@ -5,7 +5,7 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="brand-title">APPLE TREE</h1>
-          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+          <h6 class="display-4 fw-normal">我的意見反應</h6>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 
@@ -17,19 +17,20 @@
                   <!-- 折叠标题 -->
                   <h2 class="accordion-header" :id="'heading' + feedback.feedbackID">
                     <button
-                      class="accordion-button"
+                      class="accordion-button accordion"
                       type="button"
                       data-bs-toggle="collapse"
                       :data-bs-target="'#collapse' + feedback.feedbackID"
                       aria-expanded="true"
                       :aria-controls="'collapse' + feedback.feedbackID">
-                    >
-                      訂單編號:{{ feedback.orderID }} 反應類別:{{
-                        feedback.type
-                      }}
-                      評價日期:{{ formattedRegisterDate(feedback) }} 狀態:{{
-                        feedback.customerFeedbackStatus
-                      }}
+
+                      <div style="flex-grow: 1; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span> 訂單編號:{{ feedback.orderID }} 反應類別:{{feedback.type }}
+                      評價日期:{{ formattedRegisterDate(feedback) }}</span>
+                        <span class="order-status-group">狀態:{{
+                            feedback.customerFeedbackStatus
+                          }}</span>
+                      </div>
                     </button>
                   </h2>
                   <!-- 折叠内容 -->
@@ -44,12 +45,32 @@
                         v-for="(product, productIndex) in feedback.productNames"
                         :key="productIndex"
                       >
-                        產品名稱: {{ product }} 價格:{{
-                          feedback.prices[productIndex]
-                        }}$
+                        <div class="accordion-body">
+                          <div class="member-info-wrapper">
+                            <div class="member-info-group">
+                              產品名稱: {{ product }}
+                            </div>
+
+                            <div class="member-info-grouptwo">
+                              價格:{{
+                                feedback.prices[productIndex]
+                              }}$
+                            </div>
+                          </div>
+                        </div>
+                        <div class="horizontal-dividermany"></div> <!-- 橫向灰色線 -->
                       </div>
 
-                      <p>回饋內容: {{ feedback.description }}</p>
+
+                      <div class="accordion-body">
+                        <div class="member-info-wrapper">
+                          <div class="member-info-group">
+                            <p>回饋內容: {{ feedback.description }}</p>
+                          </div>
+
+                        </div>
+                      </div>
+
 
                       <template
                         v-if="feedback.customerFeedbackStatus == '處理中'"
@@ -256,6 +277,73 @@ export default {
 }
 button:hover {
   background-color: #0056b3;
+}
+
+
+.accordion{
+  border-color: black !important;
+  background-color:	#C4E1FF !important; /* For example, a green button */
+  color: black  !important;
+}
+.accordion:hover{
+  background-color: black; /* Darker green on hover */
+  color: white;
+}
+
+
+.order-status-group {
+  margin-left: 10px; /* 推送到容器的右边 */
+  white-space: nowrap;
+}
+.accordion-button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.horizontal-dividermany {
+  width: 100%;
+  height: 1px;
+  background-color: #F0F0F0; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+.member-info-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 分为两列，每列宽度相等 */
+  gap: 200px; /* 设置列与列之间的间隔 */
+  align-items: start; /* 确保所有内容在顶部对齐 */
+  padding: 0px; /* 可选：为了更好的视觉效果添加内边距 */
+}
+
+.member-info-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* 设置最小宽度为0，防止溢出 */
+}
+.member-info-grouptwo{
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* 设置最小宽度为0，防止溢出 */
+  margin-left: auto;
+}
+
+.myButton {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 25px;
+  background-color:		#ACD6FF; /* For example, a green button */
+  color:	#4F4F4F;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+
+.myButton:hover {
+  background-color: #46A3FF; /* Darker green on hover */
+  color: white;
 }
 
 /* 可以根據需要進一步調整樣式 */

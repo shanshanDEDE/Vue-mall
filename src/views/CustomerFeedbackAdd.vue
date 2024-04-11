@@ -42,9 +42,6 @@
                     >
                       <div class="accordion-body">
                         <div v-for="(detail, index) in order.orderDetails" :key="index">
-<!--                          <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>-->
-<!--                          <p>數量: {{ detail.quantity }}個,單價: {{ detail.price }}$</p>-->
-<!--                          <p>總價: {{ detail.orderPrice }}$</p>-->
 
                           <div class="accordion-body">
                             <div class="member-info-wrapper">
@@ -60,6 +57,7 @@
                             </div>
                           </div>
                           <div class="horizontal-dividermany"></div> <!-- 橫向灰色線 -->
+
                         </div>
 
                         <div class="accordion-body">

@@ -5,7 +5,7 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="brand-title">APPLE TREE</h1>
-          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
+          <h6 class="display-4 fw-normal">更改評論</h6>
           <label>訂單編號：{{ feedback.orderID }}</label>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
@@ -174,24 +174,22 @@ export default {
   margin-bottom: 20px; /* 根據需要增加下邊距 */
 }
 
-
-.myButton{
-  display: block;
-  margin: 0 auto;
-  width: max-content;
-  background-color: #84C1FF; /* A pleasant green that looks professional */
-  color: #3C3C3C; /* White text for better readability */
-  padding: 10px 20px; /* Sufficient padding for a button */
-  border: none; /* No border to keep it sleek */
-  border-radius: 4px; /* Rounded corners like other inputs */
-  cursor: pointer; /* Cursor pointer to indicate it's clickable */
-  font-size: 16px; /* Slightly larger font size for better visibility */
-  font-weight: bold; /* Bold text for emphasis */
-  text-transform: uppercase; /* Uppercase text for a formal appearance */
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+.myButton {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 25px;
+  background-color:		#ACD6FF; /* For example, a green button */
+  color:	#4F4F4F;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
 }
-button:hover {
-  background-color: #0056b3;
+
+.myButton:hover {
+  background-color: #46A3FF; /* Darker green on hover */
+  color: white;
 }
 
 </style>
