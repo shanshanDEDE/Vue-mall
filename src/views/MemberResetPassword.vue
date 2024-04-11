@@ -57,11 +57,12 @@
                 <div>
                   <div>
                     <div class="vinput">
-                    <div>驗證碼<span class="start">*</span> </div>
-                    <input type="text" v-model="VerificationCode"/>
-                    <span v-if="sendFirstVerificationCode">
-                    <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
-                    </span>
+                      <div>驗證碼<span class="start">*</span> </div>
+                      <input type="text" v-model="VerificationCode"/>
+                      <span v-if="sendFirstVerificationCode">
+                      <img :src="VerificationCodePass ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />
+                      <label class="missing-data-label">驗證碼錯誤</label>
+                      </span>
                     </div>
                       <br>
                     <div class="button-group">
