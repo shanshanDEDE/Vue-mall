@@ -130,8 +130,9 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   if (to.matched.some(record => record.meta.requiresAuth) && !userStore.isLoggedIn) {
-    // 這個路由需要認證，檢查是否已登入
-    // 如果沒有登入，則重定向到登入頁面
+    // 这个路由需要认证，检查是否已登录
+    // 如果没有登录，保存当前路由，然后重定向到登录页面
+    sessionStorage.setItem('redirectRoute', to.fullPath); // 保存尝试访问的完整路径
     alert("請先登入");
     next({ path: '/login' });
   } else {

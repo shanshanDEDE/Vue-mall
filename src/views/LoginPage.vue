@@ -82,7 +82,15 @@ export default {
           const userStore = useUserStore();
           userStore.loginSuccess(rs.data);
           sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
-          this.$router.push("/");
+          // this.$router.push("/");
+          // 登录成功后，检查是否有保存的路由，如果有，则重定向到该路由
+          const redirectRoute = sessionStorage.getItem('redirectRoute');
+          if (redirectRoute) {
+            this.$router.push(redirectRoute);
+            sessionStorage.removeItem('redirectRoute'); // 清除保存的路由
+          } else {
+            this.$router.push("/");
+          }
         })
         .catch(() => {
           this.message = "登入失敗";
