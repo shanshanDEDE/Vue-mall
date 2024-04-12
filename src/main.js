@@ -37,3 +37,4 @@ app.use(createPinia())
 app.use(router)
 app.config.globalProperties.API_URL = API_URL;
 app.mount('#app')
+

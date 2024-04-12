@@ -25,7 +25,7 @@
                       :aria-controls="'collapse' + feedback.feedbackID">
 
                       <div style="flex-grow: 1; display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <span> 訂單編號:{{ feedback.orderID }} 反應類別:{{feedback.type }}
+                        <span> 回饋編號:{{feedback.feedbackID}}訂單編號:{{ feedback.orderID }} 反應類別:{{feedback.type }}
                       評價日期:{{ formattedRegisterDate(feedback) }}</span>
                         <span class="order-status-group">狀態:{{
                             feedback.customerFeedbackStatus
@@ -82,7 +82,7 @@
 
 
                       <template
-                        v-if="feedback.customerFeedbackStatus == '處理中'"
+                        v-if="feedback.customerFeedbackStatus == '等待回覆中'"
                       >
                         <button
                           @click="updateFeedback(feedback)"
@@ -92,6 +92,20 @@
                         </button>
                       </template>
 
+                      <template
+                          v-if="feedback.customerFeedbackStatus == '已回覆'"
+                      >
+                        <button @click="confirmResolution(feedback)" class="myButton">已解決</button>
+                      </template>
+
+                      <div v-if="showModal" class="modal">
+                        <div class="modal-content">
+                          <h4>確認操作</h4>
+                          <p>您確定要將這條反饋標記為「已結案」嗎？</p>
+                          <button @click="resolveFeedback">確定</button>
+                          <button @click="cancelResolution">取消</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -120,9 +134,23 @@ export default {
         userID: null, // 初始化為空，等待登錄後填充
         orderID: null, // 初始化為空，等待需要時填充
       },
+      showModal: false,
+      currentFeedback: null,
     };
   },
   methods: {
+    confirmResolution(feedback) {
+      this.currentFeedback = feedback;
+      this.showModal = true;
+    },
+    resolveFeedback() {
+      this.updateFeedbackStatuse(this.currentFeedback);
+      this.showModal = false;
+    },
+    cancelResolution() {
+      this.showModal = false;
+    },
+
     fetchFeedbackData(userId) {
       // const userId = 1;
       axios
@@ -148,6 +176,29 @@ export default {
       this.$router.push({
         name: 'CustomerFeedbackUpdate',
       });
+    },
+
+    updateFeedbackStatuse(feedback) {
+      if (confirm("確定要將此訂單標記為已結案嗎？")) {
+        axios.put(`${this.API_URL}/update/customerFeedbacksStatus`, {
+          ...feedback,
+          customerFeedbackStatus: '已解決'
+        })
+            .then(response => {
+              alert('訂單已結案！');
+              // 這裡更新前端狀態，不需要重新加載整個頁面，僅更新該筆資料的狀態
+              this.feedbacks = this.feedbacks.map(item => {
+                if (item.feedbackID === feedback.feedbackID) {
+                  return {...item, customerFeedbackStatus: '已結案'};
+                }
+                return item;
+              });
+            })
+            .catch(error => {
+              alert('發生錯誤！');
+              console.error(error);
+            });
+      }
     },
 
     // deleteFeedback(feedback) {
@@ -373,4 +424,28 @@ button:hover {
   margin-bottom: 10px; /* 可選，添加一些底部邊距 */
 }
 /* 可以根據需要進一步調整樣式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 25%; /* 控制模態框的寬度 */
+  max-width: 600px; /* 確保模態框不會超過這個最大寬度 */
+  box-sizing: border-box;
+}
+button {
+  margin: 10px;
+}
 </style>
