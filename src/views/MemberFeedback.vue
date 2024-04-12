@@ -48,8 +48,9 @@
                         <div class="accordion-body">
                           <div class="member-info-wrapper">
                             <div class="member-info-group">
-                              產品名稱: {{ product }}
+                              產品名稱: {{ product }} x {{feedback.quantities[productIndex] }}
                             </div>
+
 
                             <div class="member-info-grouptwo">
                               價格:{{
@@ -62,6 +63,14 @@
                       </div>
 
 
+                      <div class="accordion-body">
+                        <div class="member-info-totle-wrapper">
+                          <div class="total-amount-wrapper"> <!-- 新增的包裝層，用於居中顯示總金額 -->
+                            <div>總金額: {{ calculateTotalAmount(feedback) }}$</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="horizontal-dividermany"></div> <!-- 橫向灰色線 -->
                       <div class="accordion-body">
                         <div class="member-info-wrapper">
                           <div class="member-info-group">
@@ -122,6 +131,14 @@ export default {
           console.log(rs);
           this.feedbacks = rs.data;
         });
+    },
+    toggleCollapse(feedbackID) {
+      this.feedbacks = this.feedbacks.map(fb => ({ ...fb, showDetails: fb.feedbackID === feedbackID ? !fb.showDetails : fb.showDetails }));
+    },
+    calculateTotalAmount(feedback) {
+      return feedback.productNames.reduce((total, _, index) => {
+        return total + (feedback.quantities[index] * feedback.prices[index]);
+      }, 0);
     },
 
     updateFeedback(feedback) {
@@ -315,6 +332,9 @@ button:hover {
   align-items: start; /* 确保所有内容在顶部对齐 */
   padding: 0px; /* 可选：为了更好的视觉效果添加内边距 */
 }
+.member-info-totle-wrapper{
+  text-align: center;
+}
 
 .member-info-group {
   display: flex;
@@ -346,5 +366,11 @@ button:hover {
   color: white;
 }
 
+.total-amount-wrapper {
+  text-align: center; /* 水平居中文本 */
+  width: 100%; /* 確保div占滿其父元件的寬度 */
+  margin-top: 10px; /* 可選，添加一些頂部邊距 */
+  margin-bottom: 10px; /* 可選，添加一些底部邊距 */
+}
 /* 可以根據需要進一步調整樣式 */
 </style>

@@ -90,22 +90,6 @@
           <ul class="list-group mt-2">
             <li class="list-group-item">
               <router-link
-                to="/MemberCenter/CommonProblems"
-                class="nav-link px-2 text-white"
-              >
-                <label>常見問題</label>
-              </router-link>
-            </li>
-            <li class="list-group-item">
-              <router-link
-                to="/MemberCenter/UserRight"
-                class="nav-link px-2 text-white"
-              >
-                <label>客戶權益聲明</label>
-              </router-link>
-            </li>
-            <li class="list-group-item">
-              <router-link
                 to="/MemberCenter/MemberFeedback"
                 class="nav-link px-2 text-white"
               >
@@ -121,6 +105,23 @@
               </router-link>
             </li>
 
+            <li class="list-group-item">
+              <router-link
+                  to="/MemberCenter/UserRight"
+                  class="nav-link px-2 text-white"
+              >
+                <label>客戶權益聲明</label>
+              </router-link>
+            </li>
+
+            <li class="list-group-item">
+              <router-link
+                  to="/MemberCenter/CommonProblems"
+                  class="nav-link px-2 text-white"
+              >
+                <label>常見問題</label>
+              </router-link>
+            </li>
             <!-- 可以继续添加更多子选项 -->
           </ul>
         </div>
