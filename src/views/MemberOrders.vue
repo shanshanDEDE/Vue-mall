@@ -74,7 +74,7 @@
                           v-if="order.orderStatus == '處理中'"
                       >
                         <button
-                            @click="deleteOrders(order)"
+                            @click="confirmResolution(order)"
                             class="submit-button"
                         >
                           取消訂單
@@ -85,6 +85,15 @@
                           無法取消
                         </button>
                       </template>
+
+                      <div v-if="showModal" class="modal">
+                        <div class="modal-content">
+                          <h4>確認操作</h4>
+                          <p>您確定要取消這筆訂單嗎？</p>
+                          <button @click="resolveFeedback" class="yes-button">確定</button>
+                          <button @click="cancelResolution" class="yes-button">離開</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -111,9 +120,24 @@ export default {
   data() {
     return {
       Orders: [],
+      showModal: false,
+      memberOrder: null,
     };
   },
   methods: {
+    confirmResolution(order) {
+      this.memberOrder = order;
+      this.showModal = true;
+    },
+    resolveFeedback() {
+
+      this.deleteOrders(this.memberOrder);
+      this.showModal = false;
+    },
+    cancelResolution() {
+      this.showModal = false;
+    },
+
     fetchOrdersData(userId) {
       // const userId = 1;
       axios
@@ -338,6 +362,35 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+/* 可以根據需要進一步調整樣式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 25%; /* 控制模態框的寬度 */
+  max-width: 600px; /* 確保模態框不會超過這個最大寬度 */
+  box-sizing: border-box;
+}
+button {
+  margin: 10px;
+}
+.yes-button:hover {
+  background-color: #46A3FF; /* Darker green on hover */
+  color: white;
 }
 </style>
 
