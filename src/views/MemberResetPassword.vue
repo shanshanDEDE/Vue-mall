@@ -25,7 +25,7 @@
 
                 <div v-if="memberPasswordData" class="form-group">
                       <label>密碼<span class="start">*</span></label>
-                      <input type="password" v-model="inputemberPasswordData.password" />
+                      <input type="password" v-model="inputemberPasswordData.password" autocomplete="current-password"/>
                   <div class="icon-label-group">
                     <template v-if="sendfirstcode">
                     <img v-if="!IsInputMemberPasswordData" src="/wrong.jpg" class="icon-background" />
@@ -36,7 +36,7 @@
 
                 <div v-if="memberPasswordData && ResetPasswordData" class="form-group">
                       <label>重設密碼<span class="start">*</span></label>
-                      <input type="password" v-model="ResetPasswordData.password" />
+                      <input type="password" v-model="ResetPasswordData.password" autocomplete="new-password"/>
                   <div class="icon-label-group">
                       <img v-if="!this.ResetPasswordData.password" src="/wrong.jpg" class="icon-background" />
                       <label v-if="!ResetPasswordData.password" class="missing-data-label">尚未填寫</label>
@@ -45,7 +45,7 @@
 
                 <div v-if="memberPasswordData && confirmPasswordData" class="form-group">
                       <label>確認密碼<span class="start">*</span></label>
-                      <input type="password" v-model="confirmPasswordData.password" />
+                      <input type="password" v-model="confirmPasswordData.password" autocomplete="new-password"/>
 
                   <div class="icon-label-group">
                     <img :src="IsConfirmPassword ? '/greentick.jpg' : '/wrong.jpg'" class="icon-background" />

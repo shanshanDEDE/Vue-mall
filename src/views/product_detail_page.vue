@@ -15,8 +15,8 @@
                   <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>
                   <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
                 </ul>
-                <h2 class="h4">Red digital smartwatch</h2>
-                <p class="text-muted">$250</p>
+                <h2 class="h4">{{ reProductName }}</h2>
+                <p class="text-muted">{{ rePrice }}</p>
                 <p class="text-sm mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut ullamcorper leo, eget euismod orci. Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus. Vestibulum ultricies aliquam convallis.</p>
                 <div class="row align-items-stretch mb-4 gx-0">
                   <div class="col-sm-7">
@@ -42,28 +42,25 @@
       <div class="row mb-5">
         <div class="col-lg-6">
           <!-- PRODUCT SLIDER-->
-          <div class="row m-sm-0">
-            <div class="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
-              <div class="swiper product-slider-thumbs">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src=" ../assets/img/product-detail-1.jpg" alt="..."></div>
-                  <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src=" ../assets/img/product-detail-2.jpg" alt="..."></div>
-                  <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src=" ../assets/img/product-detail-3.jpg" alt="..."></div>
-                  <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src=" ../assets/img/product-detail-4.jpg" alt="..."></div>
-                </div>
+          <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+              <div v-for="(id, index) in reSpecIds" :key="index" :class="{ 'carousel-item': true, 'active': index === 0 }" :data-bs-interval="index === 0 ? 10000 : 2000">
+                <img :src="`http://localhost:8080/mall/productSpec/photo/${id}`" class="d-block w-100" style="height: 300px; width: 100%; object-fit: contain " :alt="reProductName">
               </div>
             </div>
-            <div class="col-sm-10 order-1 order-sm-2">
-              <div class="swiper product-slider">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide h-auto"><a class="glightbox product-view" href=" ../assets/img/product-detail-1.jpg" data-gallery="gallery2" data-glightbox="Product item 1"><img class="img-fluid" src=" ../assets/img/product-detail-1.jpg" alt="..."></a></div>
-                  <div class="swiper-slide h-auto"><a class="glightbox product-view" href=" ../assets/img/product-detail-2.jpg" data-gallery="gallery2" data-glightbox="Product item 2"><img class="img-fluid" src=" ../assets/img/product-detail-2.jpg" alt="..."></a></div>
-                  <div class="swiper-slide h-auto"><a class="glightbox product-view" href=" ../assets/img/product-detail-3.jpg" data-gallery="gallery2" data-glightbox="Product item 3"><img class="img-fluid" src=" ../assets/img/product-detail-3.jpg" alt="..."></a></div>
-                  <div class="swiper-slide h-auto"><a class="glightbox product-view" href="../assets/img/product-detail-4.jpg" data-gallery="gallery2" data-glightbox="Product item 4"><img class="img-fluid" src="../assets/img/product-detail-4.jpg" alt="..."></a></div>
-                </div>
-              </div>
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+
           </div>
+
+
         </div>
         <!-- PRODUCT DETAILS-->
         <div class="col-lg-6">
@@ -74,25 +71,24 @@
             <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>
             <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
           </ul>
-          <h1>Red digital smartwatch</h1>
-          <p class="text-muted lead">$250</p>
-          <p class="text-sm mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut ullamcorper leo, eget euismod orci. Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus. Vestibulum ultricies aliquam convallis.</p>
+          <h1>{{ reProductName }}</h1>
+          <p class="text-muted lead">${{ rePrice }}</p>
+          <p class="text-sm mb-4">{{ reProductDescription }}</p>
           <div class="row align-items-stretch mb-4">
             <div class="col-sm-5 pr-sm-0">
-              <div class="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white"><span class="small text-uppercase text-gray mr-4 no-select">Quantity</span>
+              <div class="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white">
+                <span class="small text-uppercase text-gray mr-4 no-select">Quantity</span>
                 <div class="quantity">
-                  <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                  <input class="form-control border-0 shadow-0 p-0" type="text" value="1">
-                  <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
+                  <button class="dec-btn p-0" @click="updateQuantity(item, item.quantity - 1)"><i class="fas fa-caret-left"></i></button>
+                  <input class="form-control border-0 shadow-0 p-0" type="text" v-model="item.quantity">
+                  <button class="inc-btn p-0" @click="updateQuantity(item, item.quantity + 1)"><i class="fas fa-caret-right"></i></button>
                 </div>
               </div>
             </div>
             <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div>
           </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
           <ul class="list-unstyled small d-inline-block">
-            <li class="px-3 py-2 mb-1 bg-white"><strong class="text-uppercase">SKU:</strong><span class="ms-2 text-muted">039</span></li>
-            <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Category:</strong><a class="reset-anchor ms-2" href="#!">Demo Products</a></li>
-            <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Tags:</strong><a class="reset-anchor ms-2" href="#!">Innovation</a></li>
+
           </ul>
         </div>
       </div>
@@ -105,7 +101,7 @@
         <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
           <div class="p-4 p-lg-5 bg-white">
             <h6 class="text-uppercase">Product description </h6>
-            <p class="text-muted text-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p class="text-muted text-sm mb-0">{{reProductDescription}}</p>
           </div>
         </div>
         <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
@@ -151,9 +147,9 @@
   </section>
 </template>
 <script>
+import axios from "axios";
 
 function injectSvgSprite(path) {
-
   var ajax = new XMLHttpRequest();
   ajax.open("GET", path, true);
   ajax.send();
@@ -164,15 +160,53 @@ function injectSvgSprite(path) {
     document.body.insertBefore(div, document.body.childNodes[0]);
   }
 }
-// this is set to BootstrapTemple website as you cannot
-// inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-// while using file:// protocol
-// pls don't forget to change to your domain :)
-injectSvgSprite('icons/orion-svg-sprite.svg');
-export default {
 
+export default {
+  data() {
+    return {
+      reProductId: this.$route.query.reProductId,
+      reProductName: this.$route.query.reProductName,
+      rePrice: this.$route.query.rePrice,
+      rePhotoId: this.$route.query.rePhotoId,
+      reProductDescription: this.$route.query.reProductDescription,
+      reSpecIds: this.$route.query.reSpecIds
+    };
+  },
+  mounted() {
+
+// axios.get(`http://localhost:8080/mall/products/${this.reProductId}`).then((rs) => {
+//   console.log(rs.data)
+//   this.reProductName = rs.data.name
+//   this.rePrice = rs.data.price
+//   this.rePhotoId = rs.data.photoId
+//   this.reProductDescription = rs.data.description
+// })
+
+
+  },
+  methods: {
+    async updateQuantity(item, newQuantity) {
+      if (newQuantity < 1) {
+        alert('Quantity cannot be less than 1.');
+        return; // Prevent quantity from going below 1
+      }
+      try {
+        const response = await axios.post(`${this.API_URL}/cart/add`, null, {
+          params: {
+            specId: item.specId,  // Assuming each item has a specId
+            quantity: newQuantity  // Passing new quantity directly to the backend
+          }
+        });
+        item.quantity = response.data.quantity; // Update quantity with server response
+      } catch (error) {
+        console.error('Failed to update cart item:', error);
+        alert('Failed to update cart quantity. Please try again.');
+      }
+    }
+  }
 }
 </script>
+
 <style>
 
 </style>

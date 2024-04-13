@@ -8,7 +8,7 @@
               <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                   <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                    歡迎來到3C Mall!立即註冊會員，享受最優質的購物體驗！
+                    歡迎來到APPLE TREE!立即註冊會員，享受最優質的購物體驗！
                   </p>
 
                   <form class="mx-1 mx-md-4">
@@ -174,7 +174,7 @@ export default {
   },
   methods: {
     register() {
-      if (this.verificationCode2 != this.verificationCode) {
+      if (verificationCode2==""||this.verificationCode2 != this.verificationCode) {
         this.message = "驗證碼錯誤";
       } else if (this.password != this.password2) {
         this.message = "兩次輸入的密碼不相符";
@@ -224,7 +224,7 @@ export default {
         fd.append("verificationCode", this.verificationCode);
 
         axios
-          .post(`${this.API_URL}/user/mail/verify`, fd)
+          .get(`${this.API_URL}/user/mail/verify`, fd)
           .then((rs) => {
             this.message2 = "  驗證碼已發送至您的信箱！";
             this.showVerificationCode = true;

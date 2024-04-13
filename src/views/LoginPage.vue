@@ -52,6 +52,9 @@
             >
               <i class="fab fa-google"></i>
             </button>
+            <button type="button" class="btn btn-link btn-floating mx-1" @click.prevent="gotoLineLoginPage">
+              <i class="fab fa-line"></i>
+            </button>
           </div>
         </form>
       </div>
@@ -101,6 +104,9 @@ export default {
     },
     gotoGoogleLoginPage() {
       window.location.href = "http://localhost:8080/mall/google-login";
+    },
+    gotoLineLoginPage() {
+      window.location.href = "http://localhost:8080/mall/line-login";
     },
   },
 };
