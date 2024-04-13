@@ -5,7 +5,6 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="brand-title">APPLE TREE</h1>
-          <p class="brand-slogan">CAREFULLY CREATED COLLECTIONS<br>BROWSE OUR CATEGORIES</p>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 

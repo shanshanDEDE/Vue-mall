@@ -5,7 +5,7 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="brand-title">APPLE TREE</h1>
-          <h6 class="display-4 fw-normal">訂單意見填寫</h6>
+          <h6 class="display-4 fw-normal">填寫訂單意見</h6>
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 

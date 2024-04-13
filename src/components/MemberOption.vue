@@ -3,22 +3,10 @@
     <ul class="list-group mt-3">
       <!-- 產品意見反應 -->
       <li class="list-group-item">
-        <a
-          class="nav-link px-2 text-white d-flex justify-content-between align-items-center"
-          data-bs-toggle="collapse"
-          href="#serviceCollapse"
-          role="button"
-          aria-expanded="false"
-          aria-controls="serviceCollapse"
-        >
+
           <span><label>會員資料</label></span>
           <!-- 添加箭头图标 -->
-          <i
-            class="bi bi-chevron-down rotate-icon"
-            :class="{ rotate: serviceExpanded }"
-          ></i>
-        </a>
-        <div class="collapse" id="serviceCollapse">
+
           <ul class="list-group mt-2">
             <li class="list-group-item">
               <router-link
@@ -55,7 +43,7 @@
 
             <!-- 可以继续添加更多子选项 -->
           </ul>
-        </div>
+
       </li>
 
       <li class="list-group-item">
@@ -71,22 +59,10 @@
 
       <!-- 產品意見反應 -->
       <li class="list-group-item">
-        <a
-          class="nav-link px-2 text-white d-flex justify-content-between align-items-center"
-          data-bs-toggle="collapse"
-          href="#serviceCollapse"
-          role="button"
-          aria-expanded="false"
-          aria-controls="serviceCollapse"
-        >
-          <span><label>客戶服務</label></span>
-          <!-- 添加箭头图标 -->
-          <i
-            class="bi bi-chevron-down rotate-icon"
-            :class="{ rotate: serviceExpanded }"
-          ></i>
-        </a>
-        <div class="collapse" id="serviceCollapse">
+
+
+          <label>客戶服務</label>
+
           <ul class="list-group mt-2">
             <li class="list-group-item">
               <router-link
@@ -124,7 +100,6 @@
             </li>
             <!-- 可以继续添加更多子选项 -->
           </ul>
-        </div>
       </li>
 
       <!-- 其他選項 -->
