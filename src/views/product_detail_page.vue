@@ -183,6 +183,10 @@ export default {
       reSpecIds: this.$route.query.reSpecIds,
       isTracked: false,
       UserID: null,
+      trackDTO: {
+        userID: null, // 初始化為空，等待登錄後填充
+        specID: null, // 初始化為空，等待需要時填充
+      },
     };
   },
   mounted() {
@@ -228,8 +232,13 @@ export default {
 
 
     IsSpectRacked(userId, SpecIds) {
+      const data = {
+        userID: userId,
+        specID: SpecIds
+      };
+
       axios
-          .get(`${this.API_URL}/check/track?userId=${userId}&SpecIds=${SpecIds}`)
+          .post(`${this.API_URL}/check/track`, data)
           .then((response) => {
             console.log(response);
             this.isTracked = response.data;
@@ -239,12 +248,12 @@ export default {
           });
     },
     submitUpdate(userId, SpecIds) {
-      // if (!this.memberdata.userName) {
-      //   this.showsubmitfalseflag = true;
-      //   return
-      // }
+      const data = {
+        userID: userId,
+        specID: SpecIds
+      };
       axios
-          .post(`${this.API_URL}/create/track`, { data: { UserID: userId, SpecID: SpecIds } })
+          .post(`${this.API_URL}/create/track`, data)
           .then((response) => {
             console.log(response);
             this.isTracked = true;
@@ -256,15 +265,20 @@ export default {
     },
 
     deleteTrack(userId, SpecIds) {
-      axios
-          .delete(`${this.API_URL}/delete/track`, { data: { UserID: userId, SpecID: SpecIds } })
+      this.trackDTO.userID =userId;
+      this.trackDTO.specID =SpecIds;
+      console.log(userId, SpecIds);
+      axios.delete(`${this.API_URL}/Dedelete/track`,{
+        data: this.trackDTO,
+      })
           .then((response) => {
             console.log(response);
             this.isTracked = false;
-            alert("資料取消成功")
+            alert("資料取消成功");
           })
           .catch((error) => {
-            console.log(error);
+            console.error('Error deleting:', error);
+            alert("取消失敗：" + error.message);
           });
     },
   },

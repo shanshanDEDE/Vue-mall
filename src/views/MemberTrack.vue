@@ -56,7 +56,6 @@ export default {
   },
   methods: {
     fetchData(userId) {
-      // const userId = 2;
       axios.get(`${this.API_URL}/getshow/track?userId=${userId}`).then((rs) => {
         console.log(rs);
         this.tracks = rs.data;
