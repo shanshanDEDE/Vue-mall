@@ -164,6 +164,10 @@ export default {
       this.feedbacks = this.feedbacks.map(fb => ({ ...fb, showDetails: fb.feedbackID === feedbackID ? !fb.showDetails : fb.showDetails }));
     },
     calculateTotalAmount(feedback) {
+      if (!feedback.productNames || !Array.isArray(feedback.productNames)) {
+        console.error('Expected productNames to be an array', feedback.productNames);
+        return 0; // Return 0 or any other fallback value
+      }
       return feedback.productNames.reduce((total, _, index) => {
         return total + (feedback.quantities[index] * feedback.prices[index]);
       }, 0);
