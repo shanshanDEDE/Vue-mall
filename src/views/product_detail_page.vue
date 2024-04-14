@@ -78,15 +78,24 @@
             <div class="col-sm-5 pr-sm-0">
               <div class="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white">
                 <span class="small text-uppercase text-gray mr-4 no-select">Quantity</span>
-                <div class="quantity">
-                  <button class="dec-btn p-0" @click="updateQuantity(item, item.quantity - 1)"><i class="fas fa-caret-left"></i></button>
-                  <input class="form-control border-0 shadow-0 p-0" type="text" v-model="item.quantity">
-                  <button class="inc-btn p-0" @click="updateQuantity(item, item.quantity + 1)"><i class="fas fa-caret-right"></i></button>
-                </div>
+<!--                <div class="quantity">-->
+<!--                  <button class="dec-btn p-0" @click="updateQuantity(item, item.quantity - 1)"><i class="fas fa-caret-left"></i></button>-->
+<!--                  <input class="form-control border-0 shadow-0 p-0" type="text" v-model="item.quantity">-->
+<!--                  <button class="inc-btn p-0" @click="updateQuantity(item, item.quantity + 1)"><i class="fas fa-caret-right"></i></button>-->
+<!--                </div>-->
               </div>
             </div>
             <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div>
-          </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
+          </div>
+<!--          submitUpdate()-->
+          <template v-if="!isTracked">
+            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="submitUpdate(this.UserID,this.reSpecIds)"><i class="far fa-heart me-2"></i>Add to wish list</button>
+          </template>
+          <template v-if="isTracked">
+            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>delete to wish list</button>
+          </template>
+
+          <br>
           <ul class="list-unstyled small d-inline-block">
 
           </ul>
@@ -148,6 +157,7 @@
 </template>
 <script>
 import axios from "axios";
+import { useUserStore } from "@/stores/userStore"; //user store
 
 function injectSvgSprite(path) {
   var ajax = new XMLHttpRequest();
@@ -162,6 +172,7 @@ function injectSvgSprite(path) {
 }
 
 export default {
+
   data() {
     return {
       reProductId: this.$route.query.reProductId,
@@ -169,7 +180,9 @@ export default {
       rePrice: this.$route.query.rePrice,
       rePhotoId: this.$route.query.rePhotoId,
       reProductDescription: this.$route.query.reProductDescription,
-      reSpecIds: this.$route.query.reSpecIds
+      reSpecIds: this.$route.query.reSpecIds,
+      isTracked: false,
+      UserID: null,
     };
   },
   mounted() {
@@ -181,10 +194,19 @@ export default {
 //   this.rePhotoId = rs.data.photoId
 //   this.reProductDescription = rs.data.description
 // })
-
-
+    const spId = this.$route.query.reSpecIds;
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      this.IsSpectRacked(userStore.userId,spId);
+      this.UserID = userStore.userId;
+    } else {
+      console.log("會員未登入");
+    }
   },
   methods: {
+    toggleTrack() {
+      this.isTracked = !this.isTracked;
+    },
     async updateQuantity(item, newQuantity) {
       if (newQuantity < 1) {
         alert('Quantity cannot be less than 1.');
@@ -202,11 +224,59 @@ export default {
         console.error('Failed to update cart item:', error);
         alert('Failed to update cart quantity. Please try again.');
       }
-    }
-  }
+    },
+
+
+    IsSpectRacked(userId, SpecIds) {
+      axios
+          .get(`${this.API_URL}/check/track?userId=${userId}&SpecIds=${SpecIds}`)
+          .then((response) => {
+            console.log(response);
+            this.isTracked = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+    submitUpdate(userId, SpecIds) {
+      // if (!this.memberdata.userName) {
+      //   this.showsubmitfalseflag = true;
+      //   return
+      // }
+      axios
+          .post(`${this.API_URL}/create/track`, { data: { UserID: userId, SpecID: SpecIds } })
+          .then((response) => {
+            console.log(response);
+            this.isTracked = true;
+            alert("資料更新成功")
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+
+    deleteTrack(userId, SpecIds) {
+      axios
+          .delete(`${this.API_URL}/delete/track`, { data: { UserID: userId, SpecID: SpecIds } })
+          .then((response) => {
+            console.log(response);
+            this.isTracked = false;
+            alert("資料取消成功")
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+  },
+
 }
 </script>
 
 <style>
-
+.text-danger {
+  color: red; /* Or use any specific shade of red you prefer */
+}
+.no-underline {
+  text-decoration: none !important;
+}
 </style>

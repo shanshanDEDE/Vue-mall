@@ -197,28 +197,28 @@ export default {
 
 
   },
-  watch: {
-    currentPage(newVal, oldVal) {
-      let newPage = newVal - 1  // 頁碼變化時重新計算currentPage(解決無法讀取第0頁面的狀況)
-
-      if(this.keywordSearchActive==true){  //若已開始搜尋狀態則走搜尋調用的後端方法
-        axios.get(`http://localhost:8080/mall/products/findFilterProductByPage/${newPage}?productName=${this.searchKeyWord}`).then((rs) => {
-          this.currentPage =rs.data.number+1;
-          this.totalPage = rs.data.totalPages;
-          this.products = rs.data.content;
-        })
-        this.keywordSearchActive = true
-
-      }else{    //一般的商品頁面
-        axios.get(`http://localhost:8080/mall/products/${newPage}`).then((rs) => {
-          this.totalPage = rs.data.totalPages;
-          this.products = rs.data.content;
-        })
-      }
-    },
-
-
-  }
+  // watch: {
+  //   currentPage(newVal, oldVal) {
+  //     let newPage = newVal - 1  // 頁碼變化時重新計算currentPage(解決無法讀取第0頁面的狀況)
+  //
+  //     if(this.keywordSearchActive==true){  //若已開始搜尋狀態則走搜尋調用的後端方法
+  //       axios.get(`http://localhost:8080/mall/products/findFilterProductByPage/${newPage}?productName=${this.searchKeyWord}`).then((rs) => {
+  //         this.currentPage =rs.data.number+1;
+  //         this.totalPage = rs.data.totalPages;
+  //         this.products = rs.data.content;
+  //       })
+  //       this.keywordSearchActive = true
+  //
+  //     }else{    //一般的商品頁面
+  //       axios.get(`http://localhost:8080/mall/products/${newPage}`).then((rs) => {
+  //         this.totalPage = rs.data.totalPages;
+  //         this.products = rs.data.content;
+  //       })
+  //     }
+  //   },
+  //
+  //
+  // }
 
 };
 </script>
