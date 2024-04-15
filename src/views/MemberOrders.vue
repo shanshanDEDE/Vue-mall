@@ -9,55 +9,55 @@
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 
-            <div v-for="order in Orders" :key="order.orderId">
-            <div v-if="order.orderStatus != '已取消' ">
-              <div class="accordion mb-3" id="accordionExample">
-                <div class="accordion-item">
-                  <!-- 折叠标题 -->
-                  <h2 class="accordion-header" :id="'heading' + order.orderId">
-                    <button
-                        class="accordion-button accordion"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        :data-bs-target="'#collapse' + order.orderId"
-                        aria-expanded="true"
-                        :aria-controls="'collapse' + order.orderId"
-                    >
-                      <div style="flex-grow: 1; display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <span>訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }} 付款方式:{{ order.paymentMethod }}</span>
-                        <span class="order-status-group">訂單狀態: {{ order.orderStatus }}</span>
-                      </div>
-
-                    </button>
-                  </h2>
-                  <!-- 折叠内容 -->
-                  <div
-                      :id="'collapse' + order.orderId"
-                      class="accordion-collapse collapse"
-                      :aria-labelledby="'heading' + order.orderId"
-                      data-bs-parent="#accordionExample"
+        <div v-for="order in Orders" :key="order.orderId">
+          <div v-if="order.orderStatus != '已取消' ">
+            <div class="accordion mb-3" id="accordionExample">
+              <div class="accordion-item">
+                <!-- 折叠标题 -->
+                <h2 class="accordion-header" :id="'heading' + order.orderId">
+                  <button
+                      class="accordion-button accordion"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      :data-bs-target="'#collapse' + order.orderId"
+                      aria-expanded="true"
+                      :aria-controls="'collapse' + order.orderId"
                   >
-                    <div class="accordion-body">
-                      <div v-for="(detail, index) in order.orderDetails" :key="index">
+                    <div style="flex-grow: 1; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                      <span>訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }} 付款方式:{{ order.paymentMethod }}</span>
+                      <span class="order-status-group">訂單狀態: {{ order.orderStatus }}</span>
+                    </div>
 
-                        <div class="accordion-body">
-                          <div class="member-info-wrapper">
-                            <div class="member-info-group">
-                              <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
-                              <p>單價: {{ detail.price }}$</p>
-                            </div>
-
-                            <div class="member-info-group">
-                              <p>數量: {{ detail.quantity }}個</p>
-                              <p>總價: {{ detail.orderPrice }}$</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="horizontal-dividermany"></div> <!-- 橫向灰色線 -->
-                      </div>
+                  </button>
+                </h2>
+                <!-- 折叠内容 -->
+                <div
+                    :id="'collapse' + order.orderId"
+                    class="accordion-collapse collapse"
+                    :aria-labelledby="'heading' + order.orderId"
+                    data-bs-parent="#accordionExample"
+                >
+                  <div class="accordion-body">
+                    <div v-for="(detail, index) in order.orderDetails" :key="index">
 
                       <div class="accordion-body">
+                        <div class="member-info-wrapper">
+                          <div class="member-info-group">
+                            <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
+                            <p>單價: {{ detail.price }}$</p>
+                          </div>
+
+                          <div class="member-info-group">
+                            <p>數量: {{ detail.quantity }}個</p>
+                            <p>總價: {{ detail.orderPrice }}$</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="horizontal-dividermany"></div> <!-- 橫向灰色線 -->
+                    </div>
+
+                    <div class="accordion-body">
                       <div class="member-info-wrapper">
                         <div class="member-info-group">
                           <p>收貨地址: {{ order.deliverAddress }}</p>
@@ -68,40 +68,40 @@
                           <p>聯絡電話: {{ order.recipientPhone }}</p>
                         </div>
                       </div>
-                        </div>
+                    </div>
 
-                      <template
-                          v-if="order.orderStatus == '處理中'"
+                    <template
+                        v-if="order.orderStatus == '處理中'"
+                    >
+                      <button
+                          @click="confirmResolution(order)"
+                          class="submit-button"
                       >
-                        <button
-                            @click="confirmResolution(order)"
-                            class="submit-button"
-                        >
-                          取消訂單
-                        </button>
-                      </template>
-                      <template v-else>
-                        <button class="submit-button" disabled>
-                          無法取消
-                        </button>
-                      </template>
+                        取消訂單
+                      </button>
+                    </template>
+                    <template v-else>
+                      <button class="submit-button" disabled>
+                        無法取消
+                      </button>
+                    </template>
 
-                      <div v-if="showModal" class="modal">
-                        <div class="modal-content">
-                          <h4>確認操作</h4>
-                          <p>您確定要取消這筆訂單嗎？</p>
-                          <button @click="resolveFeedback" class="yes-button">確定</button>
-                          <button @click="cancelResolution" class="yes-button">離開</button>
-                        </div>
+                    <div v-if="showModal" class="modal">
+                      <div class="modal-content">
+                        <h4>確認操作</h4>
+                        <p>您確定要取消這筆訂單嗎？</p>
+                        <button @click="resolveFeedback" class="yes-button">確定</button>
+                        <button @click="cancelResolution" class="yes-button">離開</button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              </div>
+            </div>
+          </div>
 
+        </div>
       </div>
-    </div>
     </div>
   </main>
 </template>
@@ -285,8 +285,8 @@ export default {
   padding: 10px 15px;
   border: none !important;
   border-radius: 25px;
-  background-color:		#ACD6FF; /* For example, a green button */
-  color:	#4F4F4F;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -295,7 +295,8 @@ export default {
 }
 
 .submit-button:hover {
-  background-color: #46A3FF; /* Darker green on hover */
+  //background-color: #46A3FF; /* Darker green on hover */
+  background-color:		#4F4F4F !important; /* For example, a green button */
   color: white;
 }
 
@@ -345,12 +346,14 @@ export default {
 
 .accordion{
   border-color: black !important;
-  background-color:	#C4E1FF !important; /* For example, a green button */
-  color: black  !important;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
 }
+
 .accordion:hover{
-  background-color: black; /* Darker green on hover */
-  color: white;
+  background-color:		#4F4F4F !important; /* For example, a green button */
+
+  color: white  !important;
 }
 
 
@@ -389,7 +392,7 @@ button {
   margin: 10px;
 }
 .yes-button:hover {
-  background-color: #46A3FF; /* Darker green on hover */
+  background-color: black; /* Darker green on hover */
   color: white;
 }
 </style>

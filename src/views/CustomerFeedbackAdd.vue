@@ -246,8 +246,9 @@ export default {
   padding: 10px 15px;
   border: none !important;
   border-radius: 25px;
-  background-color:		#ACD6FF; /* For example, a green button */
-  color:	#4F4F4F;
+  background-color: black; /* Darker green on hover */
+  color: white;
+
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -256,7 +257,7 @@ export default {
 }
 
 .myButton:hover {
-  background-color: #46A3FF; /* Darker green on hover */
+  background-color:		#4F4F4F !important; /* For example, a green button */
   color: white;
 }
 
@@ -283,12 +284,14 @@ export default {
 
 .accordion{
   border-color: black !important;
-  background-color:	#C4E1FF !important; /* For example, a green button */
-  color: black  !important;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
+
 }
 .accordion:hover{
-  background-color: black; /* Darker green on hover */
-  color: white;
+  background-color:		#4F4F4F !important; /* For example, a green button */
+  color: white  !important;
+
 }
 
 

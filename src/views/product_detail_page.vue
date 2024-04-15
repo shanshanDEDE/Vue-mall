@@ -316,10 +316,11 @@ export default {
           .then((response) => {
             console.log(response);
             this.isTracked = true;
-            alert("資料更新成功")
+            alert("追蹤成功")
           })
           .catch((error) => {
             console.log(error);
+            alert("追蹤失敗")
           });
     },
     deleteTrack(userId, SpecIds) {
@@ -332,7 +333,7 @@ export default {
           .then((response) => {
             console.log(response);
             this.isTracked = false;
-            alert("資料取消成功");
+            alert("成功取消追蹤");
           })
           .catch((error) => {
             console.error('Error deleting:', error);

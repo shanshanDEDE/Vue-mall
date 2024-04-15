@@ -102,8 +102,8 @@
                         <div class="modal-content">
                           <h4>確認操作</h4>
                           <p>您確定要將這條反饋標記為「已結案」嗎？</p>
-                          <button @click="resolveFeedback">確定</button>
-                          <button @click="cancelResolution">取消</button>
+                          <button @click="resolveFeedback" class="yes-button">確定</button>
+                          <button @click="cancelResolution" class="yes-button">取消</button>
                         </div>
                       </div>
                     </div>
@@ -354,12 +354,13 @@ button:hover {
 
 .accordion{
   border-color: black !important;
-  background-color:	#C4E1FF !important; /* For example, a green button */
-  color: black  !important;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
 }
+
 .accordion:hover{
-  background-color: black; /* Darker green on hover */
-  color: white;
+  background-color:		#4F4F4F !important; /* For example, a green button */
+  color: white  !important;
 }
 
 
@@ -407,8 +408,8 @@ button:hover {
   padding: 10px 15px;
   border: none !important;
   border-radius: 25px;
-  background-color:		#ACD6FF; /* For example, a green button */
-  color:	#4F4F4F;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -417,7 +418,7 @@ button:hover {
 }
 
 .myButton:hover {
-  background-color: #46A3FF; /* Darker green on hover */
+  background-color:		#4F4F4F !important;
   color: white;
 }
 
@@ -451,5 +452,9 @@ button:hover {
 }
 button {
   margin: 10px;
+}
+.yes-button:hover {
+  background-color: black; /* Darker green on hover */
+  color: white;
 }
 </style>
