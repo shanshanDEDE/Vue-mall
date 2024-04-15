@@ -94,7 +94,7 @@
             <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="submitUpdate(this.UserID,this.reSpecIds)"><i class="far fa-heart me-2"></i>Add to wish list</button>
           </template>
           <template v-if="isTracked">
-            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>delete to wish list</button>
+            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>Delete wish list</button>
           </template>
 
           <br>
