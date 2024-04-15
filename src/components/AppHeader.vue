@@ -20,8 +20,14 @@
           </ul>
           <ul class="navbar-nav ms-auto">
             <router-link to="/cart" class="nav-link">
-            <li class="nav-item"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal">(2)</small></li></router-link>
-            <li class="nav-item"><router-link class="nav-link"  to="/MemberCenter/track"> <i class="far fa-heart me-1"></i><small class="text-gray fw-normal"> (0)</small></router-link></li>
+              <li class="nav-item"> <i class="fas fa-dolly-flatbed me-1 text-gray">
+                </i>Cart</li>
+            </router-link>
+
+            <router-link to="/MemberCenter/track" class="nav-link">
+              <li class="nav-item"> <i class="far fa-heart me-1">
+                </i>Wish</li>
+            </router-link>
             <router-link
               class="nav-link"
               to="/login"

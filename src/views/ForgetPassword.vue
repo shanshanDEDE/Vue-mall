@@ -56,7 +56,11 @@
                     </div>
                     <div class="text-danger text-center mt-3">
                       {{ message }}
+                      <div class="spinner-border spinner-border-sm " role="status" v-if="loading">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
                     </div>
+
                   </form>
                 </div>
               </div>
@@ -76,6 +80,7 @@ export default {
       phone: "0987654321",
       message: "",
       disableButton: false,
+      loading:false,
     };
   },
 
@@ -84,7 +89,8 @@ export default {
       const fd = new FormData();
       fd.append("email", this.email);
       fd.append("phone", this.phone);
-      this.message = "處理中，請稍等...";
+      this.message = "處理中，請稍等 ";
+      this.loading = true;
       this.disableButton = true;
       axios
         .post(`${this.API_URL}/user/mail/pwd`, fd)
@@ -95,6 +101,7 @@ export default {
         .catch(() => {
           this.message = "信箱或電話錯誤！";
           this.disableButton = false;
+          this.loading = false;
         });
     },
   },

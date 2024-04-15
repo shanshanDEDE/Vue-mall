@@ -61,11 +61,6 @@
               </router-link>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="m-3">價格:{{ p.price }}</div>
-                <div class="m-3">
-                  <button type="button" class="btn btn-sm btn-outline-secondary m-2">
-                    <i class="fa-solid fa-cart-plus"></i>
-                  </button>
-                </div>
               </div>
             </div>
           </div>
