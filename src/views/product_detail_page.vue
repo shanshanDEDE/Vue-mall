@@ -26,18 +26,19 @@
         </div>
         <!-- PRODUCT DETAILS-->
         <div class="col-lg-6">
-          <ul class="list-inline mb-2 text-sm">
-            <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
-            <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>
-            <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>
-            <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>
-            <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
-          </ul>
+
           <h1>{{ reProductName }}</h1>
           <p class="text-muted lead">${{ rePrice }}</p>
           <p class="text-sm mb-4">{{ reProductDescription }}</p>
           <div class="row align-items-stretch mb-4">
+            <select
+                v-model="sortBy"
+                class="form-select"
+            ><option value="預設">請選擇商品顏色</option>
+              <option v-for="(spec, index) in productSpecs" :key="index" >
+                {{ spec.color }}</option>
 
+            </select>
 <!--            <div class="col-sm-5 pr-sm-0">-->
               <div class="quantity-container">
                 <span class="quantity-label">Quantity</span>
@@ -74,8 +75,8 @@
                 <div class="d-flex mb-3">
                   <div class="flex-shrink-0"><img class="rounded-circle" src="../assets/img/customer-1.png" alt="" width="50"/></div>
                   <div class="ms-3 flex-shrink-1">
-                    <h6 class="mb-0 text-uppercase">Jason Doe</h6>
-                    <p class="small text-muted mb-0 text-uppercase">20 May 2020</p>
+                    <h6 class="mb-0 text-uppercase">Peggy Lin</h6>
+                    <p class="small text-muted mb-0 text-uppercase">11 April 2024</p>
                     <ul class="list-inline mb-1 text-xs">
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
@@ -83,14 +84,14 @@
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
                       <li class="list-inline-item m-0"><i class="fas fa-star-half-alt text-warning"></i></li>
                     </ul>
-                    <p class="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p class="text-sm mb-0 text-muted">金屬質感佳，符合期待!</p>
                   </div>
                 </div>
                 <div class="d-flex">
                   <div class="flex-shrink-0"><img class="rounded-circle" src="../assets/img/customer-2.png" alt="" width="50"/></div>
                   <div class="ms-3 flex-shrink-1">
-                    <h6 class="mb-0 text-uppercase">Jane Doe</h6>
-                    <p class="small text-muted mb-0 text-uppercase">20 May 2020</p>
+                    <h6 class="mb-0 text-uppercase">Ron Wu</h6>
+                    <p class="small text-muted mb-0 text-uppercase">10 April 2024</p>
                     <ul class="list-inline mb-1 text-xs">
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
@@ -98,7 +99,7 @@
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
                       <li class="list-inline-item m-0"><i class="fas fa-star-half-alt text-warning"></i></li>
                     </ul>
-                    <p class="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p class="text-sm mb-0 text-muted">送貨速度快，包裝仔細，有機會再回購其他產品。</p>
                   </div>
                 </div>
               </div>
@@ -113,17 +114,7 @@
 import axios from "axios";
 import {useUserStore} from "@/stores/userStore.js";
 
-function injectSvgSprite(path) {
-  var ajax = new XMLHttpRequest();
-  ajax.open("GET", path, true);
-  ajax.send();
-  ajax.onload = function(e) {
-    var div = document.createElement("div");
-    div.className = 'd-none';
-    div.innerHTML = ajax.responseText;
-    document.body.insertBefore(div, document.body.childNodes[0]);
-  }
-}
+
 
 export default {
   data() {
@@ -138,12 +129,14 @@ export default {
         quantity: 1,  // Default starting quantity
         specId: ''
       },
+      productSpecs:[],
       reProductId: this.$route.query.reProductId,
       reProductName: this.$route.query.reProductName,
       rePrice: this.$route.query.rePrice,
       rePhotoId: this.$route.query.rePhotoId,
       reProductDescription: this.$route.query.reProductDescription,
-      reSpecIds: this.$route.query.reSpecIds
+      reSpecIds: this.$route.query.reSpecIds,
+      sortBy: "預設",
     };
   },
   computed: {
@@ -197,7 +190,10 @@ export default {
           console.error('Response status:', error.response.status);
         }
       }
-    }
+    },
+
+
+
   },
   mounted() {
     console.log(this.$route.query.reSpecIds); // Check what is received
@@ -207,6 +203,23 @@ export default {
     } else {
       this.product.specId = this.$route.query.reSpecIds[0];
     }
+    // 使用 map 方法遍歷 reSpecIds 陣列，對每個 specId 進行請求
+    const requests =this.$route.query.reSpecIds.map(specId => {
+      return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
+    });
+// 使用 Promise.all 方法等待所有請求完成
+    Promise.all(requests)
+        .then(responses => {
+          // 在這裡處理所有請求的回應
+          responses.forEach((response, index) => {
+            console.log(`Response for specId ${this.$route.query.reSpecIds[index]}:`, response.data);
+            this.productSpecs[index] = response.data
+          });
+        })
+        .catch(error => {
+          // 處理錯誤
+          console.error('Error:', error);
+        });
   },
 }
 </script>
