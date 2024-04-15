@@ -9,31 +9,41 @@
         </div>
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 
-            <div class="track-container">
-              <button
-                v-for="track in tracks"
-                :key="track.id"
-                class="track-item"
-              >
-                <button class="untrack-button" @click="untrackProduct(track)">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-                  <!-- 假设使用 FontAwesome 图标 -->
-                </button>
+        <div class="track-container">
+          <div
+              v-for="track in tracks"
+              :key="track.trackID"
+              class="track-item"
+          >
+            <button class="untrack-button" @click.stop="untrackProduct(track)">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
 
-                <div class="track-image">
-                  <img
-                    :src="'data:image/jpeg;base64,' + track.photoFile"
-                    alt="Product Image"
-                    class="product-img"
-                  />
-                </div>
-                <div class="track-info">
-                  <h5 class="track-name">{{ track.productName }}</h5>
-                  <p class="track-price">${{ track.productPrice }}</p>
-                </div>
-              </button>
-            </div>
-    </div>
+            <router-link
+                :to="{
+                  path: '/product/detail',
+                  query: {
+                    reProductId: track.productId,
+                    reProductName: track.productName,
+                    rePrice: track.productPrice,
+                    rePhotoId: track.photoFile,  // 如果 photoFile 是 base64 編碼，可能需要其他處理方式
+                    reProductDescription: track.productDescription,
+                    reSpecIds: track.specIds
+                  }
+                }"
+                tag="div"
+            >
+              <div class="track-image">
+                <img :src="'data:image/jpeg;base64,' + track.photoFile" alt="Product Image" class="product-img" />
+              </div>
+              <div class="track-info">
+                <h5 class="track-name">{{ track.productName }}</h5>
+                <p class="track-price">${{ track.productPrice }}</p>
+              </div>
+            </router-link>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </template>
