@@ -1,4 +1,5 @@
 <template>
+
   <main>
 <category></category>
     <hr />
@@ -75,7 +76,6 @@
 
   </main>
 </template>
-
 <script>
 import axios from "axios";
 import "@/assets/shop.css";
@@ -97,17 +97,9 @@ export default {
         price: '',
         photoId: '',
         productDescription: '',
-        specIds: [],
+        specIds:[],
       },
-      displayedProducts:{
-        productId: '',
-        productName: '',
-        price: '',
-        photoId: '',
-        productDescription: '',
-        specIds: [],
-      },
-      searchPage: 0,
+      searchPage:0,
 
       searchKeyWord: '',
       keywordSearchActive: false,
@@ -139,12 +131,11 @@ export default {
         if (i > 1 && i < tp) {
           arr.push(i);
         }
-      }
+      };
       if (cp < tp - 3) {
-        arr.push("..");
+        arr.push("..")
       }
       arr.push(tp);
-
       return arr;
     },
     showSearchPageBar() {
@@ -158,8 +149,7 @@ export default {
         if (i > 1 && i < tp) {
           arr.push(i)
         }
-      }
-      ;
+      };
       if (sp < tp - 3) {
         arr.push("..")
       }
@@ -187,13 +177,13 @@ export default {
     //關鍵字查詢
     goKeywordSearch() {
       axios.get(`http://localhost:8080/mall/products/findFilterProductByPage/0?productName=${this.searchKeyWord}`).then((rs) => {
-        this.currentPage = rs.data.number + 1;
+        this.currentPage =rs.data.number+1;
         this.totalPage = rs.data.totalPages;
         this.products = rs.data.content;
         this.keywordSearchActive = true //建立搜尋狀態
       })
-    },
 
+    },
     redirectToSpec(product) {
       this.$router.push({
         path: '/product/detail',
@@ -239,18 +229,17 @@ export default {
           })
           this.keywordSearchActive = true
 
-        } else {    //一般的商品頁面
-          axios.get(`http://localhost:8080/mall/products/${newPage}`).then((rs) => {
-            this.totalPage = rs.data.totalPages;
-            this.products = rs.data.content;
-          })
-        }
-      },
-    }
+      }else{    //一般的商品頁面
+        axios.get(`http://localhost:8080/mall/products/${newPage}`).then((rs) => {
+          this.totalPage = rs.data.totalPages;
+          this.products = rs.data.content;
+        })
+      }
+    },
 
-}
+
+  }
+
+};
 </script>
-<style>
-
-
-</style>
+<style></style>

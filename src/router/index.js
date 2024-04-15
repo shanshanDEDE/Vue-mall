@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from "@/stores/userStore";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,29 +10,76 @@ const router = createRouter({
       component: () => import('@/views/new_home.vue'),
     },
     {
-      path: '/member_center',
-      component: () => import('@/views/member_center.vue'),
-
+      path: '/MemberCenter',
+      component: () => import('@/views/MemberCenter.vue'),
+      meta: { requiresAuth: true }
      },
     {
-      path: '/member_center/track',
-      component: () => import('@/views/member_track.vue'),
+      path: '/MemberCenter/track',
+      component: () => import('@/views/MemberTrack.vue'),
+      meta: { requiresAuth: true }
     },
     {
-      path: '/member_center/customer_feedback',
-      component: () => import('@/views/member_feedback.vue'),
+      path: '/MemberCenter/MemberFeedback',
+      component: () => import('@/views/MemberFeedback.vue'),
+      // meta: { requiresAuth: true }
     },
     {
-      path: '/member_center/member_data',
-      component: () => import('@/views/member_data.vue'),
+      path: '/MemberCenter/MemberData',
+      component: () => import('@/views/MemberData.vue'),
+      // meta: { requiresAuth: true }
     },
     {
-      path: '/member_center/member_data_update',
-      component: () => import('@/views/member_data_update.vue'),
+      path: '/MemberCenter/MemberDataUpdate',
+      component: () => import('@/views/MemberDataUpdate.vue'),
+      // meta: { requiresAuth: true }
     },
     {
-      path: '/member_center/member_reset_password',
-      component: () => import('@/views/member_reset_password.vue'),
+      path: '/MemberCenter/MemberResetPassword',
+      component: () => import('@/views/MemberResetPassword.vue'),
+      // meta: { requiresAuth: true }
+    },
+    {
+      path: '/MemberCenter/CustomerFeedbackAdd',
+      component: () => import('@/views/CustomerFeedbackAdd.vue'),
+      // meta: { requiresAuth: true }
+    },
+
+
+    {
+      path: '/MemberCenter/MemberOrders',
+      component: () => import('@/views/MemberOrders.vue'),
+      // meta: { requiresAuth: true }
+    },
+
+    {
+      path: '/MemberCenter/CustomerRight',
+      component: () => import('@/views/CustomerRights.vue'),
+    },
+
+    {
+      path: '/MemberCenter/UserRight',
+      component: () => import('@/views/UserRights.vue'),
+    },
+
+    {
+      path: '/MemberCenter/CommonProblems',
+      component: () => import('@/views/CommonProblem.vue'),
+    },
+
+
+    {
+      path: '/MemberCenter/CustomerFeedbackUpdate',
+      name: 'CustomerFeedbackUpdate',
+      component: () => import('@/views/CustomerFeedbackUpdate.vue'),
+      props: true // 允许通过 props 接收参数
+    },
+
+    {
+      path: '/MemberCenter/OrderFeedbackUpdate',
+      name: 'OrderFeedbackUpdate',
+      component: () => import('@/views/OrderFeedbackUpdate.vue'),
+      props: true // 允许通过 props 接收参数
     },
 
     {
@@ -96,5 +145,18 @@ const router = createRouter({
 
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  if (to.matched.some(record => record.meta.requiresAuth) && !userStore.isLoggedIn) {
+    // 這個路由需要認證，檢查是否已登入
+    // 如果沒有登入，則重定向到登入頁面
+    alert("請先登入");
+    next({ path: '/login' });
+  } else {
+    // 確保一定要調用 next()
+    next();
+  }
+});
 
 export default router

@@ -2,12 +2,27 @@
   <main class="container col-xl-10 col-xxl-8 px-4 py-5">
     <div class="row align-items-center g-lg-5 py-5">
       <div class="col-lg-7 text-center text-lg-start">
-        <img
-          src="/Apple.webp"
-          alt="NonoShop"
-          @click="check"
-          class="img-fluid mb-3"
-        />
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="@/assets/img/iphone.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="@/assets/img/macbook2.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="@/assets/img/ipad.jpg" class="d-block w-100" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
       </div>
       <div class="col-md-10 mx-auto col-lg-5">
         <form class="p-4 p-md-5 border rounded-3 bg-light">
@@ -82,10 +97,16 @@ export default {
       axios
         .post(`${this.API_URL}/user/login`, fd)
         .then((rs) => {
-          const userStore = useUserStore();
-          userStore.loginSuccess(rs.data);
-          sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
-          this.$router.push("/");
+          console.log(rs.data.authentication);
+          if(rs.data.authentication==3){
+            alert("此帳號已遭停權！")
+          }else{
+            const userStore = useUserStore();
+            userStore.loginSuccess(rs.data);
+            sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
+            this.$router.push("/");
+          }
+
         })
         .catch(() => {
           this.message = "登入失敗";

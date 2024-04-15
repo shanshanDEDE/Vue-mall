@@ -47,6 +47,9 @@
                           驗證
                         </button>
                         <span :style="{ color: 'red' }">{{ message2 }}</span>
+                          <div class="spinner-border spinner-border-sm " role="status" v-if="loading">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
                       </div>
                     </div>
 
@@ -170,13 +173,14 @@ export default {
       message: "",
       message2: "",
       disableButton: false,
+      loading:false,
     };
   },
   methods: {
     register() {
-      if (verificationCode2==""||this.verificationCode2 != this.verificationCode) {
+      if (this.verificationCode2===""||this.verificationCode2 !== this.verificationCode) {
         this.message = "驗證碼錯誤";
-      } else if (this.password != this.password2) {
+      } else if (this.password !== this.password2) {
         this.message = "兩次輸入的密碼不相符";
       } else if (!this.check) {
         this.message = "您尚未同意服務條款";
@@ -193,7 +197,7 @@ export default {
             this.$router.push("/");
           })
           .catch(() => {
-            this.message = "註冊失敗";
+            this.message = "註冊失敗，已存在的信箱！";
           });
       }
     },
@@ -216,17 +220,19 @@ export default {
         this.message2 = "  錯誤的信箱！";
         return;
       } else {
+        this.loading = true;
         this.disableButton = true; // 禁用按鈕
-        this.message2 = "  驗證碼發送中...";
+        this.message2 = "  驗證碼發送中 ";
         this.verificationCode = this.generateRandomCode();
         const fd = new FormData();
         fd.append("email", this.email);
         fd.append("verificationCode", this.verificationCode);
 
         axios
-          .get(`${this.API_URL}/user/mail/verify`, fd)
+          .post(`${this.API_URL}/user/mail/verify`, fd)
           .then((rs) => {
             this.message2 = "  驗證碼已發送至您的信箱！";
+            this.loading = false;
             this.showVerificationCode = true;
           })
           .catch(() => {
