@@ -49,14 +49,8 @@
               </div>
 <!--            </div>-->
 
-          <template v-if="!isTracked">
-            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="submitUpdate(this.UserID,this.reSpecIds)"><i class="far fa-heart me-2"></i>Add to wish list</button>
-          </template>
-          <template v-if="isTracked">
-            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>delete to wish list</button>
-          </template>
 
-          <br>
+          </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
           <ul class="list-unstyled small d-inline-block">
 
           </ul>
@@ -143,47 +137,7 @@ export default {
       reProductDescription: this.$route.query.reProductDescription,
       reSpecIds: this.$route.query.reSpecIds,
       sortBy: "預設",
-      isTracked: false,
-      UserID: null,
-      trackDTO: {
-        userID: null, // 初始化為空，等待登錄後填充
-        specID: null, // 初始化為空，等待需要時填充
-      },
     };
-  },
-  mounted() {
-    console.log(this.$route.query.reSpecIds); // Check what is received
-    // If reSpecIds is received as a string, you might need to parse it:
-    if (typeof this.$route.query.reSpecIds === 'string') {
-      this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
-    } else {
-      this.product.specId = this.$route.query.reSpecIds[0];
-    }
-    const spId = this.$route.query.reSpecIds;
-    const userStore = useUserStore();
-    if (userStore.isLoggedIn) {
-      this.IsSpectRacked(userStore.userId,spId);
-      this.UserID = userStore.userId;
-    } else {
-      console.log("會員未登入");
-    }
-    // 使用 map 方法遍歷 reSpecIds 陣列，對每個 specId 進行請求
-    const requests =this.$route.query.reSpecIds.map(specId => {
-      return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
-    });
-// 使用 Promise.all 方法等待所有請求完成
-    Promise.all(requests)
-        .then(responses => {
-          // 在這裡處理所有請求的回應
-          responses.forEach((response, index) => {
-            console.log(`Response for specId ${this.$route.query.reSpecIds[index]}:`, response.data);
-            this.productSpecs[index] = response.data
-          });
-        })
-        .catch(error => {
-          // 處理錯誤
-          console.error('Error:', error);
-        });
   },
   computed: {
     // This computed property ensures that specId is reactive and updates correctly
@@ -227,7 +181,6 @@ export default {
       try {
         const response = await axios.post('http://localhost:8080/mall/cart/add', payload);
         console.log('Added to cart successfully:', response.data);
-        alert('Added to cart successfully!')
       } catch (error) {
         console.error('Failed to add to cart:', error);
         if (error.response) {
@@ -238,86 +191,40 @@ export default {
         }
       }
     },
-    toggleTrack() {
-      this.isTracked = !this.isTracked;
-    },
-    async updateQuantity(item, newQuantity) {
-      if (newQuantity < 1) {
-        alert('Quantity cannot be less than 1.');
-        return; // Prevent quantity from going below 1
-      }
-      try {
-        const response = await axios.post(`${this.API_URL}/cart/add`, null, {
-          params: {
-            specId: item.specId,  // Assuming each item has a specId
-            quantity: newQuantity  // Passing new quantity directly to the backend
-          }
+
+
+
+  },
+  mounted() {
+    console.log(this.$route.query.reSpecIds); // Check what is received
+    // If reSpecIds is received as a string, you might need to parse it:
+    if (typeof this.$route.query.reSpecIds === 'string') {
+      this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
+    } else {
+      this.product.specId = this.$route.query.reSpecIds[0];
+    }
+    // 使用 map 方法遍歷 reSpecIds 陣列，對每個 specId 進行請求
+    const requests =this.$route.query.reSpecIds.map(specId => {
+      return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
+    });
+// 使用 Promise.all 方法等待所有請求完成
+    Promise.all(requests)
+        .then(responses => {
+          // 在這裡處理所有請求的回應
+          responses.forEach((response, index) => {
+            console.log(`Response for specId ${this.$route.query.reSpecIds[index]}:`, response.data);
+            this.productSpecs[index] = response.data
+          });
+        })
+        .catch(error => {
+          // 處理錯誤
+          console.error('Error:', error);
         });
-        item.quantity = response.data.quantity; // Update quantity with server response
-      } catch (error) {
-        console.error('Failed to update cart item:', error);
-        alert('Failed to update cart quantity. Please try again.');
-      }
-    },
-    IsSpectRacked(userId, SpecIds) {
-      const data = {
-        userID: userId,
-        specID: SpecIds
-      };
-      axios
-          .post(`${this.API_URL}/check/track`, data)
-          .then((response) => {
-            console.log(response);
-            this.isTracked = response.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    },
-    submitUpdate(userId, SpecIds) {
-      const data = {
-        userID: userId,
-        specID: SpecIds
-      };
-      axios
-          .post(`${this.API_URL}/create/track`, data)
-          .then((response) => {
-            console.log(response);
-            this.isTracked = true;
-            alert("資料更新成功")
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    },
-    deleteTrack(userId, SpecIds) {
-      this.trackDTO.userID =userId;
-      this.trackDTO.specID =SpecIds;
-      console.log(userId, SpecIds);
-      axios.delete(`${this.API_URL}/Dedelete/track`,{
-        data: this.trackDTO,
-      })
-          .then((response) => {
-            console.log(response);
-            this.isTracked = false;
-            alert("資料取消成功");
-          })
-          .catch((error) => {
-            console.error('Error deleting:', error);
-            alert("取消失敗：" + error.message);
-          });
-    },
   },
 }
 </script>
 
 <style>
-.text-danger {
-  color: red; /* Or use any specific shade of red you prefer */
-}
-.no-underline {
-  text-decoration: none !important;
-}
 .quantity-container {
   display: flex;
   align-items: center;
