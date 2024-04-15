@@ -46,8 +46,9 @@
                 <button class="quantity-btn inc-btn" @click="increment">+</button>
                 <button class="add-to-cart-btn" @click.prevent="addToCart">Add to Cart</button>
               </div>
-            </div>
-            <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div>
+<!--            </div>-->
+
+
           </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
           <ul class="list-unstyled small d-inline-block">
 
@@ -105,7 +106,7 @@
           </div>
         </div>
       </div>
-
+    </div>
   </section>
 </template>
 <script>
@@ -125,7 +126,6 @@ function injectSvgSprite(path) {
 }
 
 export default {
-
   data() {
     return {
       item: {
