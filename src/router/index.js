@@ -55,12 +55,42 @@ const router = createRouter({
         },
     {
       path: "/cart",
-      component: () => import("@/views/cart_page.vue"),
+      component: () => import("@/views/Cart.vue"),
     },
-    {
-      path: "/uploadPhotos",
-      component: () => import("@/views/upload_page.vue"),
-    },
+      {
+          path: "/checkout",
+          component: () => import("@/views/payment/Checkout.vue"),
+      },
+
+      {
+          path: '/paypal',
+          name: 'paypal',
+          component: () => import("@/views/payment/Paypal.vue") // Assumes that Paypal.vue is in the `views` folder
+      },
+      {
+          path: '/successPage',
+          component: () => import("@/views/payment/success.vue")
+      },
+      {
+          path: "/login",
+          component: () => import("@/views/LoginPage.vue"),
+      },
+      {
+          path: "/register",
+          component: () => import("@/views/RegisterPage.vue"),
+      },
+      {
+          path: "/forget",
+          component: () => import("@/views/ForgetPassword.vue"),
+      },
+      {
+          path: "/OLoginSuccess",
+          component: () => import("@/views/Oath2LoginSuccess.vue"),
+      },
+      {
+          path: "/uploadPhotos",
+          component: () => import("@/views/upload_page.vue"),
+      },
 
 
 

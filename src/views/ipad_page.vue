@@ -39,6 +39,7 @@
               <li class="page-item" v-for="p of showPageBar" :key="p" @click="goToPage(p)" :class="{ active: p === currentPage }">
                 <button class="page-link">{{ p }}</button>
               </li>
+
               <li class="page-item">
                 <button class="page-link" @click="nextPage">
                   <span>&raquo;</span>
@@ -47,6 +48,7 @@
             </ul>
           </div>
         </div>
+        <p class="text-center">iPad</p>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
           <div class="col" v-for="p in products" :key="p.productId">
             <div class="card shadow-sm">
@@ -124,15 +126,15 @@ export default {
 
       arr.push(1);
       if (cp > 4) {
-        arr.push("..");
+        arr.push("..")
       }
       for (let i = cp - 2; i <= cp + 2; i++) {
         if (i > 1 && i < tp) {
-          arr.push(i);
+          arr.push(i)
         }
-      }
+      };
       if (cp < tp - 3) {
-        arr.push("..");
+        arr.push("..")
       }
       arr.push(tp);
 
@@ -190,7 +192,7 @@ export default {
   },
   watch: {
     currentPage(newVal, oldVal) {
-      let newPage = newVal - 1  // 頁碼變化時重新計算currentPage(解決無法讀取第0頁面的狀況)
+      let newPage = newVal - 1  //頁碼變化時重新計算currentPage(解決無法讀取第0頁面的狀況)
 
       if (this.keywordSearchActive == true) {  //若已開始搜尋狀態則走搜尋調用的後端方法
         axios.get(`http://localhost:8080/mall/products/searchProduct/${newPage}?categoryId=C&productName=${this.searchKeyWord}`).then((rs) => {
