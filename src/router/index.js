@@ -102,14 +102,12 @@ const router = createRouter({
           path: "/product/detail",
           component: () => import("@/views/product_detail_page.vue"),
         },
-    {
-      path: "/findUs",
-      component: () => import("@/views/FindUs.vue"),
-    },
-    {
-      path: "/cart",
-      component: () => import("@/views/Cart.vue"),
-    },
+        {
+          path: "/cart",
+          component: () => import("@/views/Cart.vue"),
+            meta: { requiresAuth: true }
+
+        },
       {
           path: "/checkout",
           component: () => import("@/views/payment/Checkout.vue"),
@@ -118,7 +116,7 @@ const router = createRouter({
       {
           path: '/paypal',
           name: 'paypal',
-          component: () => import("@/views/payment/Paypal.vue") // Assumes that Paypal.vue is in the `views` folder
+          component: () => import("@/views/payment/Paypal.vue")
       },
       {
           path: '/successPage',
@@ -140,22 +138,13 @@ const router = createRouter({
           path: "/OLoginSuccess",
           component: () => import("@/views/Oath2LoginSuccess.vue"),
       },
-      {
-          path: "/uploadPhotos",
-          component: () => import("@/views/upload_page.vue"),
-      },
-
-
-
-
   ]
 })
 
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   if (to.matched.some(record => record.meta.requiresAuth) && !userStore.isLoggedIn) {
-    // 這個路由需要認證，檢查是否已登入
-    // 如果沒有登入，則重定向到登入頁面
+    sessionStorage.setItem('redirectRoute', to.fullPath); // 保存尝试访问的完整路径
     alert("請先登入");
     next({ path: '/login' });
   } else {

@@ -26,17 +26,15 @@
         </div>
         <!-- PRODUCT DETAILS-->
         <div class="col-lg-6">
-
           <h1>{{ reProductName }}</h1>
           <p class="text-muted lead">${{ rePrice }}</p>
           <p class="text-sm mb-4">{{ reProductDescription }}</p>
           <div class="row align-items-stretch mb-4">
-            <select
-                v-model="sortBy"
-                class="form-select"
-            ><option value="預設">請選擇商品顏色</option>
-              <option v-for="(spec, index) in productSpecs" :key="index" >
-                {{ spec.color }}</option>
+            <select v-model="selectedColor" class="form-select">
+              <option disabled value="">請選擇商品顏色</option>
+              <option v-for="spec in productSpecs" :key="spec.id" :value="spec.color">
+                {{ spec.color }}
+              </option>
             </select>
 <!--            <div class="col-sm-5 pr-sm-0">-->
               <div class="quantity-container">
@@ -52,7 +50,7 @@
             <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="submitUpdate(this.UserID,this.reSpecIds)"><i class="far fa-heart me-2"></i>Add to wish list</button>
           </template>
           <template v-if="isTracked">
-            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>delete to wish list</button>
+            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>Delete this wish</button>
           </template>
 
           <br>
@@ -78,7 +76,7 @@
             <div class="row">
               <div class="col-lg-8">
                 <div class="d-flex mb-3">
-<!--                  <div class="flex-shrink-0"><img class="rounded-circle" src="../assets/img/customer-1.png" alt="" width="50"/></div>-->
+                  <div class="flex-shrink-0"><img class="rounded-circle" src="../assets/img/customer-1.png" alt="" width="50"/></div>
                   <div class="ms-3 flex-shrink-1">
                     <h6 class="mb-0 text-uppercase">Peggy Lin</h6>
                     <p class="small text-muted mb-0 text-uppercase">11 April 2024</p>
@@ -93,7 +91,7 @@
                   </div>
                 </div>
                 <div class="d-flex">
-<!--                  <div class="flex-shrink-0"><img class="rounded-circle" src="../assets/img/customer-2.png" alt="" width="50"/></div>-->
+                  <div class="flex-shrink-0"><img class="rounded-circle" src="../assets/img/customer-2.png" alt="" width="50"/></div>
                   <div class="ms-3 flex-shrink-1">
                     <h6 class="mb-0 text-uppercase">Ron Wu</h6>
                     <p class="small text-muted mb-0 text-uppercase">10 April 2024</p>
@@ -119,21 +117,33 @@
 import axios from "axios";
 import {useUserStore} from "@/stores/userStore.js";
 
-
+function injectSvgSprite(path) {
+  var ajax = new XMLHttpRequest();
+  ajax.open("GET", path, true);
+  ajax.send();
+  ajax.onload = function(e) {
+    var div = document.createElement("div");
+    div.className = 'd-none';
+    div.innerHTML = ajax.responseText;
+    document.body.insertBefore(div, document.body.childNodes[0]);
+  }
+}
 
 export default {
   data() {
     return {
+      colorToSpecIdMap: {},
       item: {
         quantity: 1,
         specId: null,
       },
-
       product: {
         id: null,
         quantity: 1,  // Default starting quantity
         specId: ''
       },
+      selectedColor: '',
+      productSpecs:[],
       reProductId: this.$route.query.reProductId,
       reProductName: this.$route.query.reProductName,
       rePrice: this.$route.query.rePrice,
@@ -146,58 +156,20 @@ export default {
         userID: null, // 初始化為空，等待登錄後填充
         specID: null, // 初始化為空，等待需要時填充
       },
-      productSpecs: [],
-      sortBy: '預設',
     };
   },
-  mounted() {
-    console.log(this.$route.query.reSpecIds); // Check what is received
-    // If reSpecIds is received as a string, you might need to parse it:
-    if (typeof this.$route.query.reSpecIds === 'string') {
-      this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
-    } else {
-      this.product.specId = this.$route.query.reSpecIds[0];
-    }
-    const spId = this.$route.query.reSpecIds;
-    const userStore = useUserStore();
-    if (userStore.isLoggedIn) {
-      this.IsSpectRacked(userStore.userId,spId);
-      this.UserID = userStore.userId;
-    } else {
-      console.log("會員未登入");
-    }
-    // 使用 map 方法遍歷 reSpecIds 陣列，對每個 specId 進行請求
-    const requests =this.$route.query.reSpecIds.map(specId => {
-      return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
-    });
-// 使用 Promise.all 方法等待所有請求完成
-    Promise.all(requests)
-        .then(responses => {
-          // 在這裡處理所有請求的回應
-          responses.forEach((response, index) => {
-            console.log(`Response for specId ${this.$route.query.reSpecIds[index]}:`, response.data);
-            this.productSpecs[index] = response.data
-          });
-        })
-        .catch(error => {
-          // 處理錯誤
-          console.error('Error:', error);
-        });
-  },
   computed: {
-    // This computed property ensures that specId is reactive and updates correctly
     computedSpecId() {
       return this.reSpecIds && this.reSpecIds.length > 0 ? this.reSpecIds[0] : null;
     }
   },
   watch: {
-    // Whenever reSpecIds changes, update the product.specId reactively
     computedSpecId(newSpecId) {
       this.product.specId = newSpecId;
     }
   },
-
   methods: {
+
     increment() {
       this.product.quantity++;
     },
@@ -207,6 +179,13 @@ export default {
       }
     },
     async addToCart() {
+      console.log('Selected Color:', this.selectedColor);
+      console.log('Mapped specId:', this.colorToSpecIdMap[this.selectedColor]);
+
+      if (!this.selectedColor) {
+        alert('請選擇商品顏色！');
+        return;
+      }
       const store = useUserStore();
       if (!store.isLoggedIn) {
         alert('Please log in to add items to your cart.');
@@ -216,13 +195,10 @@ export default {
 
       const payload = {
         userId: store.userId,
-        specId: this.product.specId,
-        quantity: this.product.quantity
-
+        specId: this.colorToSpecIdMap[this.selectedColor],
+        quantity: this.product.quantity,
       };
-
       console.log('Sending to backend:', payload);
-
       try {
         const response = await axios.post('http://localhost:8080/mall/cart/add', payload);
         console.log('Added to cart successfully:', response.data);
@@ -230,8 +206,6 @@ export default {
       } catch (error) {
         console.error('Failed to add to cart:', error);
         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
           console.error('Response data:', error.response.data);
           console.error('Response status:', error.response.status);
         }
@@ -283,7 +257,6 @@ export default {
           .then((response) => {
             console.log(response);
             this.isTracked = true;
-            alert("資料更新成功")
           })
           .catch((error) => {
             console.log(error);
@@ -299,7 +272,6 @@ export default {
           .then((response) => {
             console.log(response);
             this.isTracked = false;
-            alert("資料取消成功");
           })
           .catch((error) => {
             console.error('Error deleting:', error);
@@ -307,6 +279,53 @@ export default {
           });
     },
   },
+  mounted() {
+    console.log("Query Parameters:", this.$route.query);
+    const reSpecIds = this.$route.query.reSpecIds;
+
+    if (!reSpecIds) {
+      console.error("No specIds found in the route query.");
+      return;
+    }
+
+    const spId = Array.isArray(reSpecIds) ? reSpecIds : JSON.parse(reSpecIds);
+    console.log("Parsed specIds:", spId);
+
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      this.IsSpectRacked(userStore.userId, spId[0]);
+      this.UserID = userStore.userId;
+    } else {
+      console.log("會員未登入");
+    }
+
+    // Continuing with the requests if spId is defined
+    if (spId && spId.length > 0) {
+      const requests = spId.map(specId => {
+        return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
+      });
+      console.log('All requests resolved:', requests);
+      Promise.all(requests)
+
+          .then(responses => {
+            responses.forEach((response, index) => {
+              console.log(`Response for specId ${spId[index]}:`, response.data);
+              this.productSpecs[index] = response.data;
+              this.colorToSpecIdMap[response.data.color] = response.data.specId;
+              console.log("colorToSpecIdMap",this.colorToSpecIdMap);
+            });
+            console.log('Color to Spec ID Map:', this.colorToSpecIdMap);
+            // Ensure productSpecId is set correctly
+            this.product.specId = spId[0];
+          })
+          .catch(error => {
+            console.error('Error with specId requests:', error);
+          });
+    } else {
+      console.error("SpecIds array is empty or undefined.");
+    }
+  }
+
 }
 </script>
 
