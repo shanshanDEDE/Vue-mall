@@ -68,18 +68,24 @@
         </div>
         <!-- PRODUCT DETAILS-->
         <div class="col-lg-6">
-          <ul class="list-inline mb-2 text-sm">
-            <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
-            <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>
-            <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>
-            <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>
-            <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
-          </ul>
+<!--          <ul class="list-inline mb-2 text-sm">-->
+<!--            <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>-->
+<!--            <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>-->
+<!--            <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>-->
+<!--            <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>-->
+<!--            <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>-->
+<!--          </ul>-->
           <h1>{{ reProductName }}</h1>
           <p class="text-muted lead">${{ rePrice }}</p>
           <p class="text-sm mb-4">{{ reProductDescription }}</p>
           <div class="row align-items-stretch mb-4">
-
+            <select
+                v-model="sortBy"
+                class="form-select"
+            ><option value="預設">請選擇商品顏色</option>
+              <option v-for="(spec, index) in productSpecs" :key="index" >
+                {{ spec.color }}</option>
+            </select>
 <!--            <div class="col-sm-5 pr-sm-0">-->
               <div class="quantity-container">
                 <span class="quantity-label">Quantity</span>
@@ -200,23 +206,7 @@ export default {
       },
     };
   },
-  mounted() {
-    console.log(this.$route.query.reSpecIds); // Check what is received
-    // If reSpecIds is received as a string, you might need to parse it:
-    if (typeof this.$route.query.reSpecIds === 'string') {
-      this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
-    } else {
-      this.product.specId = this.$route.query.reSpecIds[0];
-    }
-    const spId = this.$route.query.reSpecIds;
-    const userStore = useUserStore();
-    if (userStore.isLoggedIn) {
-      this.IsSpectRacked(userStore.userId,spId);
-      this.UserID = userStore.userId;
-    } else {
-      console.log("會員未登入");
-    }
-  },
+
   computed: {
     // This computed property ensures that specId is reactive and updates correctly
     computedSpecId() {
@@ -340,6 +330,41 @@ export default {
             alert("取消失敗：" + error.message);
           });
     },
+  },
+  mounted() {
+    console.log(this.$route.query.reSpecIds); // Check what is received
+    // If reSpecIds is received as a string, you might need to parse it:
+    if (typeof this.$route.query.reSpecIds === 'string') {
+      this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
+    } else {
+      this.product.specId = this.$route.query.reSpecIds[0];
+    }
+    const spId = this.$route.query.reSpecIds;
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      this.IsSpectRacked(userStore.userId,spId);
+      this.UserID = userStore.userId;
+    } else {
+      console.log("會員未登入");
+    }
+    // 使用 map 方法遍歷 reSpecIds 陣列，對每個 specId 進行請求
+    const requests =this.$route.query.reSpecIds.map(specId => {
+      return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
+    });
+// 使用 Promise.all 方法等待所有請求完成
+    Promise.all(requests)
+        .then(responses => {
+          // 在這裡處理所有請求的回應
+          responses.forEach((response, index) => {
+            console.log(`Response for specId ${this.$route.query.reSpecIds[index]}:`, response.data);
+            this.productSpecs[index] = response.data
+          });
+        })
+        .catch(error => {
+          // 處理錯誤
+          console.error('Error:', error);
+        });
+
   },
 }
 </script>

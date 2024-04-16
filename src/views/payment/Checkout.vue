@@ -82,7 +82,7 @@ export default {
       };
 
       try {
-        const response = await axios.post('http://localhost:8080/mall/orders/insertOrders', fullOrderData);
+        const response = await axios.post('http://localhost:8080/mall/orders/insertOrdersCart', fullOrderData);
         const orderId = response.data.orderId;
         console.log('Order ID received:', orderId);
         if (orderId) {

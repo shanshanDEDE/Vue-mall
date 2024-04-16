@@ -17,6 +17,10 @@
               <router-link to="/MemberCenter" class="nav-link active">member</router-link>
             </li>
 
+            <li class="nav-item">
+              <a href="http://localhost:8081/Page3Project_ron/HomePage.jsp" class="nav-link active">insurance</a>
+            </li>
+
           </ul>
           <ul class="navbar-nav ms-auto">
             <router-link to="/cart" class="nav-link">

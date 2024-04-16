@@ -1,48 +1,47 @@
 <template>
   <main>
-    <div class="container mb-3">
-      <div class="row align-items-center text-center">
-
-
-<!--        <div class="col-1">-->
-<!--          <label for="inputPassword6" class="col-form-label">價格</label>-->
-<!--        </div>-->
-<!--        <div class="col-2">-->
-<!--          <input type="number" class="form-control" placeholder="最小值" min="0" />-->
-<!--        </div>-->
-<!--        <div class="col-2">-->
-<!--          <input type="number" class="form-control" placeholder="最大值" min="0" />-->
-<!--        </div>-->
-        <div class="col-1">
-          <label for="inputPassword6" class="col-form-label">名稱</label>
-        </div>
-        <div class="col-4">
-          <input type="text" class="form-control" v-model="searchKeyWord"/>
-        </div>
-        <div class="col-2">
-          <button class="btn btn-primary" @click="goKeywordSearch">查詢</button>
-        </div>
+    <category></category>
+    <hr />
+    <div class="py-1 bg-light">
+    <div class="row justify-content-end align-items-center">
+      <div class="col-auto">
+        <label for="inputPassword6" class="col-form-label">名稱</label>
+      </div>
+      <div class="col-auto">
+        <input type="text" class="control1" v-model="searchKeyWord" @keyup.enter="goKeywordSearch"/>
+      </div>
+      <div class="col-auto">
+        <button class="btn-custom" @click="goKeywordSearch">查詢</button>
+      </div>
+      <div class="col-2">
+        <select
+            v-model="sortBy"
+            @change="sortCart"
+            id="sortSelect"
+            class="form-select"
+        >
+          <option value="預設">預設排序</option>
+          <option value="價格低至高">價格低至高</option>
+          <option value="價格高至低">價格高至低</option>
+        </select>
       </div>
     </div>
-    <hr />
     <p class="text-center">iPhone</p>
-    <div class="py-1 bg-light">
+
       <div class="container">
         <div class="row">
           <div class="col">
-            <ul class="pagination justify-content-center">
+            <ul class="pagination justify-content-center custom-pagination">
               <li class="page-item">
-                <button class="page-link">
+                <button class="page-link" @click="prevPage">
                   <span>&laquo;</span>
                 </button>
               </li>
-              <li class="page-item," v-for="p of showPageBar" @click="goToPage(p)"
-                  :class="{ active: p == currentPage }">
+              <li class="page-item" v-for="p of showPageBar" :key="p" @click="goToPage(p)" :class="{ active: p === currentPage }">
                 <button class="page-link">{{ p }}</button>
               </li>
-
               <li class="page-item">
-                <button class="page-link">
+                <button class="page-link" @click="nextPage">
                   <span>&raquo;</span>
                 </button>
               </li>
@@ -53,12 +52,10 @@
           <div class="col" v-for="p in products" :key="p.productId">
             <div class="card shadow-sm">
               <router-link to="/product/detail" @click="redirectToSpec(p)">
-              <div>
-                <img :src="`http://localhost:8080/mall/product/photo/${p.photoId}`" class="w-100" />
-                <p class="card-text mt-2 px-3 text-truncate">
-                  {{ p.productName }}
-                </p>
-              </div>
+                <div>
+                  <img :src="`http://localhost:8080/mall/product/photo/${p.photoId}`" class="card-img-top" alt="Product Image" style="height: 300px; width: 100%; object-fit: contain " />
+                  <p class="card-text mt-2 px-3 text-truncate">{{ p.productName }}</p>
+                </div>
               </router-link>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="m-3">價格:{{ p.price }}</div>
@@ -77,7 +74,13 @@ const route = useRoute();
 
 import axios from "axios";
 
+import "@/assets/shop.css";
+import category from "@/components/category.vue";
 export default {
+  components: {
+
+    category
+  },
   data() {
     return {
       currentPage: 1,
@@ -93,7 +96,8 @@ export default {
       searchPage:0,
 
       searchKeyWord: '',
-      keywordSearchActive: false
+      keywordSearchActive: false,
+      sortBy: "預設",
     };
   },
   mounted() {
@@ -161,7 +165,25 @@ export default {
         this.products = rs.data.content;
         this.keywordSearchActive = true //建立搜尋狀態
       })
-
+    },
+    prevPage() {
+      if(this.currentPage>1){
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if(this.currentPage<this.totalPage){
+        this.currentPage++;
+      }
+    },
+    sortCart() {
+      if (this.sortBy === "價格低至高") {
+        this.products.sort((a, b) => a.price - b.price)
+      } else if (this.sortBy === "價格高至低") {
+        this.products.sort((a, b) => b.price - a.price);
+      }else if (this.sortBy === "預設") {
+        this.init();
+      }
     }
 
   },
