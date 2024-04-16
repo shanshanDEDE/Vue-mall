@@ -1,80 +1,108 @@
 <template>
-  <main>
-    <main class="container-fluid">
-      <div class="row">
-        <!-- 左側選項列 -->
-        <MemberOption></MemberOption>
-        <!-- 主要內容 -->
-        <div class="col-md-9">
-          <!-- ... 您原本的主要內容代碼 ... -->
-          <div
-              class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light"
-          >
-            <div class="col-md-5 p-lg-5 mx-auto my-5">
-              <h1 class="display-4 fw-normal">Nono商城</h1>
-              <p class="lead fw-normal">訂單資訊</p>
-            </div>
+  <main class="main-container">
+    <MemberOption class="sidebar"></MemberOption>
+    <div class="content-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <h1 class="brand-title">APPLE TREE</h1>
+          <h6 class="display-4 fw-normal">訂單查詢</h6>
+        </div>
+        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 
-            <div v-for="order in Orders" :key="order.orderId">
-            <div v-if="order.orderStatus != '已取消' ">
-              <div class="accordion mb-3" id="accordionExample">
-                <div class="accordion-item">
-                  <!-- 折叠标题 -->
-                  <h2 class="accordion-header" :id="'heading' + order.orderId">
-                    <button
-                        class="accordion-button"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        :data-bs-target="'#collapse' + order.orderId"
-                        aria-expanded="true"
-                        :aria-controls="'collapse' + order.orderId"
-                    >
-                      訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }}
-                      付款方式:{{ order.paymentMethod }} 訂單狀態:{{ order.orderStatus }}
-                    </button>
-                  </h2>
-                  <!-- 折叠内容 -->
-                  <div
-                      :id="'collapse' + order.orderId"
-                      class="accordion-collapse collapse"
-                      :aria-labelledby="'heading' + order.orderId"
-                      data-bs-parent="#accordionExample"
+        <div v-for="order in Orders" :key="order.orderId">
+          <div v-if="order.orderStatus != '已取消' ">
+            <div class="accordion mb-3" id="accordionExample">
+              <div class="accordion-item">
+                <!-- 折叠标题 -->
+                <h2 class="accordion-header" :id="'heading' + order.orderId">
+                  <button
+                      class="accordion-button accordion"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      :data-bs-target="'#collapse' + order.orderId"
+                      aria-expanded="true"
+                      :aria-controls="'collapse' + order.orderId"
                   >
-                    <div class="accordion-body">
-                      <div v-for="(detail, index) in order.orderDetails" :key="index">
-                        <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
-                        <p>數量: {{ detail.quantity }}個,單價: {{ detail.price }}$</p>
-                        <p>總價: {{ detail.orderPrice }}$</p>
+                    <div style="flex-grow: 1; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                      <span>訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }} 付款方式:{{ order.paymentMethod }}</span>
+                      <span class="order-status-group">訂單狀態: {{ order.orderStatus }}</span>
+                    </div>
+
+                  </button>
+                </h2>
+                <!-- 折叠内容 -->
+                <div
+                    :id="'collapse' + order.orderId"
+                    class="accordion-collapse collapse"
+                    :aria-labelledby="'heading' + order.orderId"
+                    data-bs-parent="#accordionExample"
+                >
+                  <div class="accordion-body">
+                    <div v-for="(detail, index) in order.orderDetails" :key="index">
+
+                      <div class="accordion-body">
+                        <div class="member-info-wrapper">
+                          <div class="member-info-group">
+                            <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
+                            <p>單價: {{ detail.price }}$</p>
+                          </div>
+
+                          <div class="member-info-group">
+                            <p>數量: {{ detail.quantity }}個</p>
+                            <p>總價: {{ detail.orderPrice }}$</p>
+                          </div>
+                        </div>
                       </div>
 
-                      <p>收貨地址: {{ order.deliverAddress }}</p>
-                      <p>聯絡電話: {{ order.recipientPhone }}</p>
+                      <div class="horizontal-dividermany"></div> <!-- 橫向灰色線 -->
+                    </div>
 
-                      <template
-                          v-if="order.orderStatus == '處理中'"
+                    <div class="accordion-body">
+                      <div class="member-info-wrapper">
+                        <div class="member-info-group">
+                          <p>收貨地址: {{ order.deliverAddress }}</p>
+                        </div>
+
+
+                        <div class="member-info-group">
+                          <p>聯絡電話: {{ order.recipientPhone }}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <template
+                        v-if="order.orderStatus == '處理中'"
+                    >
+                      <button
+                          @click="confirmResolution(order)"
+                          class="submit-button"
                       >
-                        <button
-                            @click="deleteOrders(order)"
-                            class="btn btn-primary"
-                        >
-                          取消訂單
-                        </button>
-                      </template>
-                      <template v-else>
-                        <button class="btn btn-primary" disabled>
-                          無法取消
-                        </button>
-                      </template>
+                        取消訂單
+                      </button>
+                    </template>
+                    <template v-else>
+                      <button class="submit-button" disabled>
+                        無法取消
+                      </button>
+                    </template>
+
+                    <div v-if="showModal" class="modal">
+                      <div class="modal-content">
+                        <h4>確認操作</h4>
+                        <p>您確定要取消這筆訂單嗎？</p>
+                        <button @click="resolveFeedback" class="yes-button">確定</button>
+                        <button @click="cancelResolution" class="yes-button">離開</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              </div>
             </div>
           </div>
+
         </div>
       </div>
-    </main>
+    </div>
   </main>
 </template>
 
@@ -82,8 +110,7 @@
 import MemberOption from "@/components/MemberOption.vue";
 import axios from "axios";
 
-// 引入外部 CSS 文件
-import "@/assets/track.css";
+
 import {useUserStore} from "@/stores/userStore.js"; // 样式文件路径根据实际情况修改
 
 export default {
@@ -93,9 +120,24 @@ export default {
   data() {
     return {
       Orders: [],
+      showModal: false,
+      memberOrder: null,
     };
   },
   methods: {
+    confirmResolution(order) {
+      this.memberOrder = order;
+      this.showModal = true;
+    },
+    resolveFeedback() {
+
+      this.deleteOrders(this.memberOrder);
+      this.showModal = false;
+    },
+    cancelResolution() {
+      this.showModal = false;
+    },
+
     fetchOrdersData(userId) {
       // const userId = 1;
       axios
@@ -154,4 +196,205 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+/* custom.css */
+
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 1000px; /* 設定最大寬度 */
+  padding: 20px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-title {
+  font-size: 2.5em;
+  color: #333;
+}
+
+.brand-slogan {
+  font-size: 1em;
+  color: #666;
+}
+
+.horizontal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+.horizontal-dividermany {
+  width: 100%;
+  height: 1px;
+  background-color: #F0F0F0; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+.custom-sidebar {
+  background-color: #333; /* 調整為與頂部導航欄相同的背景顏色 */
+  color: white; /* 文字顏色為白色 */
+}
+
+.custom-sidebar .list-group-item {
+  background-color: #333; /* 調整背景顏色 */
+  color: white; /* 文字顏色 */
+  border: none; /* 移除邊框 */
+}
+
+.custom-sidebar .list-group-item:hover {
+  background-color: #555; /* 滑鼠懸停時的背景顏色 */
+}
+
+.btn{
+  display: block;      /* 使按钮成为块级元素 */
+  margin: 0 auto;      /* 上下保持0，左右自动（自动居中） */
+  width: max-content;  /* 使按钮宽度适应内容 */
+}
+
+.submit-button {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 25px;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+
+.submit-button:hover {
+  //background-color: #46A3FF; /* Darker green on hover */
+  background-color:		#4F4F4F !important; /* For example, a green button */
+  color: white;
+}
+
+.member-info-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 內容靠左對齊 */
+}
+
+.member-info-divider {
+  min-height: 100%;
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 20px;
+}
+
+.member-info-wrapper {
+  width: 100%; /* 使包裹內容填滿容器 */
+  display: flex;
+  flex-direction: row; /* 水平排列 */
+  justify-content: space-evenly; /* 內容間距平均分配 */
+  align-items: flex-start;
+  background: 	white;
+
+}
+
+.member-info-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 分为两列，每列宽度相等 */
+  gap: 200px; /* 设置列与列之间的间隔 */
+  align-items: start; /* 确保所有内容在顶部对齐 */
+  padding: 0px; /* 可选：为了更好的视觉效果添加内边距 */
+}
+
+.member-info-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* 设置最小宽度为0，防止溢出 */
+}
+
+/* 添加文本溢出省略 */
+.member-info-group p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accordion{
+  border-color: black !important;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
+}
+
+.accordion:hover{
+  background-color:		#4F4F4F !important; /* For example, a green button */
+
+  color: white  !important;
+}
+
+
+.order-status-group {
+  margin-left: 10px; /* 推送到容器的右边 */
+  white-space: nowrap;
+}
+.accordion-button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+/* 可以根據需要進一步調整樣式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 25%; /* 控制模態框的寬度 */
+  max-width: 600px; /* 確保模態框不會超過這個最大寬度 */
+  box-sizing: border-box;
+}
+button {
+  margin: 10px;
+}
+.yes-button:hover {
+  background-color: black; /* Darker green on hover */
+  color: white;
+}
+</style>
+
+

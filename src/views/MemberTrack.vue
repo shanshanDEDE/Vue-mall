@@ -1,48 +1,50 @@
 <template>
-  <main>
-    <main class="container-fluid">
-      <div class="row">
-        <!-- 左側選項列 -->
-        <MemberOption></MemberOption>
-        <!-- 主要內容 -->
-        <div class="col-md-9">
-          <!-- ... 您原本的主要內容代碼 ... -->
+  <main class="main-container">
+    <MemberOption class="sidebar"></MemberOption>
+    <div class="content-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <h1 class="brand-title">APPLE TREE</h1>
+          <h1 class="display-4 fw-normal">我的追蹤</h1>
+        </div>
+        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
+
+        <div class="track-container">
           <div
-            class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light"
+              v-for="track in tracks"
+              :key="track.trackID"
+              class="track-item"
           >
-            <div class="col-md-5 p-lg-5 mx-auto my-5">
-              <h1 class="display-4 fw-normal">Nono商城</h1>
-              <p class="lead fw-normal">我的追蹤</p>
-            </div>
+            <button class="untrack-button" @click.stop="untrackProduct(track)">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
 
-            <div class="track-container">
-              <button
-                v-for="track in tracks"
-                :key="track.id"
-                class="track-item"
-              >
-                <button class="untrack-button" @click="untrackProduct(track)">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-                  <!-- 假设使用 FontAwesome 图标 -->
-                </button>
-
-                <div class="track-image">
-                  <img
-                    :src="'data:image/jpeg;base64,' + track.photoFile"
-                    alt="Product Image"
-                    class="product-img"
-                  />
-                </div>
-                <div class="track-info">
-                  <h5 class="track-name">{{ track.productName }}</h5>
-                  <p class="track-price">${{ track.productPrice }}</p>
-                </div>
-              </button>
-            </div>
+            <router-link
+                :to="{
+                  path: '/product/detail',
+                  query: {
+                    reProductId: track.productId,
+                    reProductName: track.productName,
+                    rePrice: track.productPrice,
+                    rePhotoId: track.photoFile,  // 如果 photoFile 是 base64 編碼，可能需要其他處理方式
+                    reProductDescription: track.productDescription,
+                    reSpecIds: track.specIds
+                  }
+                }"
+                tag="div"
+            >
+              <div class="track-image">
+                <img :src="'data:image/jpeg;base64,' + track.photoFile" alt="Product Image" class="product-img" />
+              </div>
+              <div class="track-info">
+                <h5 class="track-name">{{ track.productName }}</h5>
+                <p class="track-price">${{ track.productPrice }}</p>
+              </div>
+            </router-link>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   </main>
 </template>
 
@@ -50,8 +52,6 @@
 import MemberOption from "@/components/MemberOption.vue";
 import axios from "axios";
 
-// 引入外部 CSS 文件
-import "@/assets/track.css";
 import {useUserStore} from "@/stores/userStore.js"; // 样式文件路径根据实际情况修改
 
 export default {
@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     fetchData(userId) {
-      // const userId = 2;
       axios.get(`${this.API_URL}/getshow/track?userId=${userId}`).then((rs) => {
         console.log(rs);
         this.tracks = rs.data;
@@ -113,4 +112,152 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 1200px; /* 設定最大寬度 */
+  padding: 20px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-title {
+  font-size: 2.5em;
+  color: #333;
+}
+
+.brand-slogan {
+  font-size: 1em;
+  color: #666;
+}
+
+.horizontal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+/* custom.css */
+
+.custom-sidebar {
+  background-color: #333;
+  color: white;
+}
+
+.custom-sidebar .list-group-item {
+  background-color: #333;
+  color: white;
+  border: none;
+}
+
+.custom-sidebar .list-group-item:hover {
+  background-color: #555;
+}
+
+.track-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.track-item {
+  position: relative;
+  width: 240px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.track-image {
+  width: 100%;
+  height: 160px;
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.track-image .product-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.track-info {
+  padding: 8px 12px;
+}
+
+.track-name {
+  font-size: 1rem;
+  color: #333;
+  margin: 8px 0;
+}
+
+.track-price {
+  font-size: 1.2rem;
+  color: #666;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .track-item {
+    width: 100%;
+  }
+}
+
+.untrack-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #ffa500;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.untrack-button .fa {
+  color: white;
+}
+
+
+
+</style>

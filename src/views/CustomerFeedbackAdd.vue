@@ -1,19 +1,17 @@
 <template>
-  <main>
-    <main class="container-fluid">
-      <div class="row">
-        <!-- 左側選項列 -->
-        <MemberOption></MemberOption>
-        <!-- 主要內容 -->
-        <div class="col-md-9">
-          <!-- ... 您原本的主要內容代碼 ... -->
-          <div
-              class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light"
-          >
-            <div class="col-md-5 p-lg-5 mx-auto my-5">
-              <h1 class="display-4 fw-normal">Nono商城</h1>
-              <p class="lead fw-normal">訂單評價</p>
-            </div>
+  <main class="main-container">
+    <MemberOption class="sidebar"></MemberOption>
+    <div class="content-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <h1 class="brand-title">APPLE TREE</h1>
+          <h6 class="display-4 fw-normal">填寫訂單意見</h6>
+        </div>
+        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
+
+
+        <div class="form-container">
+          <form @submit.prevent="submitUpdate" class="member-form">
 
             <div v-for="order in Orders" :key="order.orderId">
               <div v-if="order.orderStatus == '已完結' ">
@@ -22,15 +20,17 @@
                     <!-- 折叠标题 -->
                     <h2 class="accordion-header" :id="'heading' + order.orderId">
                       <button
-                          class="accordion-button"
+                          class="accordion-button accordion"
                           type="button"
                           data-bs-toggle="collapse"
                           :data-bs-target="'#collapse' + order.orderId"
                           aria-expanded="true"
                           :aria-controls="'collapse' + order.orderId"
                       >
-                        訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }}
-                        付款方式:{{ order.paymentMethod }} 訂單狀態:{{ order.orderStatus }}
+                        <div style="flex-grow: 1; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                          <span>訂單編號:{{ order.orderId }} 下單日期:{{ formattedRegisterDate(order) }} 付款方式:{{ order.paymentMethod }}</span>
+                          <span class="order-status-group">訂單狀態: {{ order.orderStatus }}</span>
+                        </div>
                       </button>
                     </h2>
                     <!-- 折叠内容 -->
@@ -42,13 +42,37 @@
                     >
                       <div class="accordion-body">
                         <div v-for="(detail, index) in order.orderDetails" :key="index">
-                          <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
-                          <p>數量: {{ detail.quantity }}個,單價: {{ detail.price }}$</p>
-                          <p>總價: {{ detail.orderPrice }}$</p>
+
+                          <div class="accordion-body">
+                            <div class="member-info-wrapper">
+                              <div class="member-info-group">
+                                <p>產品名稱: {{ detail.productName }}{{ detail.color }}色</p>
+                                <p>單價: {{ detail.price }}$</p>
+                              </div>
+
+                              <div class="member-info-group">
+                                <p>數量: {{ detail.quantity }}個</p>
+                                <p>總價: {{ detail.orderPrice }}$</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="horizontal-dividermany"></div> <!-- 橫向灰色線 -->
+
                         </div>
 
-                        <p>收貨地址: {{ order.deliverAddress }}</p>
-                        <p>聯絡電話: {{ order.recipientPhone }}</p>
+                        <div class="accordion-body">
+                          <div class="member-info-wrapper">
+                            <div class="member-info-group">
+                              <p>收貨地址: {{ order.deliverAddress }}</p>
+                            </div>
+
+
+                            <div class="member-info-group">
+                              <p>聯絡電話: {{ order.recipientPhone }}</p>
+                            </div>
+                          </div>
+                        </div>
+
 
 
                         <template
@@ -56,13 +80,13 @@
                         >
                           <button
                               @click="addOrders(order)"
-                              class="btn btn-primary"
+                              class="myButton"
                           >
                             新增評論
                           </button>
                         </template>
                         <template v-else>
-                          <button class="btn btn-primary" disabled>
+                          <button class="myButton" disabled>
                             無法新增評論
                           </button>
                         </template>
@@ -73,11 +97,11 @@
                 </div>
               </div>
             </div>
-          </div>
+            </form>
+        </div>
         </div>
       </div>
     </main>
-  </main>
 </template>
 
 <script>
@@ -85,7 +109,6 @@ import MemberOption from "@/components/MemberOption.vue";
 import axios from "axios";
 
 // 引入外部 CSS 文件
-import "@/assets/track.css";
 import {useUserStore} from "@/stores/userStore.js";
 import {OrdersFeedbackStore} from "@/stores/OrdersFeedbackStore.js"; // 样式文件路径根据实际情况修改
 
@@ -147,4 +170,138 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 1000px; /* 設定最大寬度 */
+  padding: 20px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-title {
+  font-size: 2.5em;
+  color: #333;
+}
+
+.brand-slogan {
+  font-size: 1em;
+  color: #666;
+}
+
+.horizontal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+
+.custom-sidebar {
+  background-color: #333; /* 調整為與頂部導航欄相同的背景顏色 */
+  color: white; /* 文字顏色為白色 */
+}
+
+.custom-sidebar .list-group-item {
+  background-color: #333; /* 調整背景顏色 */
+  color: white; /* 文字顏色 */
+  border: none; /* 移除邊框 */
+}
+
+.custom-sidebar .list-group-item:hover {
+  background-color: #555; /* 滑鼠懸停時的背景顏色 */
+}
+
+.myButton {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 25px;
+  background-color: black; /* Darker green on hover */
+  color: white;
+
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+
+.myButton:hover {
+  background-color:		#4F4F4F !important; /* For example, a green button */
+  color: white;
+}
+
+
+.member-info-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 分为两列，每列宽度相等 */
+  gap: 200px; /* 设置列与列之间的间隔 */
+  align-items: start; /* 确保所有内容在顶部对齐 */
+  padding: 0px; /* 可选：为了更好的视觉效果添加内边距 */
+}
+
+.member-info-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* 设置最小宽度为0，防止溢出 */
+}
+.horizontal-dividermany {
+  width: 100%;
+  height: 1px;
+  background-color: #F0F0F0; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+.accordion{
+  border-color: black !important;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
+
+}
+.accordion:hover{
+  background-color:		#4F4F4F !important; /* For example, a green button */
+  color: white  !important;
+
+}
+
+
+.order-status-group {
+  margin-left: 10px; /* 推送到容器的右边 */
+  white-space: nowrap;
+}
+.accordion-button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+</style>

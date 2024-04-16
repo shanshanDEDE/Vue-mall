@@ -12,21 +12,32 @@
             <li class="nav-item">
               <router-link to="/product" class="nav-link active">shop</router-link>
             </li>
+
             <li class="nav-item">
               <router-link to="/MemberCenter" class="nav-link active">member</router-link>
+            </li>
+
+            <li class="nav-item">
+              <a href="http://localhost:8081/Page3Project_ron/HomePage.jsp" class="nav-link active">insurance</a>
             </li>
 
           </ul>
           <ul class="navbar-nav ms-auto">
             <router-link to="/cart" class="nav-link">
-            <li class="nav-item"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal">(2)</small></li></router-link>
-            <li class="nav-item"><a class="nav-link" href="#!"> <i class="far fa-heart me-1"></i><small class="text-gray fw-normal"> (0)</small></a></li>
+              <li class="nav-item"> <i class="fas fa-dolly-flatbed me-1 text-gray">
+                </i>Cart</li>
+            </router-link>
+
+            <router-link to="/MemberCenter/track" class="nav-link">
+              <li class="nav-item"> <i class="far fa-heart me-1">
+                </i>Wish</li>
+            </router-link>
             <router-link
-                class="nav-link"
-                to="/login"
-                v-if="!isLoggedIn"
+              class="nav-link"
+              to="/login"
+              v-if="!isLoggedIn"
             >
-              <li class="nav-item"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Login</li></router-link>
+            <li class="nav-item"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Login</li></router-link>
 
             <template v-if="isLoggedIn" >
               <li class="nav-item" @click="logout"><a class="nav-link" href="#!"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Logout</a></li>
@@ -39,6 +50,7 @@
   </header>
 
 </template>
+
 <script>
 import { useUserStore } from "@/stores/userStore";
 import axios from "axios";
@@ -52,7 +64,7 @@ export default {
           .then((rs) => {
             const userStore = useUserStore();
             userStore.logout();
-            this.$router.push("/login");
+            this.$router.push("/");
           })
           .catch((error) => {
             console.log("登出失敗", error);

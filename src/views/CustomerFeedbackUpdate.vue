@@ -1,19 +1,14 @@
 <template>
-  <main>
-    <main class="container-fluid">
-      <div class="row">
-        <!-- 左側選項列 -->
-        <MemberOption></MemberOption>
-        <!-- 主要內容 -->
-        <div class="col-md-9">
-          <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-            <div class="col-md-5 p-lg-5 mx-auto my-5">
-              <div v-if="feedback"> <!-- 只有当feedback存在时才尝试渲染相关内容 -->
-                <h1 class="display-4 fw-normal">更改評論</h1>
-                <label>訂單編號：{{ feedback.orderID }}</label>
-                <!-- 其他依赖于feedback的代码 -->
-              </div>
-              <p/>
+  <main class="main-container">
+    <MemberOption class="sidebar"></MemberOption>
+    <div class="content-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <h1 class="brand-title">APPLE TREE</h1>
+          <h6 class="display-4 fw-normal">更改評論</h6>
+          <label>訂單編號：{{ feedback.orderID }}</label>
+        </div>
+        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 
                 <div class="container">
                   <div v-if="feedback">
@@ -32,15 +27,12 @@
                       <label for="feedbackDescription" class="form-label">內容：</label>
                       <textarea v-model="feedback.description" id="feedbackDescription" class="textarea-large"></textarea>
                     </div>
-                    <button @click="submitFeedback">提交更新</button>
+                    <button @click="submitFeedback" class="myButton">提交更新</button>
                   </div>
                 </div>
 
             </div>
-          </div>
-        </div>
-      </div>
-    </main>
+    </div>
   </main>
 </template>
 
@@ -49,8 +41,6 @@ import MemberOption from "@/components/MemberOption.vue";
 import { useUserStore } from "@/stores/userStore"; //user store
 import axios from "axios";
 
-// 引入外部 CSS 文件
-import "@/assets/memberReData.css"; // 样式文件路径根据实际情况修改
 // CustomerFeedbackUpdate.vue
 import { useFeedbackStore } from '@/stores/feedbackStore';
 
@@ -85,6 +75,7 @@ export default {
       })
           .then(response => {
             alert('評論更新成功！');
+            this.$router.push('/MemberCenter/MemberFeedback');
             // 這裡您可以添加更多的業務邏輯
           })
           .catch(error => {
@@ -107,7 +98,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .form-group {
   display: flex;
   align-items: flex-start; /* 改變此處，讓items在容器的開始處對齊 */
@@ -129,4 +120,77 @@ export default {
   resize: vertical;
   margin-top: 0; /* 設置適當的margin-top，如果需要 */
 }
+
+.main-container {
+  display: flex;
+  min-height: 100vh;
+
+}
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 1000px; /* 設定最大寬度 */
+  padding: 20px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.brand-title {
+  font-size: 2.5em;
+  color: #333;
+}
+
+.brand-slogan {
+  font-size: 1em;
+  color: #666;
+}
+
+.horizontal-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc; /* 淡灰色背景色 */
+  margin-bottom: 20px; /* 根據需要增加下邊距 */
+}
+
+.myButton {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 25px;
+  background-color:#272727  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+
+.myButton:hover {
+  background-color:		#4F4F4F !important; /* For example, a green button */
+  color: white;
+}
+
 </style>
