@@ -306,7 +306,6 @@ export default {
           .then((response) => {
             console.log(response);
             this.isTracked = true;
-            alert("追蹤成功")
           })
           .catch((error) => {
             console.log(error);
@@ -323,7 +322,6 @@ export default {
           .then((response) => {
             console.log(response);
             this.isTracked = false;
-            alert("成功取消追蹤");
           })
           .catch((error) => {
             console.error('Error deleting:', error);
