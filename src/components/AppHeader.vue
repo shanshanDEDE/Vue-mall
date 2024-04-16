@@ -64,7 +64,7 @@ export default {
           .then((rs) => {
             const userStore = useUserStore();
             userStore.logout();
-            this.$router.push("/");
+            this.$router.push("/login");
           })
           .catch((error) => {
             console.log("登出失敗", error);
