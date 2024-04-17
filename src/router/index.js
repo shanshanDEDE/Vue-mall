@@ -103,6 +103,10 @@ const router = createRouter({
           component: () => import("@/views/product_detail_page.vue"),
         },
     {
+      path: "/findUs",
+      component: () => import("@/views/FindUs.vue"),
+    },
+    {
       path: "/cart",
       component: () => import("@/views/Cart.vue"),
     },
@@ -136,6 +140,7 @@ const router = createRouter({
           path: "/OLoginSuccess",
           component: () => import("@/views/Oath2LoginSuccess.vue"),
       },
+
 
 
 
