@@ -1,46 +1,4 @@
 <template >
-<!--  <div class="modal fade" id="productView" tabindex="-1">-->
-<!--    <div class="modal-dialog modal-lg modal-dialog-centered">-->
-<!--      <div class="modal-content overflow-hidden border-0">-->
-<!--        <button class="btn-close p-4 position-absolute top-0 end-0 z-index-20 shadow-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--        <div class="modal-body p-0">-->
-<!--          <div class="row align-items-stretch">-->
-<!--            <div class="col-lg-6 p-lg-0"><a class="glightbox product-view d-block h-100 bg-cover bg-center" style="background: url( ../assets/img/product-5.jpg)" href="../assets/img/product-5.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a class="glightbox d-none" href="../assets/img/product-5-alt-1.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a class="glightbox d-none" href=" ../assets/img/product-5-alt-2.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a></div>-->
-<!--            <div class="col-lg-6">-->
-<!--              <div class="p-4 my-md-4">-->
-<!--                <ul class="list-inline mb-2">-->
-<!--                  <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                  <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                  <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                  <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                  <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                </ul>-->
-<!--                <h2 class="h4">{{ reProductName }}</h2>-->
-<!--                <p class="text-muted">{{ rePrice }}</p>-->
-<!--                <p class="text-sm mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut ullamcorper leo, eget euismod orci. Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus. Vestibulum ultricies aliquam convallis.</p>-->
-<!--                <div class="row align-items-stretch mb-4 gx-0">-->
-<!--&lt;!&ndash;                  <div class="col-sm-5 pr-sm-0">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <div class="quantity-container">&ndash;&gt;-->
-<!--&lt;!&ndash;                      <span class="quantity-label">Quantity</span>&ndash;&gt;-->
-<!--&lt;!&ndash;                      <button class="quantity-btn dec-btn" @click="decrement">-</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                      <input class="quantity-input" type="number" v-model="product.quantity" min="1">&ndash;&gt;-->
-<!--&lt;!&ndash;                      <button class="quantity-btn inc-btn" @click="increment">+</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                      <button class="add-to-cart-btn" @click.prevent="addToCart">Add to Cart</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
-
-
-<!--                  <div class="col-sm-5"><button class="btn btn-dark btn-sm w-100 h-100 d-flex align-items-center justify-content-center px-0" @click="addToCart">-->
-<!--                    Add to cart-->
-<!--                  </button></div>-->
-<!--                </div><a class="btn btn-link text-dark text-decoration-none p-0" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
   <section class="py-5">
     <div class="container">
       <div class="row mb-5">
@@ -68,13 +26,7 @@
         </div>
         <!-- PRODUCT DETAILS-->
         <div class="col-lg-6">
-<!--          <ul class="list-inline mb-2 text-sm">-->
-<!--            <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>-->
-<!--            <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>-->
-<!--            <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>-->
-<!--            <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>-->
-<!--            <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>-->
-<!--          </ul>-->
+
           <h1>{{ reProductName }}</h1>
           <p class="text-muted lead">${{ rePrice }}</p>
           <p class="text-sm mb-4">{{ reProductDescription }}</p>
@@ -167,17 +119,7 @@
 import axios from "axios";
 import {useUserStore} from "@/stores/userStore.js";
 
-function injectSvgSprite(path) {
-  var ajax = new XMLHttpRequest();
-  ajax.open("GET", path, true);
-  ajax.send();
-  ajax.onload = function(e) {
-    var div = document.createElement("div");
-    div.className = 'd-none';
-    div.innerHTML = ajax.responseText;
-    document.body.insertBefore(div, document.body.childNodes[0]);
-  }
-}
+
 
 export default {
   data() {
@@ -207,6 +149,40 @@ export default {
       productSpecs: [],
       sortBy: '預設',
     };
+  },
+  mounted() {
+    console.log(this.$route.query.reSpecIds); // Check what is received
+    // If reSpecIds is received as a string, you might need to parse it:
+    if (typeof this.$route.query.reSpecIds === 'string') {
+      this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
+    } else {
+      this.product.specId = this.$route.query.reSpecIds[0];
+    }
+    const spId = this.$route.query.reSpecIds;
+    const userStore = useUserStore();
+    if (userStore.isLoggedIn) {
+      this.IsSpectRacked(userStore.userId,spId);
+      this.UserID = userStore.userId;
+    } else {
+      console.log("會員未登入");
+    }
+    // 使用 map 方法遍歷 reSpecIds 陣列，對每個 specId 進行請求
+    const requests =this.$route.query.reSpecIds.map(specId => {
+      return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
+    });
+// 使用 Promise.all 方法等待所有請求完成
+    Promise.all(requests)
+        .then(responses => {
+          // 在這裡處理所有請求的回應
+          responses.forEach((response, index) => {
+            console.log(`Response for specId ${this.$route.query.reSpecIds[index]}:`, response.data);
+            this.productSpecs[index] = response.data
+          });
+        })
+        .catch(error => {
+          // 處理錯誤
+          console.error('Error:', error);
+        });
   },
   computed: {
     // This computed property ensures that specId is reactive and updates correctly
@@ -330,40 +306,6 @@ export default {
             alert("取消失敗：" + error.message);
           });
     },
-  },
-  mounted() {
-    console.log(this.$route.query.reSpecIds); // Check what is received
-    // If reSpecIds is received as a string, you might need to parse it:
-    if (typeof this.$route.query.reSpecIds === 'string') {
-      this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
-    } else {
-      this.product.specId = this.$route.query.reSpecIds[0];
-    }
-    const spId = this.$route.query.reSpecIds;
-    const userStore = useUserStore();
-    if (userStore.isLoggedIn) {
-      this.IsSpectRacked(userStore.userId,spId);
-      this.UserID = userStore.userId;
-    } else {
-      console.log("會員未登入");
-    }
-    // 使用 map 方法遍歷 reSpecIds 陣列，對每個 specId 進行請求
-    const requests =this.$route.query.reSpecIds.map(specId => {
-      return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
-    });
-// 使用 Promise.all 方法等待所有請求完成
-    Promise.all(requests)
-        .then(responses => {
-          // 在這裡處理所有請求的回應
-          responses.forEach((response, index) => {
-            console.log(`Response for specId ${this.$route.query.reSpecIds[index]}:`, response.data);
-            this.productSpecs[index] = response.data
-          });
-        })
-        .catch(error => {
-          // 處理錯誤
-          console.error('Error:', error);
-        });
   },
 }
 </script>

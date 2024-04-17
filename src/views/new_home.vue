@@ -168,6 +168,7 @@
 <!--<script src="vendor/choices.js/public/assets/scripts/choices.min.js"></script>-->
 <!--<script src="js/front.js"></script>-->
 <script>
+
 // ------------------------------------------------------- //
 //   Inject SVG Sprite -
 //   see more here

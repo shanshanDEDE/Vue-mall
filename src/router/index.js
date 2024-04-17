@@ -140,6 +140,10 @@ const router = createRouter({
           path: "/OLoginSuccess",
           component: () => import("@/views/Oath2LoginSuccess.vue"),
       },
+      {
+          path: "/uploadPhotos",
+          component: () => import("@/views/upload_page.vue"),
+      },
 
 
 
