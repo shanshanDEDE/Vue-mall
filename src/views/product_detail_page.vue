@@ -1,46 +1,4 @@
 <template >
-<!--  <div class="modal fade" id="productView" tabindex="-1">-->
-<!--    <div class="modal-dialog modal-lg modal-dialog-centered">-->
-<!--      <div class="modal-content overflow-hidden border-0">-->
-<!--        <button class="btn-close p-4 position-absolute top-0 end-0 z-index-20 shadow-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--        <div class="modal-body p-0">-->
-<!--          <div class="row align-items-stretch">-->
-<!--            <div class="col-lg-6 p-lg-0"><a class="glightbox product-view d-block h-100 bg-cover bg-center" style="background: url( ../assets/img/product-5.jpg)" href="../assets/img/product-5.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a class="glightbox d-none" href="../assets/img/product-5-alt-1.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a><a class="glightbox d-none" href=" ../assets/img/product-5-alt-2.jpg" data-gallery="gallery1" data-glightbox="Red digital smartwatch"></a></div>-->
-<!--            <div class="col-lg-6">-->
-<!--              <div class="p-4 my-md-4">-->
-<!--                <ul class="list-inline mb-2">-->
-<!--                  <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                  <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                  <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                  <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                  <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>-->
-<!--                </ul>-->
-<!--                <h2 class="h4">{{ reProductName }}</h2>-->
-<!--                <p class="text-muted">{{ rePrice }}</p>-->
-<!--                <p class="text-sm mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut ullamcorper leo, eget euismod orci. Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus. Vestibulum ultricies aliquam convallis.</p>-->
-<!--                <div class="row align-items-stretch mb-4 gx-0">-->
-<!--&lt;!&ndash;                  <div class="col-sm-5 pr-sm-0">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <div class="quantity-container">&ndash;&gt;-->
-<!--&lt;!&ndash;                      <span class="quantity-label">Quantity</span>&ndash;&gt;-->
-<!--&lt;!&ndash;                      <button class="quantity-btn dec-btn" @click="decrement">-</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                      <input class="quantity-input" type="number" v-model="product.quantity" min="1">&ndash;&gt;-->
-<!--&lt;!&ndash;                      <button class="quantity-btn inc-btn" @click="increment">+</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                      <button class="add-to-cart-btn" @click.prevent="addToCart">Add to Cart</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
-
-
-<!--                  <div class="col-sm-5"><button class="btn btn-dark btn-sm w-100 h-100 d-flex align-items-center justify-content-center px-0" @click="addToCart">-->
-<!--                    Add to cart-->
-<!--                  </button></div>-->
-<!--                </div><a class="btn btn-link text-dark text-decoration-none p-0" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
   <section class="py-5">
     <div class="container">
       <div class="row mb-5">
@@ -68,23 +26,15 @@
         </div>
         <!-- PRODUCT DETAILS-->
         <div class="col-lg-6">
-<!--          <ul class="list-inline mb-2 text-sm">-->
-<!--            <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>-->
-<!--            <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>-->
-<!--            <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>-->
-<!--            <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>-->
-<!--            <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>-->
-<!--          </ul>-->
           <h1>{{ reProductName }}</h1>
           <p class="text-muted lead">${{ rePrice }}</p>
           <p class="text-sm mb-4">{{ reProductDescription }}</p>
           <div class="row align-items-stretch mb-4">
-            <select
-                v-model="sortBy"
-                class="form-select"
-            ><option value="預設">請選擇商品顏色</option>
-              <option v-for="(spec, index) in productSpecs" :key="index" >
-                {{ spec.color }}</option>
+            <select v-model="selectedColor" class="form-select">
+              <option disabled value="">請選擇商品顏色</option>
+              <option v-for="spec in productSpecs" :key="spec.id" :value="spec.color">
+                {{ spec.color }}
+              </option>
             </select>
 <!--            <div class="col-sm-5 pr-sm-0">-->
               <div class="quantity-container">
@@ -100,7 +50,7 @@
             <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="submitUpdate(this.UserID,this.reSpecIds)"><i class="far fa-heart me-2"></i>Add to wish list</button>
           </template>
           <template v-if="isTracked">
-            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>Delete wish list</button>
+            <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>Delete this wish</button>
           </template>
 
           <br>
@@ -128,8 +78,8 @@
                 <div class="d-flex mb-3">
                   <div class="flex-shrink-0"><img class="rounded-circle" src="../assets/img/customer-1.png" alt="" width="50"/></div>
                   <div class="ms-3 flex-shrink-1">
-                    <h6 class="mb-0 text-uppercase">Jason Doe</h6>
-                    <p class="small text-muted mb-0 text-uppercase">20 May 2020</p>
+                    <h6 class="mb-0 text-uppercase">Peggy Lin</h6>
+                    <p class="small text-muted mb-0 text-uppercase">11 April 2024</p>
                     <ul class="list-inline mb-1 text-xs">
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
@@ -137,14 +87,14 @@
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
                       <li class="list-inline-item m-0"><i class="fas fa-star-half-alt text-warning"></i></li>
                     </ul>
-                    <p class="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p class="text-sm mb-0 text-muted">金屬質感佳，符合期待!</p>
                   </div>
                 </div>
                 <div class="d-flex">
                   <div class="flex-shrink-0"><img class="rounded-circle" src="../assets/img/customer-2.png" alt="" width="50"/></div>
                   <div class="ms-3 flex-shrink-1">
-                    <h6 class="mb-0 text-uppercase">Jane Doe</h6>
-                    <p class="small text-muted mb-0 text-uppercase">20 May 2020</p>
+                    <h6 class="mb-0 text-uppercase">Ron Wu</h6>
+                    <p class="small text-muted mb-0 text-uppercase">10 April 2024</p>
                     <ul class="list-inline mb-1 text-xs">
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
@@ -152,7 +102,7 @@
                       <li class="list-inline-item m-0"><i class="fas fa-star text-warning"></i></li>
                       <li class="list-inline-item m-0"><i class="fas fa-star-half-alt text-warning"></i></li>
                     </ul>
-                    <p class="text-sm mb-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p class="text-sm mb-0 text-muted">送貨速度快，包裝仔細，有機會再回購其他產品。</p>
                   </div>
                 </div>
               </div>
@@ -182,16 +132,18 @@ function injectSvgSprite(path) {
 export default {
   data() {
     return {
+      colorToSpecIdMap: {},
       item: {
         quantity: 1,
         specId: null,
       },
-
       product: {
         id: null,
         quantity: 1,  // Default starting quantity
         specId: ''
       },
+      selectedColor: '',
+      productSpecs:[],
       reProductId: this.$route.query.reProductId,
       reProductName: this.$route.query.reProductName,
       rePrice: this.$route.query.rePrice,
@@ -206,21 +158,18 @@ export default {
       },
     };
   },
-
   computed: {
-    // This computed property ensures that specId is reactive and updates correctly
     computedSpecId() {
       return this.reSpecIds && this.reSpecIds.length > 0 ? this.reSpecIds[0] : null;
     }
   },
   watch: {
-    // Whenever reSpecIds changes, update the product.specId reactively
     computedSpecId(newSpecId) {
       this.product.specId = newSpecId;
     }
   },
-
   methods: {
+
     increment() {
       this.product.quantity++;
     },
@@ -230,6 +179,13 @@ export default {
       }
     },
     async addToCart() {
+      console.log('Selected Color:', this.selectedColor);
+      console.log('Mapped specId:', this.colorToSpecIdMap[this.selectedColor]);
+
+      if (!this.selectedColor) {
+        alert('請選擇商品顏色！');
+        return;
+      }
       const store = useUserStore();
       if (!store.isLoggedIn) {
         alert('Please log in to add items to your cart.');
@@ -239,13 +195,11 @@ export default {
 
       const payload = {
         userId: store.userId,
-        specId: this.product.specId,
-        quantity: this.product.quantity
-
+        specId: this.colorToSpecIdMap[this.selectedColor],
+        quantity: this.product.quantity,
+        specIdt: this.product.specId,
       };
-
       console.log('Sending to backend:', payload);
-
       try {
         const response = await axios.post('http://localhost:8080/mall/cart/add', payload);
         console.log('Added to cart successfully:', response.data);
@@ -253,8 +207,6 @@ export default {
       } catch (error) {
         console.error('Failed to add to cart:', error);
         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
           console.error('Response data:', error.response.data);
           console.error('Response status:', error.response.status);
         }
@@ -330,40 +282,61 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$route.query.reSpecIds); // Check what is received
-    // If reSpecIds is received as a string, you might need to parse it:
+    console.log("Query Parameters:", this.$route.query);
+    const reSpecIds = this.$route.query.reSpecIds;
+
+    if (!reSpecIds) {
+      console.error("No specIds found in the route query.");
+      return;
+    }
+
+    const spId = Array.isArray(reSpecIds) ? reSpecIds : JSON.parse(reSpecIds);
+    console.log("Parsed specIds:", spId);
+
+
+    console.log(this.$route.query.reSpecIds);
     if (typeof this.$route.query.reSpecIds === 'string') {
       this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
     } else {
       this.product.specId = this.$route.query.reSpecIds[0];
     }
-    const spId = this.$route.query.reSpecIds;
+    const spIdt = this.$route.query.reSpecIds;
+
     const userStore = useUserStore();
     if (userStore.isLoggedIn) {
-      this.IsSpectRacked(userStore.userId,spId);
+      this.IsSpectRacked(userStore.userId, spIdt);
       this.UserID = userStore.userId;
     } else {
       console.log("會員未登入");
     }
-    // 使用 map 方法遍歷 reSpecIds 陣列，對每個 specId 進行請求
-    const requests =this.$route.query.reSpecIds.map(specId => {
-      return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
-    });
-// 使用 Promise.all 方法等待所有請求完成
-    Promise.all(requests)
-        .then(responses => {
-          // 在這裡處理所有請求的回應
-          responses.forEach((response, index) => {
-            console.log(`Response for specId ${this.$route.query.reSpecIds[index]}:`, response.data);
-            this.productSpecs[index] = response.data
-          });
-        })
-        .catch(error => {
-          // 處理錯誤
-          console.error('Error:', error);
-        });
 
-  },
+    // Continuing with the requests if spId is defined
+    if (spId && spId.length > 0) {
+      const requests = spId.map(specId => {
+        return axios.get(`http://localhost:8080/mall/products/findProductSpecBySpecId/${specId}`);
+      });
+      console.log('All requests resolved:', requests);
+      Promise.all(requests)
+
+          .then(responses => {
+            responses.forEach((response, index) => {
+              console.log(`Response for specId ${spId[index]}:`, response.data);
+              this.productSpecs[index] = response.data;
+              this.colorToSpecIdMap[response.data.color] = response.data.specId;
+              console.log("colorToSpecIdMap",this.colorToSpecIdMap);
+            });
+            console.log('Color to Spec ID Map:', this.colorToSpecIdMap);
+            // Ensure productSpecId is set correctly
+            this.product.specId = spId[0];
+          })
+          .catch(error => {
+            console.error('Error with specId requests:', error);
+          });
+    } else {
+      console.error("SpecIds array is empty or undefined.");
+    }
+  }
+
 }
 </script>
 
