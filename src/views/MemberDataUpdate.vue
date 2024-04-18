@@ -74,7 +74,7 @@
         您的會員資料已成功更新。
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn1 btn-primary" @click="closeSuccessModal">确定</button>
+        <button type="button" class="btn1 btn-primary" @click="closeSuccessModal">確定</button>
       </div>
     </div>
   </div>
@@ -331,10 +331,10 @@ export default {
 
 .btn1 {
   padding: 10px 15px;
-  border-color: black;
+  border: rgba(0, 0, 0, 0) solid 3px !important;
   border-radius: 6px;
   width: 50%;
-  background-color: white; /* For example, a green button */
+  background-color:  rgba(0, 0, 0, 0.05); /* For example, a green button */
   color: black;
   cursor: pointer;
   font-weight: bold;
@@ -343,18 +343,18 @@ export default {
   margin: auto; /* 左邊距自動，推到右側 */
 }
 .btn1:hover {
-  background-color: black; /* Darker green on hover */
-  color: white;
+  background-color:  rgba(0, 0, 0, 0.15); /* Darker green on hover */
+  color: black;
 }
 .btn2{
-  border-color: black;
+  border: rgba(0, 0, 0, 0) solid 3px !important;
   background-color: white; /* For example, a green button */
   color: black;
   cursor: pointer;
 }
 .btn2:hover {
-  background-color: black; /* Darker green on hover */
-  color: white;
+  background-color: rgba(0, 0, 0, 0) !important; /* Darker green on hover */
+  color: black;
 }
 
 
@@ -372,7 +372,7 @@ export default {
 }
 
 .modal-content {
-  border: black solid 2px !important;
+  border: rgba(0, 0, 0, 0) solid 3px !important;
   background: white;
   color: black;
   padding: 20px;
@@ -381,6 +381,10 @@ export default {
   width: 25%; /* 控制模態框的寬度 */
   max-width: 600px; /* 確保模態框不會超過這個最大寬度 */
   box-sizing: border-box;
+}
+
+.modal-title{
+  font-weight:  800;
 }
 </style>
 
