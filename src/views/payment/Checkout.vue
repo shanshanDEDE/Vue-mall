@@ -87,6 +87,17 @@ export default {
         console.log('Order ID received:', orderId);
         if (orderId) {
           await this.submitOrderDetails(orderId);
+          switch (paymentMethod) {
+            case 'Stripe':
+              this.$router.push({ name: 'stripe', params: { orderData: this.orderData } });
+              break;
+            case 'Paypal':
+              this.$router.push({ name: 'paypal', params: { orderData: this.orderData } });
+              break;
+            case 'Linepay':
+              this.$router.push({ name: 'linepay', params: { orderData: this.orderData } });
+              break;
+          }
         }
       } catch (error) {
         console.error('Failed to submit order:', error);

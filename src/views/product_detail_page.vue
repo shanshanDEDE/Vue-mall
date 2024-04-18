@@ -30,9 +30,9 @@
           <p class="text-muted lead">${{ rePrice }}</p>
           <p class="text-sm mb-4">{{ reProductDescription }}</p>
           <div class="row align-items-stretch mb-4">
-            <select v-model="selectedColor" class="form-select">
-              <option disabled value="">請選擇商品顏色</option>
-              <option v-for="spec in productSpecs" :key="spec.id" :value="spec.color">
+            <select class="form-select" v-model="selectedSpec">
+              <option disabled value="null">請選擇商品顏色</option>
+              <option v-for="spec in productSpecs" :key="spec.id" :value="spec">
                 {{ spec.color }}
               </option>
             </select>
@@ -142,7 +142,8 @@ export default {
         quantity: 1,  // Default starting quantity
         specId: ''
       },
-      selectedColor: '',
+
+      selectedSpec: null,
       productSpecs:[],
       reProductId: this.$route.query.reProductId,
       reProductName: this.$route.query.reProductName,
@@ -179,10 +180,10 @@ export default {
       }
     },
     async addToCart() {
-      console.log('Selected Color:', this.selectedColor);
-      console.log('Mapped specId:', this.colorToSpecIdMap[this.selectedColor]);
+      console.log('Selected Color:', this.selectedSpec.color);
+      // console.log('Mapped specId:', this.colorToSpecIdMap[this.selectedColor]);
 
-      if (!this.selectedColor) {
+      if (!this.selectedSpec.specId) {
         alert('請選擇商品顏色！');
         return;
       }
@@ -195,15 +196,14 @@ export default {
 
       const payload = {
         userId: store.userId,
-        specId: this.colorToSpecIdMap[this.selectedColor],
+        specId: this.selectedSpec.specId,
         quantity: this.product.quantity,
-        specIdt: this.product.specId,
       };
       console.log('Sending to backend:', payload);
       try {
         const response = await axios.post('http://localhost:8080/mall/cart/add', payload);
         console.log('Added to cart successfully:', response.data);
-        alert('Added to cart successfully!')
+        // this.modalVisible = true;
       } catch (error) {
         console.error('Failed to add to cart:', error);
         if (error.response) {
@@ -294,12 +294,7 @@ export default {
     console.log("Parsed specIds:", spId);
 
 
-    console.log(this.$route.query.reSpecIds);
-    if (typeof this.$route.query.reSpecIds === 'string') {
-      this.product.specId = JSON.parse(this.$route.query.reSpecIds)[0];
-    } else {
-      this.product.specId = this.$route.query.reSpecIds[0];
-    }
+
     const spIdt = this.$route.query.reSpecIds;
 
     const userStore = useUserStore();
@@ -322,11 +317,8 @@ export default {
             responses.forEach((response, index) => {
               console.log(`Response for specId ${spId[index]}:`, response.data);
               this.productSpecs[index] = response.data;
-              this.colorToSpecIdMap[response.data.color] = response.data.specId;
-              console.log("colorToSpecIdMap",this.colorToSpecIdMap);
             });
             console.log('Color to Spec ID Map:', this.colorToSpecIdMap);
-            // Ensure productSpecId is set correctly
             this.product.specId = spId[0];
           })
           .catch(error => {

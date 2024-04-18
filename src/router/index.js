@@ -119,8 +119,15 @@ const router = createRouter({
           component: () => import("@/views/payment/Paypal.vue")
       },
       {
+          path: '/stripe',
+          name: 'stripe',
+          component: () => import("@/views/payment/Stripe.vue")
+      },
+      {
           path: '/successPage',
+          name: 'successPage',
           component: () => import("@/views/payment/success.vue")
+
       },
       {
           path: "/login",
