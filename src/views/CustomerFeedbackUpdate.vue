@@ -94,6 +94,7 @@ export default {
       })
           .then(response => {
             this.showSuccessModal = true;
+            alert( '評論更新成功！' );
             this.$router.push('/MemberCenter/MemberFeedback');
             // 這裡您可以添加更多的業務邏輯
           })

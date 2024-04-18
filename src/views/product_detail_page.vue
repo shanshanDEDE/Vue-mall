@@ -1,4 +1,5 @@
 <template >
+  <main>
   <section class="py-5">
     <div class="container">
       <div class="row mb-5">
@@ -19,10 +20,7 @@
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
-
           </div>
-
-
         </div>
         <!-- PRODUCT DETAILS-->
         <div class="col-lg-6">
@@ -36,7 +34,6 @@
                 {{ spec.color }}
               </option>
             </select>
-<!--            <div class="col-sm-5 pr-sm-0">-->
               <div class="quantity-container">
                 <span class="quantity-label">Quantity</span>
                 <button class="quantity-btn dec-btn" @click="decrement">-</button>
@@ -52,10 +49,8 @@
           <template v-if="isTracked">
             <button class="btn btn-link text-dark p-0 mb-4 no-underline" @click="deleteTrack(this.UserID,this.reSpecIds)"><i class="fas fa-heart me-2 text-danger"></i>Delete this wish</button>
           </template>
-
           <br>
           <ul class="list-unstyled small d-inline-block">
-
           </ul>
         </div>
       </div>
@@ -112,7 +107,25 @@
       </div>
     </div>
   </section>
-</template>
+  </main>
+  <div class="modal fade" id="checkColorSelectModal" tabindex="-1" aria-labelledby="checkColorSelectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black">
+          <h5 class="modal-title" id="checkColorSelectModalLabel">提醒！</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          請選擇商品顏色！<br>
+          選擇顏色後，才可放入購物車！
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </template>
 <script>
 import axios from "axios";
 import {useUserStore} from "@/stores/userStore.js";
@@ -132,18 +145,16 @@ function injectSvgSprite(path) {
 export default {
   data() {
     return {
-      colorToSpecIdMap: {},
       item: {
         quantity: 1,
         specId: null,
       },
       product: {
         id: null,
-        quantity: 1,  // Default starting quantity
+        quantity: 1,
         specId: ''
       },
-
-      selectedSpec: null,
+      selectedSpec: '',
       productSpecs:[],
       reProductId: this.$route.query.reProductId,
       reProductName: this.$route.query.reProductName,
@@ -154,8 +165,8 @@ export default {
       isTracked: false,
       UserID: null,
       trackDTO: {
-        userID: null, // 初始化為空，等待登錄後填充
-        specID: null, // 初始化為空，等待需要時填充
+        userID: null,
+        specID: null,
       },
     };
   },
@@ -164,13 +175,7 @@ export default {
       return this.reSpecIds && this.reSpecIds.length > 0 ? this.reSpecIds[0] : null;
     }
   },
-  watch: {
-    computedSpecId(newSpecId) {
-      this.product.specId = newSpecId;
-    }
-  },
   methods: {
-
     increment() {
       this.product.quantity++;
     },
@@ -180,19 +185,16 @@ export default {
       }
     },
     async addToCart() {
-      console.log('Selected Color:', this.selectedSpec.color);
-      // console.log('Mapped specId:', this.colorToSpecIdMap[this.selectedColor]);
-
-      if (!this.selectedSpec.specId) {
-        alert('請選擇商品顏色！');
-        return;
-      }
       const store = useUserStore();
       if (!store.isLoggedIn) {
         alert('Please log in to add items to your cart.');
         this.$router.push('/login');
         return;
       }
+      if (!this.selectedSpec.specId) {
+        var myModal = new bootstrap.Modal(document.getElementById('checkColorSelectModal'));
+        myModal.show();
+      }else{
 
       const payload = {
         userId: store.userId,
@@ -210,6 +212,7 @@ export default {
           console.error('Response data:', error.response.data);
           console.error('Response status:', error.response.status);
         }
+      }
       }
     },
     toggleTrack() {
@@ -292,11 +295,7 @@ export default {
 
     const spId = Array.isArray(reSpecIds) ? reSpecIds : JSON.parse(reSpecIds);
     console.log("Parsed specIds:", spId);
-
-
-
     const spIdt = this.$route.query.reSpecIds;
-
     const userStore = useUserStore();
     if (userStore.isLoggedIn) {
       this.IsSpectRacked(userStore.userId, spIdt);
@@ -318,7 +317,6 @@ export default {
               console.log(`Response for specId ${spId[index]}:`, response.data);
               this.productSpecs[index] = response.data;
             });
-            console.log('Color to Spec ID Map:', this.colorToSpecIdMap);
             this.product.specId = spId[0];
           })
           .catch(error => {

@@ -128,7 +128,7 @@ import { useUserStore } from "@/stores/userStore";
 export default {
   data() {
     return {
-      email: "willyjen0530@gmail.com",
+      email: "wangsmingg@gmail.com",
       password: "12345678",
       message: "",
       isChatIcon: true, // 標記是否顯示 chat icon
@@ -158,8 +158,6 @@ export default {
             const userStore = useUserStore();
             userStore.loginSuccess(rs.data);
             sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
-            // this.$router.push("/");
-            // 登录成功后，检查是否有保存的路由，如果有，则重定向到该路由
             const redirectRoute = sessionStorage.getItem('redirectRoute');
             if (redirectRoute) {
               this.$router.push(redirectRoute);
@@ -168,6 +166,7 @@ export default {
               this.$router.push("/");
             }
           }
+
         })
         .catch(() => {
           this.message = "登入失敗";
