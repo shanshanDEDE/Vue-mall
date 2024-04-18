@@ -1,4 +1,5 @@
 <template>
+  <main>
   <div class="main-container">
     <MemberOption class="sidebar"></MemberOption>
     <div class="content-container">
@@ -55,8 +56,25 @@
               <button type="submit" class="submit-button">提交更新</button>
               <div v-if="showsubmitfalseflag" class="error-message">更新失敗，姓名：尚未填寫</div>
             </div>
+
           </form>
         </div>
+      </div>
+    </div>
+  </div>
+  </main>
+  <!-- 更新成功的模态窗口 -->
+  <div class="modal" v-show="showSuccessModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">更新成功</h5>
+        <button type="button" class="btn2 " @click="closeSuccessModal">×</button>
+      </div>
+      <div class="modal-body">
+        您的會員資料已成功更新。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn1 btn-primary" @click="closeSuccessModal">确定</button>
       </div>
     </div>
   </div>
@@ -74,13 +92,17 @@ export default {
     return {
       memberdata: null,
       inputmemberdata: null,
-      showsubmitfalseflag: false
+      showsubmitfalseflag: false,
+      showSuccessModal: false  // 控制模态窗口的显示
     };
   },
   components: {
     MemberOption,
   },
   methods: {
+    closeSuccessModal() {
+      this.showSuccessModal = false;  // 隐藏模态窗口
+    },
     getMemberData(userId) {
       axios
           .get(`${this.API_URL}/member/showmemberredata?userId=${userId}`)
@@ -121,8 +143,8 @@ export default {
           .put(`${this.API_URL}/update/memberdataupdate`, this.memberdata)
           .then((response) => {
             console.log(response);
+            this.showSuccessModal = true;
             this.showsubmitfalseflag = false;
-            alert("資料更新成功")
           })
           .catch((error) => {
             console.log(error);
@@ -271,6 +293,92 @@ export default {
   margin-right: 20px; /* 右邊距保留一些空間 */
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.modal-header,
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.modal-body {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.btn1 {
+  padding: 10px 15px;
+  border-color: black;
+  border-radius: 6px;
+  width: 50%;
+  background-color: white; /* For example, a green button */
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+.btn1:hover {
+  background-color: black; /* Darker green on hover */
+  color: white;
+}
+.btn2{
+  border-color: black;
+  background-color: white; /* For example, a green button */
+  color: black;
+  cursor: pointer;
+}
+.btn2:hover {
+  background-color: black; /* Darker green on hover */
+  color: white;
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  color: black;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 25%; /* 控制模態框的寬度 */
+  max-width: 600px; /* 確保模態框不會超過這個最大寬度 */
+  box-sizing: border-box;
+}
 </style>
 

@@ -453,8 +453,19 @@ button:hover {
 button {
   margin: 10px;
 }
+.yes-button {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 6px;
+  background-color: black !important; /* Darker green on hover */
+  color: white !important;
+  cursor: pointer;
+  text-transform: uppercase;
+}
 .yes-button:hover {
-  background-color: black; /* Darker green on hover */
-  color: white;
+  background-color:	#6C6C6C  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
+  border-radius: 6px;
+
 }
 </style>

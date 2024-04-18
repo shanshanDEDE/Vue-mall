@@ -34,6 +34,22 @@
             </div>
     </div>
   </main>
+
+  <!-- 更新成功的模态窗口 -->
+  <div class="modal" v-show="showSuccessModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">更新成功</h5>
+        <button type="button" class="btn2 " @click="closeSuccessModal">×</button>
+      </div>
+      <div class="modal-body">
+        您的會員資料已成功更新。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" @click="closeSuccessModal">确定</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -49,6 +65,7 @@ export default {
     return {
       isLoggedInUserId: null,
       feedback: useFeedbackStore().feedback
+      showSuccessModal: false  // 控制模态窗口的显示
     };
   },
   created() {
@@ -66,7 +83,9 @@ export default {
     MemberOption,
   },
   methods: {
-
+    closeSuccessModal() {
+      this.showSuccessModal = false;  // 隐藏模态窗口
+    },
 
     submitFeedback() {
       axios.put(`${this.API_URL}/update/customerFeedbacks`, {
@@ -74,7 +93,7 @@ export default {
         feedbackDate: new Date().toISOString()
       })
           .then(response => {
-            alert('評論更新成功！');
+            this.showSuccessModal = true;
             this.$router.push('/MemberCenter/MemberFeedback');
             // 這裡您可以添加更多的業務邏輯
           })
