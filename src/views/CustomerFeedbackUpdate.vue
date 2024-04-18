@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       isLoggedInUserId: null,
-      feedback: useFeedbackStore().feedback
+      feedback: useFeedbackStore().feedback,
       showSuccessModal: false  // 控制模态窗口的显示
     };
   },

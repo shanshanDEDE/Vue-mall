@@ -359,6 +359,7 @@ export default {
 
 
 .modal {
+  border-color: black !important;
   position: fixed;
   top: 0;
   left: 0;
@@ -371,6 +372,7 @@ export default {
 }
 
 .modal-content {
+  border: black solid 2px !important;
   background: white;
   color: black;
   padding: 20px;
