@@ -2,8 +2,9 @@
   <!-- navbar-->
   <header class="header bg-white">
     <div class="container px-lg-3">
-      <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><a class="navbar-brand" href="index.html"><span class="fw-bold text-uppercase text-dark">Apple Tree</span></a>
+      <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><router-link to="/" class="navbar-brand"><span class="fw-bold text-uppercase text-dark">Apple Tree</span></router-link>
         <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+<!--        -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
@@ -18,7 +19,7 @@
             </li>
 
             <li class="nav-item">
-              <a href="http://localhost:8081/Page3Project_ron/HomePage.jsp" class="nav-link active">insurance</a>
+              <a href="http://localhost:8081/Page3Project_ron/LoginPage.jsp" class="nav-link active">insurance</a>
             </li>
 
           </ul>
