@@ -30,9 +30,9 @@
           <p class="text-muted lead">${{ rePrice }}</p>
           <p class="text-sm mb-4">{{ reProductDescription }}</p>
           <div class="row align-items-stretch mb-4">
-            <select v-model="selectedColor" class="form-select">
-              <option disabled value="">請選擇商品顏色</option>
-              <option v-for="spec in productSpecs" :key="spec.id" :value="spec.color">
+            <select class="form-select" v-model="selectedSpec">
+              <option disabled value="null">請選擇商品顏色</option>
+              <option v-for="spec in productSpecs" :key="spec.id" :value="spec">
                 {{ spec.color }}
               </option>
             </select>
@@ -110,12 +110,19 @@
           </div>
         </div>
       </div>
+<!--      <modal-component-->
+<!--          :isVisible.sync="modalVisible"-->
+<!--          message="Added to cart successfully!"-->
+<!--          @confirm="handleConfirm"-->
+<!--      />-->
     </div>
+
   </section>
 </template>
 <script>
 import axios from "axios";
 import {useUserStore} from "@/stores/userStore.js";
+// import ModalComponent from "@/components/ModalComponent.vue";
 
 function injectSvgSprite(path) {
   var ajax = new XMLHttpRequest();
@@ -132,6 +139,7 @@ function injectSvgSprite(path) {
 export default {
   data() {
     return {
+      // modalVisible: false,
       colorToSpecIdMap: {},
       item: {
         quantity: 1,
@@ -142,7 +150,8 @@ export default {
         quantity: 1,  // Default starting quantity
         specId: ''
       },
-      selectedColor: '',
+
+      selectedSpec: null,
       productSpecs:[],
       reProductId: this.$route.query.reProductId,
       reProductName: this.$route.query.reProductName,
@@ -158,6 +167,9 @@ export default {
       },
     };
   },
+  components: {
+    // ModalComponent, // Register the modal component
+  },
   computed: {
     computedSpecId() {
       return this.reSpecIds && this.reSpecIds.length > 0 ? this.reSpecIds[0] : null;
@@ -169,7 +181,6 @@ export default {
     }
   },
   methods: {
-
     increment() {
       this.product.quantity++;
     },
@@ -179,10 +190,10 @@ export default {
       }
     },
     async addToCart() {
-      console.log('Selected Color:', this.selectedColor);
-      console.log('Mapped specId:', this.colorToSpecIdMap[this.selectedColor]);
+      console.log('Selected Color:', this.selectedSpec.color);
+      // console.log('Mapped specId:', this.colorToSpecIdMap[this.selectedColor]);
 
-      if (!this.selectedColor) {
+      if (!this.selectedSpec.specId) {
         alert('請選擇商品顏色！');
         return;
       }
@@ -195,14 +206,14 @@ export default {
 
       const payload = {
         userId: store.userId,
-        specId: this.colorToSpecIdMap[this.selectedColor],
+        specId: this.selectedSpec.specId,
         quantity: this.product.quantity,
       };
       console.log('Sending to backend:', payload);
       try {
         const response = await axios.post('http://localhost:8080/mall/cart/add', payload);
         console.log('Added to cart successfully:', response.data);
-        alert('Added to cart successfully!')
+        // this.modalVisible = true;
       } catch (error) {
         console.error('Failed to add to cart:', error);
         if (error.response) {
@@ -211,6 +222,12 @@ export default {
         }
       }
     },
+    handleConfirm() {
+      // this.modalVisible = false; // Close the modal when the user confirms
+      // console.log('User confirmed the addition.');
+      // Additional logic after confirmation if needed
+    },
+
     toggleTrack() {
       this.isTracked = !this.isTracked;
     },
@@ -248,6 +265,7 @@ export default {
           });
     },
     submitUpdate(userId, SpecIds) {
+      console.log(userId, SpecIds);
       const data = {
         userID: userId,
         specID: SpecIds
@@ -311,11 +329,8 @@ export default {
             responses.forEach((response, index) => {
               console.log(`Response for specId ${spId[index]}:`, response.data);
               this.productSpecs[index] = response.data;
-              this.colorToSpecIdMap[response.data.color] = response.data.specId;
-              console.log("colorToSpecIdMap",this.colorToSpecIdMap);
             });
             console.log('Color to Spec ID Map:', this.colorToSpecIdMap);
-            // Ensure productSpecId is set correctly
             this.product.specId = spId[0];
           })
           .catch(error => {
