@@ -158,7 +158,13 @@ export default {
             const userStore = useUserStore();
             userStore.loginSuccess(rs.data);
             sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
-            this.$router.push("/");
+            const redirectRoute = sessionStorage.getItem('redirectRoute');
+            if (redirectRoute) {
+              this.$router.push(redirectRoute);
+              sessionStorage.removeItem('redirectRoute'); // 清除保存的路由
+            } else {
+              this.$router.push("/");
+            }
           }
 
         })
