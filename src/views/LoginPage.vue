@@ -83,7 +83,7 @@
     <div class="modal fade" id="blockedAccountModal" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header bg-warning text-black"> <!-- 更改背景颜色和标题颜色 -->
+          <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
             <h5 class="modal-title" id="blockedAccountModalLabel">警告！</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
@@ -158,7 +158,13 @@ export default {
             const userStore = useUserStore();
             userStore.loginSuccess(rs.data);
             sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
-            this.$router.push("/");
+            const redirectRoute = sessionStorage.getItem('redirectRoute');
+            if (redirectRoute) {
+              this.$router.push(redirectRoute);
+              sessionStorage.removeItem('redirectRoute'); // 清除保存的路由
+            } else {
+              this.$router.push("/");
+            }
           }
 
         })

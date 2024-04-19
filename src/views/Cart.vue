@@ -239,7 +239,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .form-control{
   min-width:35px;
 }
