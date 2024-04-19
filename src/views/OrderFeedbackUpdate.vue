@@ -76,7 +76,7 @@ export default {
       }
       this.feedback.userId = userStore.userId;
       this.feedback.orderId = this.order.orderId;
-      this.feedback.ordersDetailId = 1;
+      this.feedback.ordersDetailId = 3;
       this.feedback.feedbackDate = new Date().toISOString(); // 设置当前时间为反馈时间
 
       console.log(this.feedback.userId);

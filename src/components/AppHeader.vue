@@ -21,7 +21,9 @@
             <li class="nav-item">
               <a href="http://localhost:8081/Page3Project_ron/LoginPage.jsp" class="nav-link active">insurance</a>
             </li>
-
+            <li class="nav-item">
+              <router-link to="/findUs" class="nav-link active">find us</router-link>
+            </li>
           </ul>
           <ul class="navbar-nav ms-auto">
             <router-link to="/cart" class="nav-link">

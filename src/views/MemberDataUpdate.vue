@@ -347,10 +347,10 @@ export default {
   color: black;
 }
 .btn2{
-  border: rgba(0, 0, 0, 0) solid 3px !important;
-  background-color: white; /* For example, a green button */
-  color: black;
-  cursor: pointer;
+border: rgba(0, 0, 0, 0) solid 3px !important;
+background-color: white; /* For example, a green button */
+color: black;
+cursor: pointer;
 }
 .btn2:hover {
   background-color: rgba(0, 0, 0, 0) !important; /* Darker green on hover */
