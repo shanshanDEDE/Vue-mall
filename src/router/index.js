@@ -102,12 +102,14 @@ const router = createRouter({
           path: "/product/detail",
           component: () => import("@/views/product_detail_page.vue"),
         },
-        {
-          path: "/cart",
-          component: () => import("@/views/Cart.vue"),
-            meta: { requiresAuth: true }
-
-        },
+    {
+      path: "/findUs",
+      component: () => import("@/views/FindUs.vue"),
+    },
+    {
+      path: "/cart",
+      component: () => import("@/views/Cart.vue"),
+    },
       {
           path: "/checkout",
           component: () => import("@/views/payment/Checkout.vue"),

@@ -24,7 +24,8 @@ axios.defaults.withCredentials = true;
 //刷新頁面時，如果session有登入資料，則還原pinia
 axios.get(`${API_URL}/user/check`).then((rs) => {
     if (rs.data) {
-        const loggedInMember = JSON.parse(sessionStorage.getItem("loggedInMember"));
+        //const loggedInMember = JSON.parse(sessionStorage.getItem("loggedInMember"));
+        const loggedInMember = rs.data;
         useUserStore().loginSuccess(loggedInMember);
     }
 });

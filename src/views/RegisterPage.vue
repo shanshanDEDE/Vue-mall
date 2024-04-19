@@ -161,8 +161,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      name: "amy",
-      email: "amy@mail.com",
+      name: "王小明",
+      email: "891001no8@gmail.com",
       phone: "0987654321",
       password: "",
       password2: "",

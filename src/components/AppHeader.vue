@@ -24,7 +24,6 @@
             <li class="nav-item">
               <router-link to="/findUs" class="nav-link active">find us</router-link>
             </li>
-
           </ul>
           <ul class="navbar-nav ms-auto">
             <router-link to="/cart" class="nav-link">
