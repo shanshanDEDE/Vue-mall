@@ -198,10 +198,10 @@ export default {
 
 .myButton {
   padding: 10px 15px;
-  border: none !important;
+  border: black solid 3px;
   border-radius: 25px;
-  background-color:#272727  !important;  /* Darker green on hover */
-  color: 	#FCFCFC  !important;
+  background-color: white  !important;  /* Darker green on hover */
+  color: 	black  !important;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -210,8 +210,8 @@ export default {
 }
 
 .myButton:hover {
-  background-color:		#4F4F4F !important; /* For example, a green button */
-  color: white;
+  background-color:		black !important; /* For example, a green button */
+  color: white !important;
 }
 
 </style>

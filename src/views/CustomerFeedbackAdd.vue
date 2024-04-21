@@ -16,11 +16,11 @@
             <div v-for="order in Orders" :key="order.orderId">
               <div v-if="order.orderStatus == '已完結' ">
                 <div class="accordion mb-3" id="accordionExample">
-                  <div class="accordion-item">
                     <!-- 折叠标题 -->
-                    <h2 class="accordion-header" :id="'heading' + order.orderId">
+
+                    <h2 class="accordion-header accordion" :id="'heading' + order.orderId">
                       <button
-                          class="accordion-button accordion"
+                          class="accordion-button accordion2"
                           type="button"
                           data-bs-toggle="collapse"
                           :data-bs-target="'#collapse' + order.orderId"
@@ -96,7 +96,6 @@
                   </div>
                 </div>
               </div>
-            </div>
             </form>
         </div>
         </div>
@@ -244,10 +243,10 @@ export default {
 
 .myButton {
   padding: 10px 15px;
-  border: none !important;
-  border-radius: 25px;
-  background-color: black; /* Darker green on hover */
-  color: white;
+  border-radius: 20px;
+  border: black 3px solid !important;
+  background-color:white ; /* Darker green on hover */
+  color: black;
 
   cursor: pointer;
   font-weight: bold;
@@ -257,8 +256,8 @@ export default {
 }
 
 .myButton:hover {
-  background-color:		#4F4F4F !important; /* For example, a green button */
-  color: white;
+  background-color:	black	 !important; /* For example, a green button */
+  color: white !important;
 }
 
 
@@ -283,16 +282,25 @@ export default {
 }
 
 .accordion{
-  border-color: black !important;
-  background-color:#272727  !important;  /* Darker green on hover */
-  color: 	#FCFCFC  !important;
-
+  background-color:	#FCFCFC !important;  /* Darker green on hover */
+  color: #272727	 !important;
 }
+
 .accordion:hover{
-  background-color:		#4F4F4F !important; /* For example, a green button */
-  color: white  !important;
-
+  background-color:		white !important; /* For example, a green button */
+  color:  #4F4F4F !important;
 }
+
+
+.accordion2{
+  border: black solid 3px !important;
+  border-radius: 10px;
+  background-color:	#FCFCFC !important;  /* Darker green on hover */
+  color: #272727	 !important;
+}
+
+
+
 
 
 .order-status-group {

@@ -233,10 +233,10 @@ button:hover {
 
 .myButton {
   padding: 10px 15px;
-  border: none !important;
+  border: black 3px solid !important;
   border-radius: 25px;
-  background-color: black; /* Darker green on hover */
-  color: white;
+  background-color: white; /* Darker green on hover */
+  color: black;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -245,7 +245,7 @@ button:hover {
 }
 
 .myButton:hover {
-  background-color:		#4F4F4F !important; /* For example, a green button */
+  background-color:		black !important; /* For example, a green button */
   color: white;
 }
 </style>
