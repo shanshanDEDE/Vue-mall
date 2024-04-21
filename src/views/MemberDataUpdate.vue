@@ -63,7 +63,7 @@
     </div>
   </div>
   </main>
-  <!-- 更新成功的模态窗口 -->
+
   <div class="modal" v-show="showSuccessModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -93,7 +93,7 @@ export default {
       memberdata: null,
       inputmemberdata: null,
       showsubmitfalseflag: false,
-      showSuccessModal: false  // 控制模态窗口的显示
+      showSuccessModal: false
     };
   },
   components: {

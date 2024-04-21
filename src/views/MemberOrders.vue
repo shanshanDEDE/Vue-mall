@@ -105,23 +105,20 @@
     </div>
   </main>
 
-  <div class="modal fade" id="blockedAccountModalDelete" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
-          <h5 class="modal-title" id="blockedAccountModalLabel">提示</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          取消成功
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+  <div class="modal" v-show="showSuccessModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">提示</h5>
+        <button type="button" class="btn2" @click="closeSuccessModal">×</button>
+      </div>
+      <div class="modal-body">
+        您的密碼已重設更新。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn1 btn-primary" @click="closeSuccessModal">確定</button>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -140,9 +137,13 @@ export default {
       Orders: [],
       showModal: false,
       memberOrder: null,
+      showSuccessModal: false
     };
   },
   methods: {
+    closeSuccessModal() {
+      this.showSuccessModal = false;  // 隐藏模态窗口
+    },
     confirmResolution(order) {
       this.memberOrder = order;
       this.showModal = true;
@@ -173,8 +174,7 @@ export default {
           )
           .then((response) => {
             console.log(response);
-            var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModalDelete'));
-            myModal.show();
+            this.showSuccessModal = true;
             this.Orders = this.Orders.filter(
                 (item) => item.orderId !== order.orderId
             );
@@ -412,6 +412,103 @@ button {
 .yes-button:hover {
   background-color: black; /* Darker green on hover */
   color: white;
+}
+
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.modal-header,
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.modal-body {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.btn1 {
+  padding: 10px 15px;
+  border: rgba(0, 0, 0, 0) solid 3px !important;
+  border-radius: 6px;
+  width: 50%;
+  background-color:  rgba(0, 0, 0, 0.05); /* For example, a green button */
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+.btn1:hover {
+  background-color:  rgba(0, 0, 0, 0.15); /* Darker green on hover */
+  color: black;
+}
+
+.btn2{
+  border: rgba(0, 0, 0, 0) solid 3px !important;
+  background-color: white; /* For example, a green button */
+  color: black;
+  cursor: pointer;
+}
+.btn2:hover {
+  background-color: rgba(0, 0, 0, 0) !important; /* Darker green on hover */
+  color: black;
+}
+
+
+.modal {
+  border-color: black !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  border: rgba(0, 0, 0, 0) solid 3px !important;
+  background: white;
+  color: black;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 25%; /* 控制模態框的寬度 */
+  max-width: 600px; /* 確保模態框不會超過這個最大寬度 */
+  box-sizing: border-box;
+}
+
+.modal-title{
+  font-weight:  800;
 }
 </style>
 

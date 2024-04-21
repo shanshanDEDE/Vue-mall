@@ -25,7 +25,7 @@
                   <p/>
                   <div class="form-group">
                     <label for="feedbackDescription" class="form-label">描述：</label>
-                    <textarea v-model="feedback.description" id="feedbackDescription" class="textarea-large" required></textarea>
+                    <textarea v-model="feedback.description" id="feedbackDescription" class="textarea-large" required >配送速度快速，非常滿意</textarea>
                   </div>
                   <button type="submit" class="myButton">提交評論</button>
                 </form>
@@ -33,6 +33,23 @@
             </div>
           </div>
   </main>
+
+  <div class="modal fade" id="blockedAccountModalUp" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
+          <h5 class="modal-title" id="blockedAccountModalLabel">提示</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          意見反饋新增成功
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -99,7 +116,8 @@ export default {
       })
           .then(response => {
             // 处理响应
-            alert('新增評論成功！');
+            var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModalUp'));
+            myModal.show();
             this.$router.push('/MemberCenter/MemberFeedback');
           })
           .catch(error => {

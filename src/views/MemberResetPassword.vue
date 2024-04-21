@@ -343,6 +343,8 @@
           this.disableSend = false; // 恢复发送按钮
 
           this.disableupdate = false; // 恢复提交按钮
+          clearInterval(this.countdown); // 清除倒计时
+          this.buttonText = '重新取得驗證碼';
         }
       }
     },

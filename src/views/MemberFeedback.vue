@@ -457,7 +457,7 @@ button {
   padding: 10px 15px;
   border: none !important;
   border-radius: 6px;
-  background-color: black !important; /* Darker green on hover */
+  background-color: #3C3C3C !important; /* Darker green on hover */
   color: white !important;
   cursor: pointer;
   text-transform: uppercase;
