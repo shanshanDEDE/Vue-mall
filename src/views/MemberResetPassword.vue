@@ -84,6 +84,41 @@
     </div>
     </div>
   </main>
+
+  <div class="modal fade" id="blockedAccountModalValid" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
+          <h5 class="modal-title" id="blockedAccountModalLabel">提示</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          驗證碼驗發送成功,請確認您的電子信箱
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">確認</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="blockedAccountModalPass" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
+          <h5 class="modal-title" id="blockedAccountModalLabel">提示</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          重設密碼成功
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">確認</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
   <script>
@@ -172,7 +207,8 @@
             .then(res => {
               console.log(res.data)
               if (res.data.code === 1) {
-                alert(res.data.message); // 使用 alert 函數顯示成功消息
+                var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModalValid'));
+                myModal.show();
               } else {
                 alert(res.data.message); // 使用 alert 函數顯示錯誤消息
                 this.disableSend = false;
@@ -191,7 +227,7 @@
               .then(res => {
                 this.sendFirstVerificationCode=true;
                 if (res.data.code === 1) {
-                  alert("驗證碼驗證成功");
+                  // alert("驗證碼驗證成功");
                   this.VerificationCodePass = true;
                   resolve(true);
 
@@ -297,7 +333,8 @@
             }
           });
 
-          alert('重設密碼成功!');
+          var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModalPass'));
+          myModal.show();
         } catch (error) {
           console.error(error);
           clearInterval(this.countdown); // 清除倒计时

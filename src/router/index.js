@@ -154,8 +154,11 @@ router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   if (to.matched.some(record => record.meta.requiresAuth) && !userStore.isLoggedIn) {
     sessionStorage.setItem('redirectRoute', to.fullPath); // 保存尝试访问的完整路径
-    alert("請先登入");
-    next({ path: '/login' });
+
+      var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModal'));
+      myModal.show();
+
+
   } else {
     // 確保一定要調用 next()
     next();

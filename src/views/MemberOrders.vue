@@ -104,6 +104,24 @@
       </div>
     </div>
   </main>
+
+  <div class="modal fade" id="blockedAccountModalDelete" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
+          <h5 class="modal-title" id="blockedAccountModalLabel">提示</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          取消成功
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -155,13 +173,13 @@ export default {
           )
           .then((response) => {
             console.log(response);
-            // 更新tracks数组，移除取消收藏的产品
+            var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModalDelete'));
+            myModal.show();
             this.Orders = this.Orders.filter(
                 (item) => item.orderId !== order.orderId
             );
           })
           .catch((error) => {
-            // 处理错误
             console.error(error);
           });
     },
