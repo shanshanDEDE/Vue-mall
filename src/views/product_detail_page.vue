@@ -125,6 +125,53 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="checkColorSelectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black">
+          <h5 class="modal-title" id="checkColorSelectModalLabel">加入完成！</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          已加入購物車！<br>
+          可至購物車下訂單！
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="pleaseLogInModal" tabindex="-1" aria-labelledby="checkColorSelectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          請先登入！
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="quantityLessThenOneModal" tabindex="-1" aria-labelledby="checkColorSelectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          數量不能少於一！
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   </template>
 <script>
 import axios from "axios";
@@ -187,7 +234,8 @@ export default {
     async addToCart() {
       const store = useUserStore();
       if (!store.isLoggedIn) {
-        alert('Please log in to add items to your cart.');
+        var myModal = new bootstrap.Modal(document.getElementById('pleaseLogInModal'));
+        myModal.show();
         this.$router.push('/login');
         return;
       }
@@ -195,7 +243,6 @@ export default {
         var myModal = new bootstrap.Modal(document.getElementById('checkColorSelectModal'));
         myModal.show();
       }else{
-
       const payload = {
         userId: store.userId,
         specId: this.selectedSpec.specId,
@@ -205,7 +252,8 @@ export default {
       try {
         const response = await axios.post('http://localhost:8080/mall/cart/add', payload);
         console.log('Added to cart successfully:', response.data);
-        // this.modalVisible = true;
+        var myModal = new bootstrap.Modal(document.getElementById('addToCartModal'));
+        myModal.show();
       } catch (error) {
         console.error('Failed to add to cart:', error);
         if (error.response) {
@@ -213,27 +261,6 @@ export default {
           console.error('Response status:', error.response.status);
         }
       }
-      }
-    },
-    toggleTrack() {
-      this.isTracked = !this.isTracked;
-    },
-    async updateQuantity(item, newQuantity) {
-      if (newQuantity < 1) {
-        alert('Quantity cannot be less than 1.');
-        return; // Prevent quantity from going below 1
-      }
-      try {
-        const response = await axios.post(`${this.API_URL}/cart/add`, null, {
-          params: {
-            specId: item.specId,  // Assuming each item has a specId
-            quantity: newQuantity  // Passing new quantity directly to the backend
-          }
-        });
-        item.quantity = response.data.quantity; // Update quantity with server response
-      } catch (error) {
-        console.error('Failed to update cart item:', error);
-        alert('Failed to update cart quantity. Please try again.');
       }
     },
     IsSpectRacked(userId, SpecIds) {
@@ -280,19 +307,16 @@ export default {
           })
           .catch((error) => {
             console.error('Error deleting:', error);
-            alert("取消失敗：" + error.message);
           });
     },
   },
   mounted() {
     console.log("Query Parameters:", this.$route.query);
     const reSpecIds = this.$route.query.reSpecIds;
-
     if (!reSpecIds) {
       console.error("No specIds found in the route query.");
       return;
     }
-
     const spId = Array.isArray(reSpecIds) ? reSpecIds : JSON.parse(reSpecIds);
     console.log("Parsed specIds:", spId);
     const spIdt = this.$route.query.reSpecIds;
@@ -303,7 +327,6 @@ export default {
     } else {
       console.log("會員未登入");
     }
-
     // Continuing with the requests if spId is defined
     if (spId && spId.length > 0) {
       const requests = spId.map(specId => {
@@ -311,7 +334,6 @@ export default {
       });
       console.log('All requests resolved:', requests);
       Promise.all(requests)
-
           .then(responses => {
             responses.forEach((response, index) => {
               console.log(`Response for specId ${spId[index]}:`, response.data);

@@ -13,11 +13,10 @@
         <!-- 交易记录 -->
             <div v-for="feedback in feedbacks" :key="feedback.feedbackID">
               <div class="accordion mb-3" id="accordionExample">
-                <div class="accordion-item">
                   <!-- 折叠标题 -->
-                  <h2 class="accordion-header" :id="'heading' + feedback.feedbackID">
+                  <h2 class="accordion-header accordion" :id="'heading' + feedback.feedbackID">
                     <button
-                      class="accordion-button accordion"
+                      class="accordion-button accordion2"
                       type="button"
                       data-bs-toggle="collapse"
                       :data-bs-target="'#collapse' + feedback.feedbackID"
@@ -111,7 +110,6 @@
                 </div>
               </div>
             </div>
-    </div>
     </div>
   </main>
 </template>
@@ -351,17 +349,24 @@ button:hover {
   background-color: #0056b3;
 }
 
-
 .accordion{
-  border-color: black !important;
-  background-color:#272727  !important;  /* Darker green on hover */
-  color: 	#FCFCFC  !important;
+  background-color:	#FCFCFC !important;  /* Darker green on hover */
+  color: #272727	 !important;
 }
 
 .accordion:hover{
-  background-color:		#4F4F4F !important; /* For example, a green button */
-  color: white  !important;
+  background-color:		white !important; /* For example, a green button */
+  color:  #4F4F4F !important;
 }
+
+
+.accordion2{
+  border: black solid 1px !important;
+  border-radius: 10px;
+  background-color:	#FCFCFC !important;  /* Darker green on hover */
+  color: #272727	 !important;
+}
+
 
 
 .order-status-group {
@@ -406,10 +411,10 @@ button:hover {
 
 .myButton {
   padding: 10px 15px;
-  border: none !important;
-  border-radius: 25px;
-  background-color:#272727  !important;  /* Darker green on hover */
-  color: 	#FCFCFC  !important;
+  border-radius: 20px;
+  border: black solid 3px !important;
+  background-color: white  !important;  /* Darker green on hover */
+  color: 	black  !important;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -418,8 +423,8 @@ button:hover {
 }
 
 .myButton:hover {
-  background-color:		#4F4F4F !important;
-  color: white;
+  background-color:	black !important;
+  color: white !important;
 }
 
 .total-amount-wrapper {
@@ -453,8 +458,19 @@ button:hover {
 button {
   margin: 10px;
 }
+.yes-button {
+  padding: 10px 15px;
+  border: none !important;
+  border-radius: 6px;
+  background-color: #3C3C3C !important; /* Darker green on hover */
+  color: white !important;
+  cursor: pointer;
+  text-transform: uppercase;
+}
 .yes-button:hover {
-  background-color: black; /* Darker green on hover */
-  color: white;
+  background-color:	#6C6C6C  !important;  /* Darker green on hover */
+  color: 	#FCFCFC  !important;
+  border-radius: 6px;
+
 }
 </style>

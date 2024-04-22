@@ -332,13 +332,6 @@ export default {
   align-items: flex-start; /* 內容靠左對齊 */
 }
 
-
-
-
-
-
-
-
 .content-container {
   display: flex;
   justify-content: center; /* 水平置中 */
@@ -374,6 +367,15 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* 內容靠左對齊 */
+}
+.member-info-content {
+  font-size: 16px; /* 調整字體大小 */
+  color: #333; /* 文字顏色 */
+  padding: 6px; /* 輕微的內距 */
+  background-color: transparent; /* 背景設為透明 */
+  border: none; /* 移除邊框 */
+  box-shadow: none; /* 移除陰影 */
+  margin-bottom: 10px; /* 保持底部間隔 */
 }
 </style>
 

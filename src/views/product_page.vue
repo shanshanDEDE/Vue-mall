@@ -61,7 +61,7 @@
                   </div>
                 </router-link>
                 <div class="d-flex justify-content-between align-items-center">
-                  <div class="m-3">價格:{{ p.price }}</div>
+                  <div class="m-3">NTD$:{{ p.price }}</div>
                 </div>
               </div>
             </div>

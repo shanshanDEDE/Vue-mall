@@ -80,7 +80,7 @@
     </div>
   </main>
 <!--  modal-->
-    <div class="modal fade" id="blockedAccountModal" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
+    <div class="modal fade" id="blockedAccountModal2" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
@@ -128,7 +128,7 @@ import { useUserStore } from "@/stores/userStore";
 export default {
   data() {
     return {
-      email: "amy@mail.com",
+      email: "wangsmingg@gmail.com",
       password: "12345678",
       message: "",
       isChatIcon: true, // 標記是否顯示 chat icon
@@ -152,7 +152,7 @@ export default {
         .then((rs) => {
           console.log(rs.data.authentication);
           if(rs.data.authentication==3){
-            var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModal'));
+            var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModal2'));
             myModal.show();
           }else{
             const userStore = useUserStore();

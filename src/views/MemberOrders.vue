@@ -12,11 +12,11 @@
         <div v-for="order in Orders" :key="order.orderId">
           <div v-if="order.orderStatus != '已取消' ">
             <div class="accordion mb-3" id="accordionExample">
-              <div class="accordion-item">
+
                 <!-- 折叠标题 -->
-                <h2 class="accordion-header" :id="'heading' + order.orderId">
+                <h2 class="accordion-header accordion" :id="'heading' + order.orderId">
                   <button
-                      class="accordion-button accordion"
+                      class="accordion-button accordion2"
                       type="button"
                       data-bs-toggle="collapse"
                       :data-bs-target="'#collapse' + order.orderId"
@@ -33,7 +33,7 @@
                 <!-- 折叠内容 -->
                 <div
                     :id="'collapse' + order.orderId"
-                    class="accordion-collapse collapse"
+                    class="accordion-collapse collapse "
                     :aria-labelledby="'heading' + order.orderId"
                     data-bs-parent="#accordionExample"
                 >
@@ -101,9 +101,24 @@
           </div>
 
         </div>
-      </div>
+
     </div>
   </main>
+
+  <div class="modal" v-show="showSuccessModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">提示</h5>
+        <button type="button" class="btn2" @click="closeSuccessModal">×</button>
+      </div>
+      <div class="modal-body">
+        您的密碼已重設更新。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn1 btn-primary" @click="closeSuccessModal">確定</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -122,9 +137,13 @@ export default {
       Orders: [],
       showModal: false,
       memberOrder: null,
+      showSuccessModal: false
     };
   },
   methods: {
+    closeSuccessModal() {
+      this.showSuccessModal = false;  // 隐藏模态窗口
+    },
     confirmResolution(order) {
       this.memberOrder = order;
       this.showModal = true;
@@ -155,13 +174,12 @@ export default {
           )
           .then((response) => {
             console.log(response);
-            // 更新tracks数组，移除取消收藏的产品
+            this.showSuccessModal = true;
             this.Orders = this.Orders.filter(
                 (item) => item.orderId !== order.orderId
             );
           })
           .catch((error) => {
-            // 处理错误
             console.error(error);
           });
     },
@@ -283,10 +301,10 @@ export default {
 
 .submit-button {
   padding: 10px 15px;
-  border: none !important;
-  border-radius: 25px;
-  background-color:#272727  !important;  /* Darker green on hover */
-  color: 	#FCFCFC  !important;
+  border: black 3px solid !important;
+  border-radius: 15px;
+  background-color: white  !important;  /* Darker green on hover */
+  color: 	black  !important;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -296,8 +314,8 @@ export default {
 
 .submit-button:hover {
   //background-color: #46A3FF; /* Darker green on hover */
-  background-color:		#4F4F4F !important; /* For example, a green button */
-  color: white;
+  background-color:		black !important; /* For example, a green button */
+  color: white !important;
 }
 
 .member-info-group {
@@ -345,16 +363,23 @@ export default {
 }
 
 .accordion{
-  border-color: black !important;
-  background-color:#272727  !important;  /* Darker green on hover */
-  color: 	#FCFCFC  !important;
+  background-color:	#FCFCFC !important;  /* Darker green on hover */
+  color: #272727	 !important;
 }
 
 .accordion:hover{
-  background-color:		#4F4F4F !important; /* For example, a green button */
-
-  color: white  !important;
+  background-color:		white !important; /* For example, a green button */
+  color:  #4F4F4F !important;
 }
+
+
+.accordion2{
+  border: black solid 1px !important;
+  border-radius: 10px;
+  background-color:	#FCFCFC !important;  /* Darker green on hover */
+  color: #272727	 !important;
+}
+
 
 
 .order-status-group {
@@ -394,6 +419,103 @@ button {
 .yes-button:hover {
   background-color: black; /* Darker green on hover */
   color: white;
+}
+
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.modal-header,
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.modal-body {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.btn1 {
+  padding: 10px 15px;
+  border: rgba(0, 0, 0, 0) solid 3px !important;
+  border-radius: 6px;
+  width: 50%;
+  background-color:  rgba(0, 0, 0, 0.05); /* For example, a green button */
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block; /* 確保它是塊級元素 */
+  margin: auto; /* 左邊距自動，推到右側 */
+}
+.btn1:hover {
+  background-color:  rgba(0, 0, 0, 0.15); /* Darker green on hover */
+  color: black;
+}
+
+.btn2{
+  border: rgba(0, 0, 0, 0) solid 3px !important;
+  background-color: white; /* For example, a green button */
+  color: black;
+  cursor: pointer;
+}
+.btn2:hover {
+  background-color: rgba(0, 0, 0, 0) !important; /* Darker green on hover */
+  color: black;
+}
+
+
+.modal {
+  border-color: black !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  border: rgba(0, 0, 0, 0) solid 3px !important;
+  background: white;
+  color: black;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 25%; /* 控制模態框的寬度 */
+  max-width: 600px; /* 確保模態框不會超過這個最大寬度 */
+  box-sizing: border-box;
+}
+
+.modal-title{
+  font-weight:  800;
 }
 </style>
 

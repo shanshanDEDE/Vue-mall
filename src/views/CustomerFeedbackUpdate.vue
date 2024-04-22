@@ -14,7 +14,7 @@
                   <div v-if="feedback">
                     <div>
                       <label for="feedbackType">類型：</label>
-                      <select v-model="feedback.type" id="feedbackType">
+                      <select v-model="feedback.type" id="feedbackType" required>
                         <option value="服務態度">服務態度</option>
                         <option value="商品品質">商品品質</option>
                         <option value="配送速度">配送速度</option>
@@ -25,7 +25,7 @@
                     <p/>
                     <div class="form-group">
                       <label for="feedbackDescription" class="form-label">內容：</label>
-                      <textarea v-model="feedback.description" id="feedbackDescription" class="textarea-large"></textarea>
+                      <textarea v-model="feedback.description" id="feedbackDescription" class="textarea-large" required>配送速度快速，非常滿意</textarea>
                     </div>
                     <button @click="submitFeedback" class="myButton">提交更新</button>
                   </div>
@@ -34,6 +34,23 @@
             </div>
     </div>
   </main>
+
+  <div class="modal fade" id="blockedAccountModalUp" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
+          <h5 class="modal-title" id="blockedAccountModalLabel">提示</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          意見反饋更新成功
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -48,7 +65,8 @@ export default {
   data() {
     return {
       isLoggedInUserId: null,
-      feedback: useFeedbackStore().feedback
+      feedback: useFeedbackStore().feedback,
+      showSuccessModal: false  // 控制模态窗口的显示
     };
   },
   created() {
@@ -66,7 +84,9 @@ export default {
     MemberOption,
   },
   methods: {
-
+    closeSuccessModal() {
+      this.showSuccessModal = false;  // 隐藏模态窗口
+    },
 
     submitFeedback() {
       axios.put(`${this.API_URL}/update/customerFeedbacks`, {
@@ -74,9 +94,10 @@ export default {
         feedbackDate: new Date().toISOString()
       })
           .then(response => {
-            alert('評論更新成功！');
+            this.showSuccessModal = true;
+            var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModalUp'));
+            myModal.show();
             this.$router.push('/MemberCenter/MemberFeedback');
-            // 這裡您可以添加更多的業務邏輯
           })
           .catch(error => {
             alert('評論更新失敗！');
@@ -177,10 +198,10 @@ export default {
 
 .myButton {
   padding: 10px 15px;
-  border: none !important;
+  border: black solid 3px;
   border-radius: 25px;
-  background-color:#272727  !important;  /* Darker green on hover */
-  color: 	#FCFCFC  !important;
+  background-color: white  !important;  /* Darker green on hover */
+  color: 	black  !important;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -189,8 +210,8 @@ export default {
 }
 
 .myButton:hover {
-  background-color:		#4F4F4F !important; /* For example, a green button */
-  color: white;
+  background-color:		black !important; /* For example, a green button */
+  color: white !important;
 }
 
 </style>
