@@ -7,7 +7,7 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            component: () => import('@/views/new_home.vue'),
+            component: () => import('@/views/NewHome.vue'),
         },
         {
             path: '/MemberCenter',
@@ -71,23 +71,23 @@ const router = createRouter({
 
         {
             path: "/product",
-            component: () => import("@/views/product_page.vue"),
+            component: () => import("@/views/ProductPage.vue"),
         },
         {
             path: "/product/iphoneIndex",
-            component: () => import("@/views/iphone_page.vue"),
+            component: () => import("@/views/IphonePage.vue"),
         },
         {
             path: "/product/ipadIndex",
-            component: () => import("@/views/ipad_page.vue"),
+            component: () => import("@/views/IpadPage.vue"),
         },
         {
             path: "/product/macbookIndex",
-            component: () => import("@/views/macbook_page.vue"),
+            component: () => import("@/views/MacbookPage.vue"),
         },
         {
             path: "/product/detail",
-            component: () => import("@/views/product_detail_page.vue"),
+            component: () => import("@/views/ProductDetailPage.vue"),
         },
         {
             path: "/findUs",

@@ -19,14 +19,13 @@
             @change="sortCart"
             id="sortSelect"
             class="form-select"
-        >
-          <option value="預設">預設排序</option>
+        ><option value="預設">預設排序</option>
           <option value="價格低至高">價格低至高</option>
           <option value="價格高至低">價格高至低</option>
         </select>
       </div>
     </div>
-    <p class="text-center">iPhone</p>
+
 
       <div class="container">
         <div class="row">
@@ -57,8 +56,8 @@
                   <p class="card-text mt-2 px-3 text-truncate">{{ p.productName }}</p>
                 </div>
               </router-link>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="m-3">NTD$:{{ p.price }}</div>
+              <div >
+                <div class="m-3 text-center">NTD$:{{ p.price }}</div>
               </div>
             </div>
           </div>
@@ -68,17 +67,12 @@
   </main>
 </template>
 <script>
-import { useRoute, useRouter } from 'vue-router';
-const router = useRouter();
-const route = useRoute();
-
 import axios from "axios";
 
 import "@/assets/shop.css";
 import category from "@/components/category.vue";
 export default {
   components: {
-
     category
   },
   data() {
@@ -102,7 +96,7 @@ export default {
   },
   mounted() {
     window.a = this
-    axios.get(`http://localhost:8080/mall/products/findProductsByCategoryId?categoryId=A&pageNumber=0`).then((rs) => {
+    axios.get(`http://localhost:8080/mall/products/findProductsByCategoryId?categoryId=B&pageNumber=0`).then((rs) => {
       console.log(rs.data)
 
       this.currentPage =rs.data.number+1;
@@ -159,7 +153,7 @@ export default {
       });
     },
     goKeywordSearch() {
-      axios.get(`http://localhost:8080/mall/products/searchProduct/0?categoryId=A&productName=${this.searchKeyWord}`).then((rs) => {
+      axios.get(`http://localhost:8080/mall/products/searchProduct/0?categoryId=B&productName=${this.searchKeyWord}`).then((rs) => {
         this.currentPage = rs.data.number + 1;
         this.totalPage = rs.data.totalPages;
         this.products = rs.data.content;
@@ -192,7 +186,7 @@ export default {
       let newPage = newVal - 1  // 頁碼變化時重新計算currentPage(解決無法讀取第0頁面的狀況)
 
       if(this.keywordSearchActive==true){  //若已開始搜尋狀態則走搜尋調用的後端方法
-        axios.get(`http://localhost:8080/mall/products/searchProduct/${newPage}?categoryId=A&productName=${this.searchKeyWord}`).then((rs) => {
+        axios.get(`http://localhost:8080/mall/products/searchProduct/${newPage}?categoryId=B&productName=${this.searchKeyWord}`).then((rs) => {
           this.currentPage =rs.data.number+1;
           this.totalPage = rs.data.totalPages;
           this.products = rs.data.content;
@@ -200,7 +194,7 @@ export default {
         this.keywordSearchActive = true
 
       }else{    //一般的商品頁面
-        axios.get(`http://localhost:8080/mall/products/findProductsByCategoryId?categoryId=A&pageNumber=${newPage}`).then((rs) => {
+        axios.get(`http://localhost:8080/mall/products/findProductsByCategoryId?categoryId=B&pageNumber=${newPage}`).then((rs) => {
           this.totalPage = rs.data.totalPages;
           this.products = rs.data.content;
         })
