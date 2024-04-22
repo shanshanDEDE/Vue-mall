@@ -120,7 +120,6 @@
       <button class="sub-button"><i class="fab fa-whatsapp"></i></button>
     </div>
   </transition>
-
 </template>
 <script>
 import axios from "axios";

@@ -361,7 +361,7 @@ button:hover {
 
 
 .accordion2{
-  border: black solid 3px !important;
+  border: black solid 1px !important;
   border-radius: 10px;
   background-color:	#FCFCFC !important;  /* Darker green on hover */
   color: #272727	 !important;
