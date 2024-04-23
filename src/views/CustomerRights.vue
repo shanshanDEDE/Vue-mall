@@ -7,10 +7,7 @@
           <h1 class="brand-title">AppleTree</h1>
           <h1 class="display-4 fw-normal">會員權益</h1>
         </div>
-        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
-
-
-
+        <div class="horizontal-divider"></div>
                 <pre class="lead fw-normal">
   親愛的客戶您好！這份隱私權的保障聲明，為因應社會環境及法令規定的變遷與科技的進步，富邦媒體科技股份有限公司為保護客戶隱私，有權修改這份公告
 聲明，並儘速更新與告知客戶。
@@ -184,7 +181,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 .main-container {
   display: flex;
@@ -211,7 +208,7 @@ export default {
 
 .profile-card {
   width: 100%;
-  max-width: 1200px; /* 設定最大寬度 */
+  max-width: 1200px;
   padding: 20px;
   border-radius: 6px;
   background-color: #fff;
@@ -228,14 +225,11 @@ export default {
   color: #333;
 }
 
-
 .horizontal-divider {
   width: 100%;
   height: 1px;
-  background-color: #ccc; /* 淡灰色背景色 */
-  margin-bottom: 20px; /* 根據需要增加下邊距 */
+  background-color: #ccc;
+  margin-bottom: 20px;
 }
-
-
 
 </style>

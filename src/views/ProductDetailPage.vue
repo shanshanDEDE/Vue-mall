@@ -352,7 +352,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .text-danger {
   color: red; /* Or use any specific shade of red you prefer */
 }

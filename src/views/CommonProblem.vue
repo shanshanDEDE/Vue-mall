@@ -4,13 +4,9 @@
     <div class="content-container">
       <div class="profile-card">
         <div class="profile-header">
-          <h1 class="brand-title">APPLE TREE</h1>
           <h1 class="display-4 fw-normal">常見問題</h1>
         </div>
-        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
-
-
-
+        <div class="horizontal-divider"></div>
         <pre class="lead fw-normal">
 
  以下為收集的賣家常見問題，請您參考。
@@ -211,6 +207,7 @@
 
 <script>
 import MemberOption from "@/components/MemberOption.vue";
+
 export default {
   components: {
     MemberOption,
@@ -218,7 +215,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 .main-container {
   display: flex;
@@ -262,14 +259,11 @@ export default {
   color: #333;
 }
 
-
 .horizontal-divider {
   width: 100%;
   height: 1px;
-  background-color: #ccc; /* 淡灰色背景色 */
-  margin-bottom: 20px; /* 根據需要增加下邊距 */
+  background-color: #ccc;
+  margin-bottom: 20px;
 }
-
-
 
 </style>

@@ -55,7 +55,7 @@ export default {
 
 .profile-card {
   width: 100%;
-  max-width: 1000px; /* 設定最大寬度 */
+  max-width: 1000px;
   padding: 20px;
   border-radius: 6px;
   background-color: #fff;
@@ -80,8 +80,8 @@ export default {
 .horizontal-divider {
   width: 100%;
   height: 1px;
-  background-color: #ccc; /* 淡灰色背景色 */
-  margin-bottom: 20px; /* 根據需要增加下邊距 */
+  background-color: #ccc;
+  margin-bottom: 20px;
 }
 
 </style>

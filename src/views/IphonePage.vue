@@ -57,8 +57,8 @@
                   <p class="card-text mt-2 px-3 text-truncate">{{ p.productName }}</p>
                 </div>
               </router-link>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="m-3">NTD$:{{ p.price }}</div>
+              <div >
+                <div class="m-3 text-center">NTD$:{{ p.price }}</div>
               </div>
             </div>
           </div>
@@ -104,7 +104,6 @@ export default {
     window.a = this
     axios.get(`http://localhost:8080/mall/products/findProductsByCategoryId?categoryId=A&pageNumber=0`).then((rs) => {
       console.log(rs.data)
-
       this.currentPage =rs.data.number+1;
       this.totalPage = rs.data.totalPages;
       this.products = rs.data.content;
@@ -185,7 +184,6 @@ export default {
         this.init();
       }
     }
-
   },
   watch: {
     currentPage(newVal, oldVal) {
@@ -210,4 +208,4 @@ export default {
 
 };
 </script>
-<style></style>
+<style scoped></style>

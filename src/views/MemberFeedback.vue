@@ -10,7 +10,7 @@
         <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
 
 
-        <!-- 交易记录 -->
+        <!-- 紀錄 -->
             <div v-for="feedback in feedbacks" :key="feedback.feedbackID">
               <div class="accordion mb-3" id="accordionExample">
                   <!-- 折叠标题 -->
@@ -202,31 +202,6 @@ export default {
             });
       }
     },
-
-    // deleteFeedback(feedback) {
-    //   // 这里添加取消收藏的逻辑
-    //   console.log("取消收藏的产品ID:", feedback.feedbackID);
-    //   // 例如，发起一个请求到后端取消收藏
-    //   this.feedbackDTO.userID = feedback.userID;
-    //   this.feedbackDTO.orderID = feedback.orderID;
-    //
-    //   axios
-    //     .delete(`${this.API_URL}/delete/customerFeedbacks`, {
-    //       data: this.feedbackDTO,
-    //     })
-    //     .then((response) => {
-    //       // 处理响应
-    //       console.log(response);
-    //       // 更新tracks数组，移除取消收藏的产品
-    //       this.feedbacks = this.feedbacks.filter(
-    //         (item) => item.feedbackID !== feedback.feedbackID
-    //       );
-    //     })
-    //     .catch((error) => {
-    //       // 处理错误
-    //       console.error(error);
-    //     });
-    // },
   },
   mounted() {
     const userStore = useUserStore();
@@ -362,7 +337,7 @@ button:hover {
 
 .accordion2{
   border: black solid 1px !important;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color:	#FCFCFC !important;  /* Darker green on hover */
   color: #272727	 !important;
 }

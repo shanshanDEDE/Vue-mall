@@ -8,7 +8,7 @@
           <h6 class="display-4 fw-normal">更改評論</h6>
           <label>訂單編號：{{ feedback.orderID }}</label>
         </div>
-        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
+        <div class="horizontal-divider"></div>
 
                 <div class="container">
                   <div v-if="feedback">
@@ -38,7 +38,7 @@
   <div class="modal fade" id="blockedAccountModalUp" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header bg-light text-black"> <!-- 更改背景颜色和标题颜色 -->
+        <div class="modal-header bg-light text-black">
           <h5 class="modal-title" id="blockedAccountModalLabel">提示</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -122,24 +122,24 @@ export default {
 <style scoped>
 .form-group {
   display: flex;
-  align-items: flex-start; /* 改變此處，讓items在容器的開始處對齊 */
-  margin-bottom: 10px; /* 添加一些底部外邊距 */
+  align-items: flex-start;
+  margin-bottom: 10px;
 }
 
 .form-label {
-  margin-right: 10px; /* 添加標籤右側的一些空間 */
-  white-space: nowrap; /* 防止標籤折行 */
+  margin-right: 10px;
+  white-space: nowrap;
 }
 
 .textarea-large {
-  flex-grow: 1; /* textarea佔據剩餘空間 */
+  flex-grow: 1;
   min-height: 150px;
   padding: 10px;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
-  margin-top: 0; /* 設置適當的margin-top，如果需要 */
+  margin-top: 0;
 }
 
 .main-container {
@@ -167,7 +167,7 @@ export default {
 
 .profile-card {
   width: 100%;
-  max-width: 1000px; /* 設定最大寬度 */
+  max-width: 1000px;
   padding: 20px;
   border-radius: 6px;
   background-color: #fff;
@@ -192,21 +192,21 @@ export default {
 .horizontal-divider {
   width: 100%;
   height: 1px;
-  background-color: #ccc; /* 淡灰色背景色 */
-  margin-bottom: 20px; /* 根據需要增加下邊距 */
+  background-color: #ccc;
+  margin-bottom: 20px;
 }
 
 .myButton {
   padding: 10px 15px;
   border: black solid 3px;
   border-radius: 25px;
-  background-color: white  !important;  /* Darker green on hover */
+  background-color: white  !important;
   color: 	black  !important;
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
-  display: block; /* 確保它是塊級元素 */
-  margin: auto; /* 左邊距自動，推到右側 */
+  display: block;
+  margin: auto;
 }
 
 .myButton:hover {

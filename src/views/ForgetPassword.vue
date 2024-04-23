@@ -15,14 +15,14 @@
                     <div class="d-flex flex-row align-items-center mb-4">
                       <div class="form-outline flex-fill mb-0">
                         <input
-                          type="email"
-                          id="form3Example3c"
-                          class="form-control"
-                          v-model="email"
-                          required
+                            type="email"
+                            id="form3Example3c"
+                            class="form-control"
+                            v-model="email"
+                            required
                         />
                         <label class="form-label" for="form3Example3c"
-                          >Your Email</label
+                        >Your Email</label
                         >
                       </div>
                     </div>
@@ -30,27 +30,26 @@
                     <div class="d-flex flex-row align-items-center mb-4">
                       <div class="form-outline flex-fill mb-0">
                         <input
-                          type="text"
-                          id="form3Example3c"
-                          class="form-control"
-                          v-model="phone"
-                          required
+                            type="text"
+                            id="form3Example3c"
+                            class="form-control"
+                            v-model="phone"
+                            required
                         />
                         <label class="form-label" for="form3Example3c"
-                          >Your Phone</label
+                        >Your Phone</label
                         >
                       </div>
                     </div>
 
                     <div
-                      class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
+                        class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
                     >
                       <button
-                        type="button"
-                        class="btn btn-primary btn-lg"
-                        @click.prevent="sendPwd"
-                        :disabled="disableButton"
-                      >
+                          type="button"
+                          class="btn btn-primary btn-lg"
+                          @click.prevent="sendPwd"
+                          :disabled="disableButton">
                         Submit
                       </button>
                     </div>
@@ -71,10 +70,11 @@
     </div>
   </main>
   <!--  modal-->
-  <div class="modal fade" id="passwordSendModal" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
+  <div class="modal fade" id="passwordSendModal" tabindex="-1" aria-labelledby="blockedAccountModalLabel"
+       aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header bg-warning text-black"> <!-- 更改背景颜色和标题颜色 -->
+        <div class="modal-header bg-warning text-black">
           <h5 class="modal-title" id="blockedAccountModalLabel">提醒！</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -90,6 +90,7 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -97,7 +98,7 @@ export default {
       phone: "0987654321",
       message: "",
       disableButton: false,
-      loading:false,
+      loading: false,
     };
   },
 
@@ -110,19 +111,19 @@ export default {
       this.loading = true;
       this.disableButton = true;
       axios
-        .post(`${this.API_URL}/user/mail/pwd`, fd)
-        .then((rs) => {
-          var myModal = new bootstrap.Modal(document.getElementById('passwordSendModal'));
-          myModal.show();
-          this.$router.push("/login");
-        })
-        .catch(() => {
-          this.message = "信箱或電話錯誤！";
-          this.disableButton = false;
-          this.loading = false;
-        });
+          .post(`${this.API_URL}/user/mail/pwd`, fd)
+          .then((rs) => {
+            var myModal = new bootstrap.Modal(document.getElementById('passwordSendModal'));
+            myModal.show();
+            this.$router.push("/login");
+          })
+          .catch(() => {
+            this.message = "信箱或電話錯誤！";
+            this.disableButton = false;
+            this.loading = false;
+          });
     },
   },
 };
 </script>
-<style></style>
+<style scoped></style>

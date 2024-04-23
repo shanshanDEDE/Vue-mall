@@ -2,16 +2,14 @@
   <main class="bg-light">
     <div class="container py-5">
       <div class="row">
+
         <div class="col-lg-8">
-          <!-- Shopping Cart Header -->
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="free-shipping-banner">
               <span class="free-shipping-text">Your order qualifies for free shipping!</span>
               <div class="striped-bar"></div>
             </div>
           </div>
-
-          <!-- Column Titles -->
           <div class="row text-muted mb-3 text-lg align-items-center">
             <div class="col-1">移除</div>
             <div class="col-2">圖片</div>
@@ -20,52 +18,46 @@
             <div class="col-2 text-center">價格</div>
             <div class="col-2 text-center">小計</div>
           </div>
-
-          <!-- Product List -->
-          <div v-for="item in cartItems" :key="item.cartItemId" class="card mb-3">
-            <div class="card-body">
-              <div class="row align-items-center">
-
-                <!-- Remove Item Column -->
-                <div class="col-auto text-center">
-                  <a href="#" class="text-secondary" @click.prevent="deleteCartItem(item.cartItemId)">
-                    <i class="fas fa-times"></i>
-                  </a>
-                </div>
-
-                <!-- Product Image Column -->
-                <div class="col-2 text-center">
-                  <img :src="getPhotoUrl(item.photoFile)" class="img-fluid" alt="product">
-                </div>
-
-                <!-- Product Name Column -->
-                <div class="col-3 text-center">
-                  <p class="text-secondary">{{ item.productName }}</p>
-                </div>
-
-                <!-- Product Quantity Column -->
-                <div class="col-2 text-center">
-                  <div class="d-flex">
-                    <button class="btn btn-outline-secondary" @click="decrement(item)">-</button>
-                    <input type="number" class="form-control text-center mx-1" v-model="item.quantity" min="1">
-                    <button class="btn btn-outline-secondary" @click="increment(item)">+</button>
+          <div v-if="cartItems.length > 0">
+            <div v-for="item in cartItems" :key="item.cartItemId" class="card mb-3">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-auto text-center">
+                    <a href="#" class="text-secondary" @click.prevent="deleteCartItem(item.cartItemId)">
+                      <i class="fas fa-times"></i>
+                    </a>
                   </div>
-                </div>
-
-                <!-- Product Price Column -->
-                <div class="col-2 text-end">
-                  <span class="text-secondary">{{ item.productPrice }}</span>
-                </div>
-
-                <!-- Product Subtotal Column -->
-                <div class="col-2 text-end">
-                  <span class="text-secondary">{{ item.subtotal }}</span>
+                  <div class="col-2 text-center">
+                    <img :src="getPhotoUrl(item.photoFile)" class="img-fluid" alt="product">
+                  </div>
+                  <div class="col-3 text-center">
+                    <p class="text-secondary">{{ item.productName }}</p>
+                  </div>
+                  <div class="col-2 text-center">
+                    <div class="d-flex">
+                      <button class="btn btn-outline-secondary" @click="decrement(item)">-</button>
+                      <input type="number" class="form-control text-center mx-1" v-model="item.quantity" min="1">
+                      <button class="btn btn-outline-secondary" @click="increment(item)">+</button>
+                    </div>
+                  </div>
+                  <div class="col-2 text-end">
+                    <span class="text-secondary">{{ item.productPrice }}</span>
+                  </div>
+                  <div class="col-2 text-end">
+                    <span class="text-secondary">{{ item.subtotal }}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div v-else class="empty-cart-message-container">
+            <div class="empty-cart-container d-flex justify-content-center align-items-center">
+              <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+              <p class="mb-4">您的購物車是空的！</p>
+              <button class="btn btn-primary btn-shop" @click="goToShop">前往選購</button>
+            </div>
+          </div>
         </div>
-        <!-- Checkout Section (Summary) -->
         <div class="col-lg-4">
           <div class="summary-card">
             <div class="summary-title">購物車總計</div>
@@ -73,7 +65,6 @@
               <span class="item-title">小計</span>
               <span class="total-price">{{ totalAmount }}</span>
             </div>
-            <!-- Other summary items if needed -->
             <div class="summary-options">
               <h6 class="options-title">運送方式</h6>
               <div class="form-check">
@@ -104,7 +95,6 @@
               <span class="total-title">總計</span>
               <span class="total-price">{{ totalAmount }}</span>
             </div>
-            <!-- Button wrapper for centering -->
             <div class="button-container">
               <p v-if="errorMsg2" class="error-message">{{ errorMsg2 }}</p>
               <button class="btn btn-primary" @click="checkDeliveryOption('/checkout')">結帳</button>
@@ -118,7 +108,7 @@
 
 <script>
 import axios from "axios";
-import { useCheckoutStore } from '@/stores/checkoutStore';
+import {useCheckoutStore} from '@/stores/checkoutStore';
 
 export default {
   data() {
@@ -179,7 +169,9 @@ export default {
       checkoutStore.addOrderDetails(orderDetails);
       this.$router.push('/checkout');
     },
-
+    goToShop() {
+      this.$router.push('/'); // Replace '/shop' with the path to your shop's main page.
+    },
     async deleteCartItem(cartItemId) {
       try {
         await axios.delete(`${this.API_URL}/cart/item/${cartItemId}`);
@@ -204,7 +196,7 @@ export default {
     },
     async updateCartItemQuantity(cartItemId, quantity) {
       try {
-        const cartDto = { cartItemId, quantity };
+        const cartDto = {cartItemId, quantity};
         const response = await axios.put(`${this.API_URL}/cart/${cartItemId}`, cartDto);
         console.log(response.data);
       } catch (error) {
@@ -220,10 +212,16 @@ export default {
     },
     getPhotoUrl(photoFile) {
       if (photoFile) {
-        // Check if it's a Base64 string; Base64 typically starts with '/9j/' for JPEG images
+        // Check if it's a JPEG Base64 string
         if (photoFile.startsWith('/9j/')) {
           return `data:image/jpeg;base64,${photoFile}`;
-        } else {
+        }
+        // Check if it's a PNG Base64 string
+        else if (photoFile.startsWith('iVBORw0KGgo')) {
+          return `data:image/png;base64,${photoFile}`;
+        }
+        // Add more conditions here for other image formats if necessary
+        else {
           // Handle other cases or return a default/placeholder image
           return 'placeholder_image_url.jpg';
         }
@@ -231,6 +229,7 @@ export default {
         return 'placeholder_image_url.jpg';  // Provide a valid placeholder URL
       }
     }
+
   },
 
   mounted() {
@@ -240,8 +239,8 @@ export default {
 </script>
 
 <style scoped>
-.form-control{
-  min-width:35px;
+.form-control {
+  min-width: 35px;
 }
 
 .quantity-selector input {
@@ -251,8 +250,6 @@ export default {
 .btn-outline-secondary {
   width: 60px;
   border-color: #e0e0e0;
-//border: none;
-//background-color: transparent;
 }
 
 /* For WebKit-based browsers */
@@ -274,22 +271,17 @@ input[type="number"] {
 
 .free-shipping-banner {
   border: 2px dashed #6fa8dc;
-  /* Blue dashed border */
   padding: 15px;
-  /* position: relative; */
   margin: 10px 0px 10px 0px;
-  width: 700px;;
+  width: 100%;
 }
 
 .free-shipping-text {
   color: #656a7a;
   font-weight: bold;
   display: block;
-  /* Ensure it takes a full line for positioning */
   margin: 10px 0px 10px 0px;
-
 }
-
 
 .striped-bar {
   width: 100%;
@@ -300,6 +292,7 @@ input[type="number"] {
   #428bca 10px,
   #428bca 20px);
 }
+
 .summary-card {
   background-color: #fff;
   border-radius: 4px;
@@ -307,27 +300,28 @@ input[type="number"] {
   padding: 20px;
   max-width: 400px;
 }
-.button-container {
-  text-align: center; /* Centers the button inside the container */
-  padding-top: 20px; /* Adds some spacing above the button */
-}
-.btn-primary {
-  width: 100%; /* Makes the button take full width of its container */
-  background-color: #606060; /* Dark gray for an industrial feel */
-  color: #fff; /* White text for contrast */
-  border: none; /* No border for a clean look */
-  padding: 12px 0; /* Larger padding for better touch area */
-  font-size: 18px; /* Slightly larger text */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s ease;
 
-  /* Subtle box shadow for a 3D effect */
+.button-container {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.btn-primary {
+  width: 100%;
+  background-color: #606060;
+  color: #fff;
+  border: none;
+  padding: 12px 0;
+  font-size: 18px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover, .btn-primary:focus {
-  background-color: #505050; /* Slightly lighter gray on hover */
+  background-color: #505050;
 }
+
 .summary-title {
   font-size: 20px;
   margin-bottom: 16px;
@@ -348,27 +342,39 @@ input[type="number"] {
 .payment-options h3 {
   margin-bottom: 20px;
 }
+
 .error-message {
   color: red;
   font-weight: bold;
 }
+
 .btn-primary {
-  background-color: #606060; /* Dark gray for an industrial feel */
-  border: none; /* Remove borders for a cleaner look */
-  color: #fff; /* White text for contrast */
+  background-color: #606060;
+  border: none;
+  color: #fff;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
-  border-radius: 3px; /* Slight rounding to soften the button */
+  border-radius: 3px;
   transition: background-color 0.3s ease;
-
-  /* Subtle texturing with a shadow to mimic industrial surfaces */
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:hover, .btn-primary:focus {
-  background-color: #505050; /* Slightly lighter gray on hover */
+  background-color: #505050;
   cursor: pointer;
 }
 
+.btn-shop {
+  width: 50%;
+  max-width: 200px;
+}
+
+.empty-cart-container {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 </style>

@@ -375,7 +375,7 @@ export default {
 
 .accordion2{
   border: black solid 1px !important;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color:	#FCFCFC !important;  /* Darker green on hover */
   color: #272727	 !important;
 }

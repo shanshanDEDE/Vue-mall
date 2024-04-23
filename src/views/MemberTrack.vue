@@ -4,11 +4,9 @@
     <div class="content-container">
       <div class="profile-card">
         <div class="profile-header">
-          <h1 class="brand-title">APPLE TREE</h1>
-          <h1 class="display-4 fw-normal">我的追蹤</h1>
+          <h1 class="display-4 fw-normal">My Wish</h1>
         </div>
-        <div class="horizontal-divider"></div> <!-- 橫向灰色線 -->
-
+        <div class="horizontal-divider"></div>
         <div class="track-container">
           <div
               v-for="track in tracks"
@@ -26,7 +24,7 @@
                     reProductId: track.productId,
                     reProductName: track.productName,
                     rePrice: track.productPrice,
-                    rePhotoId: track.photoFile,  // 如果 photoFile 是 base64 編碼，可能需要其他處理方式
+                    rePhotoId: track.photoFile,
                     reProductDescription: track.productDescription,
                     reSpecIds: track.specIds
                   }
@@ -34,7 +32,7 @@
                 tag="div"
             >
               <div class="track-image">
-                <img :src="'data:image/jpeg;base64,' + track.photoFile" alt="Product Image" class="product-img" />
+                <img :src="'data:image/jpeg;base64,' + track.photoFile" alt="Product Image" class="product-img"/>
               </div>
               <div class="track-info">
                 <h5 class="track-name">{{ track.productName }}</h5>
@@ -51,8 +49,7 @@
 <script>
 import MemberOption from "@/components/MemberOption.vue";
 import axios from "axios";
-
-import {useUserStore} from "@/stores/userStore.js"; // 样式文件路径根据实际情况修改
+import {useUserStore} from "@/stores/userStore.js";
 
 export default {
   data() {
@@ -71,31 +68,24 @@ export default {
         this.tracks = rs.data;
       });
     },
-    // ...其他方法保持不变...
 
     untrackProduct(track) {
-      // 这里添加取消收藏的逻辑
-      console.log("取消收藏的产品ID:", track.trackID);
-      // 例如，发起一个请求到后端取消收藏
       this.trackDTO.userID = track.userID;
       this.trackDTO.specID = track.specID;
 
       axios
-        .delete(`${this.API_URL}/delete/track`, {
-          data: this.trackDTO,
-        })
-        .then((response) => {
-          // 处理响应
-          console.log(response);
-          // 更新tracks数组，移除取消收藏的产品
-          this.tracks = this.tracks.filter(
-            (item) => item.trackID !== track.trackID
-          );
-        })
-        .catch((error) => {
-          // 处理错误
-          console.error(error);
-        });
+          .delete(`${this.API_URL}/delete/track`, {
+            data: this.trackDTO,
+          })
+          .then((response) => {
+            console.log(response);
+            this.tracks = this.tracks.filter(
+                (item) => item.trackID !== track.trackID
+            );
+          })
+          .catch((error) => {
+            console.error(error);
+          });
     },
   },
   components: {
@@ -138,7 +128,7 @@ export default {
 
 .profile-card {
   width: 100%;
-  max-width: 1200px; /* 設定最大寬度 */
+  max-width: 1200px;
   padding: 20px;
   border-radius: 6px;
   background-color: #fff;
@@ -163,11 +153,9 @@ export default {
 .horizontal-divider {
   width: 100%;
   height: 1px;
-  background-color: #ccc; /* 淡灰色背景色 */
-  margin-bottom: 20px; /* 根據需要增加下邊距 */
+  background-color: #ccc;
+  margin-bottom: 20px;
 }
-
-/* custom.css */
 
 .custom-sidebar {
   background-color: #333;
@@ -257,7 +245,5 @@ export default {
 .untrack-button .fa {
   color: white;
 }
-
-
 
 </style>

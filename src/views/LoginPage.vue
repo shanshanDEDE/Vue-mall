@@ -32,19 +32,19 @@
         <form class="p-4 p-md-5 border rounded-3 bg-light">
           <div class="form-floating mb-3">
             <input
-              type="text"
-              class="form-control"
-              placeholder="name@example.com"
-              v-model="email"
+                type="text"
+                class="form-control"
+                placeholder="name@example.com"
+                v-model="email"
             />
             <label>Email address</label>
           </div>
           <div class="form-floating mb-3">
             <input
-              type="password"
-              class="form-control"
-              placeholder="Password"
-              v-model="password"
+                type="password"
+                class="form-control"
+                placeholder="Password"
+                v-model="password"
             />
             <label>Password</label>
           </div>
@@ -65,9 +65,9 @@
             <p>or sign up with:</p>
 
             <button
-              type="button"
-              class="btn btn-link btn-floating mx-1"
-              @click.prevent="gotoGoogleLoginPage"
+                type="button"
+                class="btn btn-link btn-floating mx-1"
+                @click.prevent="gotoGoogleLoginPage"
             >
               <i class="fab fa-google"></i>
             </button>
@@ -148,29 +148,29 @@ export default {
       fd.append("password", this.password);
 
       axios
-        .post(`${this.API_URL}/user/login`, fd)
-        .then((rs) => {
-          console.log(rs.data.authentication);
-          if(rs.data.authentication==3){
-            var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModal2'));
-            myModal.show();
-          }else{
-            const userStore = useUserStore();
-            userStore.loginSuccess(rs.data);
-            sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
-            const redirectRoute = sessionStorage.getItem('redirectRoute');
-            if (redirectRoute) {
-              this.$router.push(redirectRoute);
-              sessionStorage.removeItem('redirectRoute'); // 清除保存的路由
-            } else {
-              this.$router.push("/");
+          .post(`${this.API_URL}/user/login`, fd)
+          .then((rs) => {
+            console.log(rs.data.authentication);
+            if(rs.data.authentication==3){
+              var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModal'));
+              myModal.show();
+            }else{
+              const userStore = useUserStore();
+              userStore.loginSuccess(rs.data);
+              sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
+              const redirectRoute = sessionStorage.getItem('redirectRoute');
+              if (redirectRoute) {
+                this.$router.push(redirectRoute);
+                sessionStorage.removeItem('redirectRoute'); // 清除保存的路由
+              } else {
+                this.$router.push("/");
+              }
             }
-          }
 
-        })
-        .catch(() => {
-          this.message = "登入失敗";
-        });
+          })
+          .catch(() => {
+            this.message = "登入失敗";
+          });
     },
     check() {
       axios.get(`${this.API_URL}/check`).then((rs) => console.log(rs.data));
@@ -212,49 +212,49 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .fixed-button {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 50px; /* 設置寬度和高度相等，使其呈現圓形 */
+  width: 50px;
   height: 50px;
-  border-radius: 50%; /* 圓形邊框 */
+  border-radius: 50%;
   background-color: #007bff;
   color: #fff;
   border: none;
   cursor: pointer;
-  /* 將內容居中 */
+
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
 }
 
-/* 調整 icon 大小 */
+
 .fixed-button i {
   font-size: 25px;
 }
 .sub-button {
   bottom: 20px;
   right: 20px;
-  width: 50px; /* 設置寬度和高度相等，使其呈現圓形 */
+  width: 50px;
   height: 50px;
-  border-radius: 50%; /* 圓形邊框 */
+  border-radius: 50%;
   background-color: #2784e7;
   color: #fff;
   border: none;
   cursor: pointer;
-  /* 將內容居中 */
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .sub-button i {
-  font-size: 25px; /* 調整圖標大小 */
+  font-size: 25px;
 }
 
-/* 旋轉動畫 */
+
 .rotate {
   animation: rotateIcon 0.3s linear;
 }
@@ -268,7 +268,7 @@ export default {
   }
 }
 
-/* 按鈕列表容器 */
+
 .buttons-container {
   position: fixed;
   bottom: 80px;
@@ -278,24 +278,24 @@ export default {
   align-items: center;
 }
 
-.slide-enter, .slide-leave-to /* .slide-leave-active below version 2.1.8 */ {
+.slide-enter, .slide-leave-to  {
   transform: translateY(0);
   opacity: 1;
 }
 
-.slide-enter-to, .slide-leave /* .slide-enter-active below version 2.1.8 */ {
+.slide-enter-to, .slide-leave  {
   transform: translateY(-100%);
   opacity: 0;
 }
 
-/* 彈出的按鈕 */
+
 .sub-button {
   margin-top: 10px;
 }
 
 a {
-  color: inherit; /* 使用父元素的文字顏色 */
-  text-decoration: none; /* 取消下劃線 */
+  color: inherit;
+  text-decoration: none;
 }
 a:link {
   color: inherit;
@@ -306,7 +306,4 @@ a:visited {
   color: inherit;
   text-decoration: none;
 }
-
-
-
 </style>

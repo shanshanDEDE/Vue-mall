@@ -135,7 +135,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .form-group {
   display: flex;
   align-items: flex-start; /* 改變此處，讓items在容器的開始處對齊 */
