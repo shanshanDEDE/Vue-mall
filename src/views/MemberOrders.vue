@@ -4,7 +4,6 @@
     <div class="content-container">
       <div class="profile-card">
         <div class="profile-header">
-          <h1 class="brand-title">APPLE TREE</h1>
           <h6 class="display-4 fw-normal">訂單查詢</h6>
         </div>
         <div class="horizontal-divider"></div>
@@ -101,12 +100,8 @@
 
   <div class="modal" v-show="showSuccessModal">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">提示</h5>
-        <button type="button" class="btn2" @click="closeSuccessModal">×</button>
-      </div>
       <div class="modal-body">
-        您的密碼已重設更新。
+        您的訂單已取消！
       </div>
       <div class="modal-footer">
         <button type="button" class="btn1 btn-primary" @click="closeSuccessModal">確定</button>
@@ -143,7 +138,6 @@ export default {
       this.showModal = true;
     },
     resolveFeedback() {
-
       this.deleteOrders(this.memberOrder);
       this.showModal = false;
     },

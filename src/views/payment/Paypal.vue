@@ -49,8 +49,6 @@ function onApprove(data, actions) {
   return actions.order.capture().then(() => {
     paid.value = true
     window.location.href = 'http://localhost:5173/successPage';
-    console.log('Order complete!');
-
 })
 }
 </script>
@@ -64,12 +62,6 @@ function onApprove(data, actions) {
 
 <script>
 export default {
-  methods: {
-
-    goToHome() {
-      this.$router.push({path: '/'});
-    },
-  }
 }
 
 </script>
@@ -86,7 +78,7 @@ export default {
 }
 
 #confirmation {
-  color: green;
+  color: white;
   margin-top: 1em;
   font-size: 2em;
   text-align: center; /* 将文本水平置中 */

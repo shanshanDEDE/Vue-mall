@@ -3,27 +3,31 @@
     <h1>Payment Successful!</h1>
     <p>Your order has been processed successfully.</p>
     <button @click="goHome">Go to Home</button>
-<!--    <button @click="viewOrder">View Order Details</button>-->
+    <br>
+    <button @click="viewOrder">View Order Details</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { useUserStore } from '@/stores/userStore'; // Adjust the path as necessary
+import {useUserStore} from '@/stores/userStore'; // Adjust the path as necessary
 
 export default {
   mounted() {
-    if (this.userStore.isLoggedIn) {
-      this.clearShoppingCart(this.userStore.userId);
-      // this.saveOrderDetails();
-    }
-  },
-  setup() {
     const userStore = useUserStore();
-    return { userStore };
+    axios.get(`${this.API_URL}/user/getSession`).then((rs) => {
+      userStore.loginSuccess(rs.data);
+      console.log(rs.data);
+      sessionStorage.setItem("loggedInMember", JSON.stringify(rs.data));
+      if (userStore.isLoggedIn) {
+        console.log('User is logged in:', userStore.userId);
+        this.clearShoppingCart(userStore.userId);
+      }
+    });
   },
   methods: {
     clearShoppingCart(userId) {
+      console.log('Clearing shopping cart for user:', userId);
       axios.delete(`${this.API_URL}/cart/clear/${userId}`)
           .then(response => {
             console.log('Cart cleared successfully:', response.data);
@@ -36,9 +40,9 @@ export default {
     goHome() {
       this.$router.push('/');
     },
-    // viewOrder() {
-    //   this.$router.push('/order-details');
-    // }
+    viewOrder(){
+      this.$router.push('/MemberCenter/MemberOrders');
+    }
   }
 }
 </script>
@@ -52,6 +56,7 @@ export default {
   height: 100vh;
   text-align: center;
 }
+
 button {
   margin: 10px;
   padding: 10px 20px;

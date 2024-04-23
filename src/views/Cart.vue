@@ -51,7 +51,7 @@
             </div>
           </div>
           <div v-else class="empty-cart-message-container">
-            <div class="empty-cart-container d-flex justify-content-center align-items-center">
+            <div class="empty-cart-container d-flex">
               <i class="fas fa-shopping-cart fa-3x mb-3"></i>
               <p class="mb-4">您的購物車是空的！</p>
               <button class="btn btn-primary btn-shop" @click="goToShop">前往選購</button>
@@ -211,24 +211,28 @@ export default {
       this.total = this.cartItems.reduce((total, item) => total + item.subtotal, 0);
     },
     getPhotoUrl(photoFile) {
-      if (photoFile) {
-        // Check if it's a JPEG Base64 string
-        if (photoFile.startsWith('/9j/')) {
-          return `data:image/jpeg;base64,${photoFile}`;
-        }
-        // Check if it's a PNG Base64 string
-        else if (photoFile.startsWith('iVBORw0KGgo')) {
-          return `data:image/png;base64,${photoFile}`;
-        }
-        // Add more conditions here for other image formats if necessary
-        else {
-          // Handle other cases or return a default/placeholder image
-          return 'placeholder_image_url.jpg';
-        }
-      } else {
-        return 'placeholder_image_url.jpg';  // Provide a valid placeholder URL
+      if (!photoFile) {
+        return 'placeholder_image_url.jpg'; // Return a placeholder if no image data is provided
       }
+
+      // Attempt to automatically detect MIME type (not fully reliable without prefix)
+      // Assuming the MIME type is always an image, but the specific type is unknown
+      let mimeType = 'image/jpeg'; // Default to JPEG if detection fails
+      if (photoFile.startsWith('iVBORw0KGgo')) {
+        mimeType = 'image/png';
+      } else if (photoFile.startsWith('/9j/')) {
+        mimeType = 'image/jpeg';
+      } else if (photoFile.startsWith('R0lGODlh')) {
+        mimeType = 'image/gif';
+      } else if (photoFile.startsWith('UklGR')) {
+        mimeType = 'image/webp';
+      } else if (photoFile.startsWith('Qk')) {
+        mimeType = 'image/bmp';
+      }
+
+      return `data:${mimeType};base64,${photoFile}`;
     }
+
 
   },
 
@@ -372,8 +376,8 @@ input[type="number"] {
 
 .empty-cart-container {
   height: 70vh;
+  padding: 60px;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 }

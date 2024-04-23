@@ -80,7 +80,7 @@
     </div>
   </main>
   <!--  modal-->
-  <div class="modal fade" id="blockedAccountModal" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
+  <div class="modal fade" id="blockedAccountModal2" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-light text-black"> <!-- 更改背景顏色和標題顏色 -->
@@ -129,7 +129,7 @@ import { useUserStore } from "@/stores/userStore";
 export default {
   data() {
     return {
-      email: "amy@mail.com",
+      email: "wangsmingg@gmail.com",
       password: "12345678",
       message: "",
       isChatIcon: true, // 標記是否顯示 chat icon

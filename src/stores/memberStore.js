@@ -7,7 +7,6 @@ export const useMemberStore = defineStore("memberStore",{
             memberName:"",
             memberPhoto:"",
             isLoggedIn: false
-
         };
     },
 
