@@ -94,7 +94,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      email: "891001no2@gmail.com",
+      email: "891001no8@gmail.com",
       phone: "0987654321",
       message: "",
       disableButton: false,

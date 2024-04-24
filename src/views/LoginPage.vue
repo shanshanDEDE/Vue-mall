@@ -83,7 +83,7 @@
   <div class="modal fade" id="blockedAccountModal2" tabindex="-1" aria-labelledby="blockedAccountModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header bg-light text-black"> <!-- 更改背景顏色和標題顏色 -->
+        <div class="modal-header bg-light text-black">
           <h5 class="modal-title" id="blockedAccountModalLabel">警告！</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -153,7 +153,7 @@ export default {
           .then((rs) => {
             console.log(rs.data.authentication);
             if(rs.data.authentication==3){
-              var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModal'));
+              var myModal = new bootstrap.Modal(document.getElementById('blockedAccountModal2'));
               myModal.show();
             }else{
               const userStore = useUserStore();
